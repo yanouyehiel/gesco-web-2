@@ -1,0 +1,66 @@
+/* Conteneur principal */
+.rbc-calendar {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
+  
+  /* Événements */
+  .rbc-event {
+    background-color: #009AD7;
+    border-color: #009AD7;
+    color: #fff;
+  }
+  
+  .rbc-event:hover {
+    background-color: #0086b8;
+    border-color: #0086b8;
+  }
+  
+  /* Événements sélectionnés */
+  .rbc-event.rbc-selected {
+    background-color: #48BB8C;
+    border-color: #48BB8C;
+  }
+  
+  /* Aujourd'hui */
+  .rbc-today {
+    background-color: #009AD7;
+    color: #fff;
+  }
+  
+  /* En-têtes */
+  .rbc-header {
+    border-bottom-color: #009AD7;
+  }
+  
+  /* Navigation */
+  .rbc-toolbar button {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    color: #333;
+  }
+  
+  .rbc-toolbar button:hover,
+  .rbc-toolbar button:focus {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+  }
+  
+  .rbc-toolbar button.rbc-active {
+    background-color: #009AD7;
+    border-color: #009AD7;
+    color: #fff;
+  }
+  
+  /* Vues */
+  .rbc-month-view,
+  .rbc-week-view,
+  .rbc-day-view {
+    border-color: #ddd;
+  }
+  
+  .rbc-month-view .rbc-row.rbc-row-flex,
+  .rbc-week-view .rbc-row.rbc-row-flex,
+  .rbc-day-view .rbc-row.rbc-row-flex {
+    border-bottom-color: #ddd;
+  }

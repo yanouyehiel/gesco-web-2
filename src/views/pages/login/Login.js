@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -15,8 +15,31 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { login } from '../../../services/AuthApi'
+import { addItem } from '../../../services/LocalStorage'
 
 const Login = () => {
+  const [user, setUser] = useState({})
+
+  const handleChange = ({currentTarget}) => {
+    const {name, value} = currentTarget;
+    setUser({...user, [name]: value})
+  }
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    console.log(user)
+    await login(user).then((res) => {
+      addItem('gesco', JSON.stringify(res))
+      //setIsAuthenticated(true);
+      console.log(res)
+      window.location.replace('/dashboard');
+    }, (error) => {
+      console.log(error.response.data.message)
+      //toast.error(error.response.data.message)
+    });
+  }
+
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -25,14 +48,19 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={handleSubmit}>
                     <h1>Login</h1>
                     <p className="text-body-secondary">Sign In to your account</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput 
+                        placeholder="Username" 
+                        autoComplete="username" 
+                        onChange={handleChange} 
+                        name="email"
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -42,11 +70,13 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        onChange={handleChange} 
+                        name="password"
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton color="primary" type="submit" className="px-4">
                           Login
                         </CButton>
                       </CCol>

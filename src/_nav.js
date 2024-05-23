@@ -10,8 +10,25 @@ import {
   cilNotes,
   cilPencil,
   cilPuzzle,
-  cilSpeedometer,
   cilStar,
+  cilCash,
+  cilDoor,
+  cilMoney,
+  cilClipboard,
+  cilBook,
+  cilContact,
+  cilCheckCircle,
+  cilAddressBook,
+  cilColumns,
+  cilCalendar,
+  cilInstitution,
+  cilPeople,
+  cilUser,
+  cilAudioDescription,
+  cilHistory,
+  cilSchool,
+  cilEnvelopeLetter,
+  cilCalendarCheck
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -20,11 +37,190 @@ const _nav = [
     component: CNavItem,
     name: 'Dashboard',
     to: '/dashboard',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilInstitution} customClassName="nav-icon" />,
     badge: {
       color: 'info',
       text: 'NEW',
     },
+  },
+  {
+    component: CNavTitle,
+    name: "Gestion de l'établissement",
+  },
+  {
+    component: CNavItem,
+    name: 'Les salles de classe',
+    to: '/classes',
+    icon: <CIcon icon={cilDoor} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Les pensions',
+    to: '/pensions',
+    icon: <CIcon icon={cilCash} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Les tarifs',
+    to: '/tarifs',
+    icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Les documents',
+    to: '/documents',
+    icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Les livres',
+    to: '/livres',
+    icon: <CIcon icon={cilBook} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: 'Gestion des enseignements',
+  },
+  {
+    component: CNavItem,
+    name: 'Les matières',
+    to: '/matieres',
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavGroup,
+    name: 'Les cours enseignés',
+    to: '/lessons',
+    icon: <CIcon icon={cilAudioDescription} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'SIL',
+        to: '/lessons/classe',
+      },
+      {
+        component: CNavItem,
+        name: 'Buttons groups',
+        to: '/buttons/button-groups',
+      },
+      {
+        component: CNavItem,
+        name: 'Dropdowns',
+        to: '/buttons/dropdowns',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Les présences',
+    to: '/presences',
+    icon: <CIcon icon={cilCheckCircle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'SIL',
+        to: '/presences/classe',
+      },
+      {
+        component: CNavItem,
+        name: 'Buttons groups',
+        to: '/buttons/button-groups',
+      },
+      {
+        component: CNavItem,
+        name: 'Dropdowns',
+        to: '/buttons/dropdowns',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Les devoirs',
+    to: '/devoirs',
+    icon: <CIcon icon={cilColumns} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'SIL',
+        to: '/devoirs/classe',
+      },
+      {
+        component: CNavItem,
+        name: 'Buttons groups',
+        to: '/buttons/button-groups',
+      },
+      {
+        component: CNavItem,
+        name: 'Dropdowns',
+        to: '/buttons/dropdowns',
+      },
+    ],
+  },
+  {
+    component: CNavTitle,
+    name: 'Gestion des évaluations',
+  },
+  {
+    component: CNavItem,
+    name: 'Les notes',
+    to: '/notes',
+    icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Le calendrier',
+    to: '/calendar',
+    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: 'Gestion du personnel',
+  },
+  {
+    component: CNavItem,
+    name: 'Administration',
+    to: '/administration',
+    icon: <CIcon icon={cilSchool} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Enseignants',
+    to: '/teachers',
+    icon: <CIcon icon={cilContact} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Elèves',
+    to: '/students',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Parents',
+    to: '/parents',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: 'Gestion de la communication',
+  },
+  {
+    component: CNavItem,
+    name: 'Emplois de temps',
+    to: '/planning',
+    icon: <CIcon icon={cilCalendarCheck} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Evènements',
+    to: '/events',
+    icon: <CIcon icon={cilHistory} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Messagerie',
+    to: '/messages',
+    icon: <CIcon icon={cilEnvelopeLetter} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,

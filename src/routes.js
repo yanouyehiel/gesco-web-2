@@ -50,8 +50,50 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
+const Classes = React.lazy(() => import('./views/classes/Classes'))
+const ViewClasse = React.lazy(() => import('./views/classes/Classe'))
+const Pensions = React.lazy(() => import('./views/pensions/Pensions'))
+const Tarifs = React.lazy(() => import('./views/tarifs/Tarifs'))
+const Documents = React.lazy(() => import('./views/documents/Documents'))
+const Livres = React.lazy(() => import('./views/livres/Livres'))
+const Matieres = React.lazy(() => import('./views/matieres/Matieres'))
+const Cours = React.lazy(() => import('./views/cours/Cours'))
+const Presences = React.lazy(() => import('./views/presences/Presences'))
+const Devoirs = React.lazy(() => import('./views/devoirs/Devoirs'))
+const Notes = React.lazy(() => import('./views/notes/Notes'))
+const Calendrier = React.lazy(() => import('./views/calendrier/Calendrier'))
+const Administration = React.lazy(() => import('./views/administration/Administration'))
+const Enseignants = React.lazy(() => import('./views/enseignants/Enseignants'))
+const Eleves = React.lazy(() => import('./views/eleves/Eleves'))
+const ViewEleve = React.lazy(() => import('./views/eleves/ViewEleve'))
+const Parents = React.lazy(() => import('./views/parents/Parents'))
+const Planning = React.lazy(() => import('./views/planning/Planning'))
+const Events = React.lazy(() => import('./views/events/Events'))
+const Messagerie = React.lazy(() => import('./views/messagerie/Messagerie'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
+  { path: '/classes', name: 'Classes', element: Classes },
+  { path: '/classes/:id', name: 'Classe', element: ViewClasse },
+  { path: '/pensions', name: 'Pensions', element: Pensions },
+  { path: '/tarifs', name: 'Tarifs', element: Tarifs },
+  { path: '/documents', name: 'Documents', element: Documents },
+  { path: '/livres', name: 'Livres', element: Livres },
+  { path: '/matieres', name: 'Matières', element: Matieres },
+  { path: '/lessons/classe', name: 'Cours', element: Cours },
+  { path: '/presences/classe', name: 'Présences', element: Presences },
+  { path: '/devoirs/classe', name: 'Devoirs', element: Devoirs },
+  { path: '/notes', name: 'Notes', element: Notes },
+  { path: '/calendar', name: 'Calendrier', element: Calendrier },
+  { path: '/administration', name: 'Administration', element: Administration },
+  { path: '/teachers', name: 'Enseignants', element: Enseignants },
+  { path: '/students', name: 'Elèves', element: Eleves },
+  { path: '/students/:id', name: 'Elèves', element: ViewEleve },
+  { path: '/parents', name: 'Parents', element: Parents },
+  { path: '/planning', name: 'Emploi du temps', element: Planning },
+  { path: '/events', name: 'Evènements', element: Events },
+  { path: '/messages', name: 'Messagerie', element: Messagerie },
+
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
