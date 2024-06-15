@@ -2,12 +2,12 @@ import AxiosApi from "./AxiosApi";
 import { getItem } from "./LocalStorage";
 
 export async function getRoles(headers) {
-    const response = await AxiosApi.get('/get-roles', headers);
+    const response = await AxiosApi.get('/get-roles', {headers});
     return response.data;
 }
 
 export async function getRole(id, headers) {
-    const response = await AxiosApi.get('/get-role/' + id, headers);
+    const response = await AxiosApi.get('/get-role/' + id, {headers});
     return response.data;
 }
 
@@ -26,8 +26,8 @@ export async function typesClasse(headers) {
     return response.data;
 }
 
-export async function typesEtablissements(headers) {
-    const response = await AxiosApi.get('/get-types-etablissement', {headers});
+export async function typesEtablissements() {
+    const response = await AxiosApi.get('/get-types-etablissement');
     return response.data;
 }
 
@@ -37,7 +37,12 @@ export async function addClasse(classe, headers) {
 }
 
 export async function addPersonne(personne, headers) {
-    const response = await AxiosApi.post('/add-personne', personne, {headers});
+    const response = await AxiosApi.post('/auth/register', personne, {headers});
+    return response.data;
+}
+
+export async function addDirecteur(personne) {
+    const response = await AxiosApi.post('/auth/register', personne);
     return response.data;
 }
 
@@ -66,8 +71,8 @@ export async function getInfoEcole(id, header) {
     return response.data;
 }
 
-export async function addEcole(ecole, headers) {
-    const response = await AxiosApi.post('/add-ecole', ecole, {headers});
+export async function addEcole(ecole) {
+    const response = await AxiosApi.post('/add-ecole', ecole);
     return response.data;
 }
 
@@ -121,13 +126,18 @@ export async function getDocumentsAsked(id, headers) {
     return response.data;
 }
 
-export async function validateRequest(id, headers) {
-    const response = await AxiosApi.post('/validate-request', id, {headers});
+export async function validateRequest(data, headers) {
+    const response = await AxiosApi.put('/validate-request', data, {headers});
     return response.data;
 }
 
-export async function getMessages(id, headers) {
-    const response = await AxiosApi.get('/get-messages/' + id, {headers});
+export async function getMessages(id, idUser, headers) {
+    const response = await AxiosApi.get('/get-messages/'+id+'/'+idUser, {headers});
+    return response.data;
+}
+
+export async function readMessage(data, headers) {
+    const response = await AxiosApi.put('/update-message', data, {headers});
     return response.data;
 }
 
@@ -168,5 +178,15 @@ export async function addHoraire(data, headers) {
 
 export async function getHoraires(id, headers) {
     const response = await AxiosApi.get('/get-horaires/' + id, {headers});
+    return response.data;
+}
+
+export async function addLivre(livre, headers) {
+    const response = await AxiosApi.post('/add-livre', livre, {headers});
+    return response.data;
+}
+
+export async function getLivres(id, headers) {
+    const response = await AxiosApi.get('/get-livres/' + id, {headers});
     return response.data;
 }

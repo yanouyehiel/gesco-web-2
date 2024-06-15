@@ -30,7 +30,37 @@ export async function register(credentials) {
 
 export async function logout(header) {
     try {
-        const response = await AxiosApi.post('/auth/logout', header);
+        const response = await AxiosApi.post('/auth/logout', {}, {header});
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export async function verify(data) {
+    try {
+        const response = await AxiosApi.post(`/auth/email/verify/${data.email}/${data.expires}/${data.signature}`, data, {headers});
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export async function sendLinkResetPassword(data) {
+    try {
+        const response = await AxiosApi.post(`/auth/password/email`, data, {headers});
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export async function resetPassword(data, credentials) {
+    try {
+        const response = await AxiosApi.post(`/auth/password/reset/${data.email}/${data.expires}/${data.signature}`, credentials, {headers});
         return response.data;
     } catch (error) {
         console.error(error);

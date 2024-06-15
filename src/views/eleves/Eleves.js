@@ -20,7 +20,7 @@ const columns = [
     name: 'Parent',
     selector: row => row.parent_id,
     sortable: true,
-    cell: row => row.parent_id === null ? <CBadge color='danger' /> : <CBadge color='success' />
+    //cell: row => row.parent_id === null ? <CBadge color='danger' /> : <CBadge color='success' />
   },
   {
     name: 'Matricule',
@@ -131,7 +131,7 @@ function Eleves() {
               <Button onClick={handleShow}>Ajouter un élève</Button>
             </Col>
           </Row>
-          {loading ? <CSpinner /> :
+          {loading ? <CSpinner color='primary' /> :
             <DataTable
               columns={columns}
               data={data}
@@ -201,7 +201,7 @@ function Eleves() {
                 </Button>
             </Form>
         </Modal.Body>
-    </Modal>
+      </Modal>
     </CCard>
   )
 }

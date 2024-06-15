@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -12,14 +12,38 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CSpinner,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { login } from '../../../services/AuthApi'
-import { addItem } from '../../../services/LocalStorage'
+import { addItem, getItem } from '../../../services/LocalStorage'
+import { ToastContainer, toast } from 'react-toastify'
+
+const headers = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+}
 
 const Login = () => {
   const [user, setUser] = useState({})
+  const [theme, setTheme] = useState("")
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
+  const [loadingC, setLoadingC] = useState(false)
+  
+  useEffect(() => {
+    const themeS = localStorage.getItem('coreui-free-react-admin-template-theme')
+    setTheme(themeS)
+
+    const data = getItem('gesco')
+    const json = JSON.parse(data)
+    if (json.user) {
+      navigate("/dashboard")
+    } else {
+      setLoading(false)
+    }
+  }, [])
 
   const handleChange = ({currentTarget}) => {
     const {name, value} = currentTarget;
@@ -28,20 +52,34 @@ const Login = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    console.log(user)
-    await login(user).then((res) => {
+    setLoading(true)
+    
+    await login(user, headers).then((res) => {
       addItem('gesco', JSON.stringify(res))
-      //setIsAuthenticated(true);
-      console.log(res)
-      window.location.replace('/dashboard');
+      setLoading(false)
+      navigate("../dashboard")
     }, (error) => {
-      console.log(error.response.data.message)
-      //toast.error(error.response.data.message)
+      toast.error(error.response.data.message)
     });
+  }
+
+  if (loading) {
+    return (
+      <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+        <CContainer>
+          <CRow className="justify-content-center">
+            <CCol md={8}>
+              <CSpinner color='primary' />
+            </CCol>
+          </CRow>
+        </CContainer>
+      </div>
+    )
   }
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+      <ToastContainer />
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={8}>
@@ -49,14 +87,14 @@ const Login = () => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm onSubmit={handleSubmit}>
-                    <h1>Login</h1>
-                    <p className="text-body-secondary">Sign In to your account</p>
+                    <h1>Connexion</h1>
+                    <p className="text-body-secondary">Connectez-vous à votre compte</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
                       <CFormInput 
-                        placeholder="Username" 
+                        placeholder="Email" 
                         autoComplete="username" 
                         onChange={handleChange} 
                         name="email"
@@ -68,7 +106,7 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         type="password"
-                        placeholder="Password"
+                        placeholder="Mot de passe"
                         autoComplete="current-password"
                         onChange={handleChange} 
                         name="password"
@@ -76,14 +114,16 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" type="submit" className="px-4">
-                          Login
+                        <CButton color="primary" type="submit" className="text-white px-4" disabled={loadingC}>
+                          {loadingC ? <CSpinner color='white' /> : 'Se connecter'}
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
-                          Forgot password?
-                        </CButton>
+                        <Link to="/password-forgot">
+                          <CButton color="link" className="px-0">
+                            Mot de passe oublié ?
+                          </CButton>
+                        </Link>
                       </CCol>
                     </CRow>
                   </CForm>
@@ -92,14 +132,13 @@ const Login = () => {
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
-                    <h2>Sign up</h2>
+                    <h2>Créer votre école</h2>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
+                    Simplifiez votre gestion scolaire avec notre solution tout-en-un ! Créez dès maintenant le compte de votre établissement et découvrez comment notre logiciel peut révolutionner votre organisation administrative.
                     </p>
                     <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                        Register Now!
+                      <CButton color="primary" className="text-white mt-3" active tabIndex={-1}>
+                        Créez dès maintenant !
                       </CButton>
                     </Link>
                   </div>

@@ -138,7 +138,7 @@ function Classe() {
                             <Button onClick={handleShow}>Ajouter un élève</Button>
                         </Col>
                     </Row>
-                    {loading ? <CSpinner /> :
+                    {loading ? <CSpinner color='primary' /> :
                         <DataTable
                             columns={columns}
                             data={data}

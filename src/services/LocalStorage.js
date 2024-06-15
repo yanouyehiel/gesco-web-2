@@ -3,7 +3,7 @@ export function removeItem(itemToRemove) {
 }
 
 export function getItem(item) {
-    return window.localStorage.getItem(item);
+    return window.localStorage.getItem(item) || '{}';
 }
 
 export function addItem(localStorageName, newItem) {
@@ -11,11 +11,17 @@ export function addItem(localStorageName, newItem) {
 }
 
 export function getEcoleStored() {
-    const data = getItem('gesco') || '{}'
+    const data = getItem('gesco')
     const parsed = JSON.parse(data)
-    //console.log(parsed.user.ecole_id)
     
-    return parsed.user.ecole_id
+    return parsed?.user?.ecole_id
+}
+
+export function getUserStored() {
+    const data = getItem('gesco')
+    const parsed = JSON.parse(data)
+    
+    return parsed?.user
 }
 
 export function getHeaders() {
@@ -24,8 +30,8 @@ export function getHeaders() {
     
     const headers = {}
     headers.Accept = 'application/json'
-    //headers.Content-Type = "application/json"
-    headers.Authorization = `Bearer ${dataParsed.access_token}`
+    headers.ContentType = "application/json"
+    headers.Authorization = `Bearer ${dataParsed?.access_token}`
     //console.log(headers)
     return headers
 }

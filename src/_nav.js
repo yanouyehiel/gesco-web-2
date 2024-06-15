@@ -88,73 +88,22 @@ const _nav = [
     icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Les cours enseignés',
     to: '/lessons',
     icon: <CIcon icon={cilAudioDescription} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'SIL',
-        to: '/lessons/classe',
-      },
-      {
-        component: CNavItem,
-        name: 'Buttons groups',
-        to: '/buttons/button-groups',
-      },
-      {
-        component: CNavItem,
-        name: 'Dropdowns',
-        to: '/buttons/dropdowns',
-      },
-    ],
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Les présences',
     to: '/presences',
     icon: <CIcon icon={cilCheckCircle} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'SIL',
-        to: '/presences/classe',
-      },
-      {
-        component: CNavItem,
-        name: 'Buttons groups',
-        to: '/buttons/button-groups',
-      },
-      {
-        component: CNavItem,
-        name: 'Dropdowns',
-        to: '/buttons/dropdowns',
-      },
-    ],
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Les devoirs',
     to: '/devoirs',
     icon: <CIcon icon={cilColumns} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'SIL',
-        to: '/devoirs/classe',
-      },
-      {
-        component: CNavItem,
-        name: 'Buttons groups',
-        to: '/buttons/button-groups',
-      },
-      {
-        component: CNavItem,
-        name: 'Dropdowns',
-        to: '/buttons/dropdowns',
-      },
-    ],
   },
   {
     component: CNavTitle,
@@ -222,7 +171,7 @@ const _nav = [
     to: '/messages',
     icon: <CIcon icon={cilEnvelopeLetter} customClassName="nav-icon" />,
   },
-  {
+  /*{
     component: CNavTitle,
     name: 'Theme',
   },
@@ -495,7 +444,7 @@ const _nav = [
     name: 'Docs',
     href: 'https://coreui.io/react/docs/templates/installation/',
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
-  },
+  },*/
 ]
 
 export default _nav

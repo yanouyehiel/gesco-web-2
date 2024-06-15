@@ -72,7 +72,7 @@ const Events = React.lazy(() => import('./views/events/Events'))
 const Messagerie = React.lazy(() => import('./views/messagerie/Messagerie'))
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/dashboard', exact: true, name: 'Home' },
   { path: '/classes', name: 'Classes', element: Classes },
   { path: '/classes/:id', name: 'Classe', element: ViewClasse },
   { path: '/pensions', name: 'Pensions', element: Pensions },
@@ -80,9 +80,9 @@ const routes = [
   { path: '/documents', name: 'Documents', element: Documents },
   { path: '/livres', name: 'Livres', element: Livres },
   { path: '/matieres', name: 'Matières', element: Matieres },
-  { path: '/lessons/classe', name: 'Cours', element: Cours },
-  { path: '/presences/classe', name: 'Présences', element: Presences },
-  { path: '/devoirs/classe', name: 'Devoirs', element: Devoirs },
+  { path: '/lessons', name: 'Cours', element: Cours },
+  { path: '/presences', name: 'Présences', element: Presences },
+  { path: '/devoirs', name: 'Devoirs', element: Devoirs },
   { path: '/notes', name: 'Notes', element: Notes },
   { path: '/calendar', name: 'Calendrier', element: Calendrier },
   { path: '/administration', name: 'Administration', element: Administration },

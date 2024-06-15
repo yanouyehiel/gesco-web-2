@@ -79,14 +79,17 @@ const Classes = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    setLoading(true)
-    classe.ecole_id = ecole_id
-    await addClasse(classe, headers).then(res => {
-        handleClose()
-        setLoading(false)
-        toast.success(res.message)
-        classes.push(classe)
-    });
+    if (!classe.teacher_id) {
+      toast.error("Veuillez lui attribuer en enseignant principale")
+    } else {
+      setLoading(true)
+      classe.ecole_id = ecole_id
+      await addClasse(classe, headers).then(res => {
+          handleClose()
+          setLoading(false)
+          toast.success(res.message)
+      });
+    }
   }
 
   function handleFilter(event) {
@@ -136,7 +139,7 @@ const Classes = () => {
                 <Button onClick={handleShow}>Ajouter une salle</Button>
               </Col>
             </Row>
-            {loading ? <CSpinner color={colors.BLEU} /> :
+            {loading ? <CSpinner color='primary' /> :
               <DataTable
                 columns={columns}
                 data={data}
@@ -158,11 +161,11 @@ const Classes = () => {
               <Form onSubmit={handleSubmit}>
                   <Form.Group className="form-group mt-4">
                       <Form.Label className="control-label">Nom de la salle</Form.Label>
-                      <Form.Control onChange={handleChange} name='nom' type="text" className="form-control" placeholder="Exemple: SIL A" required />
+                      <Form.Control onChange={handleChange} name='nom' type="text" className="form-control" placeholder="Exemple: SIL A" required='true' />
                   </Form.Group>
                   <Form.Group className="form-group mt-4">
                       <Form.Label className="control-label">Sélectionner le type de classe</Form.Label>
-                      <Form.Select onChange={handleChange} name='type_classe_id' className="form-control" required>
+                      <Form.Select onChange={handleChange} name='type_classe_id' className="form-control" required='true'>
                           <option>-- select --</option>
                           {typeClasses.length > 0 && typeClasses.map((typeClasse, i) => (
                               <option key={i} value={typeClasse.id}>{typeClasse.classe}</option>
@@ -171,7 +174,7 @@ const Classes = () => {
                   </Form.Group>
                   <Form.Group className="form-group mt-4">
                       <Form.Label className="control-label">Nommer un enseignant principal</Form.Label>
-                      <Form.Select onChange={handleChange} name='teacher_id' className="form-control" required>
+                      <Form.Select onChange={handleChange} name='teacher_id' className="form-control" required='true'>
                           <option>-- select --</option>
                           {teachers.length > 0 && teachers.map((teacher, i) => (
                               <option key={i} value={teacher.id}>{teacher.nom + ' ' + teacher.prenom}</option>

@@ -1,13 +1,166 @@
-import { CCard, CCardBody, CCardHeader } from '@coreui/react'
-import React from 'react'
+import { CCard, CCardBody, CCardHeader, CFormInput, CInputGroup, CNavLink, CSpinner, CTable } from '@coreui/react'
+import React, { useEffect, useState } from 'react'
+import { getEcoleStored, getHeaders } from '../../services/LocalStorage';
+import { addPaiement, getPaiementSchool } from '../../services/MainControllerApi';
+import { getStudents } from '../../services/StudentController';
+import { ToastContainer, toast } from 'react-toastify';
+import { NavLink } from 'react-router-dom';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import DataTable from 'react-data-table-component';
+import { dateParser } from '../../utils/functions';
+
+const columns = [
+  {
+    name: 'Code',
+    selector: row => row.code,
+    sortable: true
+  },
+  {
+    name: 'Intitule',
+    selector: row => row.intitule,
+    sortable: true
+  },
+  {
+    name: "Nom de l'élève",
+    selector: row => row.nom_student,
+    sortable: true
+  },
+  {
+    name: "Prénom de l'élève",
+    selector: row => row.prenom_student,
+    sortable: true
+  },
+  {
+    name: 'Montant',
+    selector: row => row.montant + ' XAF',
+    sortable: true
+  },
+  {
+    name: 'Date',
+    selector: row => dateParser(row.created_at),
+    sortable: true
+  },
+  {
+    name: 'Action',
+    cell: row => <CNavLink to={'/fees-student/' + row.student_id} as={NavLink}>Voir</CNavLink>
+  }
+]
 
 function Pensions() {
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true)
+  const [paiement, setPaiement] = useState({})
+  const [paiements, setPaiements] = useState([])
+  const [students, setStudents] = useState([])
+  const ecole_id = getEcoleStored()
+  const headers = getHeaders()
+
+  useEffect(() => {
+    getStudentsSchool() 
+    getPaiements().then(() => setLoading(false))      
+  }, [])
+
+  async function getPaiements() {
+    await getPaiementSchool(ecole_id, headers).then((res) => {
+      setPaiements(res)
+    })
+  }
+
+  async function getStudentsSchool() {
+    await getStudents(ecole_id, headers).then((res) => {
+      console.log(res)
+      setStudents(res)
+    })
+  }
+
+  const handleChange = ({currentTarget}) => {
+    const {name, value} = currentTarget;
+    setPaiement({...paiement, [name]: value})
+  }
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setShow(false);
+    setLoading(true)
+    paiement.ecole_id = ecole_id
+    await addPaiement(paiement, headers).then((res) => {
+      toast.success(res.message)
+      getPaiements().then(() => setLoading(false)) 
+    })  
+  }
+
+  const handleFilter = () => {
+
+  }
+
   return (
     <CCard className="mb-4">
+      <ToastContainer />
         <CCardHeader>Pensions</CCardHeader>
         <CCardBody>
-            <p>Lorem ipsum</p>
+          <CTable>
+            <Row>
+              <Col>
+                <CInputGroup className="mb-3">
+                  <CFormInput
+                    placeholder="Rechercher"
+                    aria-label="Rechercher"
+                    aria-describedby="basic-addon1"
+                    onChange={handleFilter}
+                  />
+                </CInputGroup>
+              </Col>
+              <Col>
+                <Button onClick={handleShow}>Enregistrer un paiement</Button>
+              </Col>
+            </Row>
+            <Row>
+            {loading ? <CSpinner color='primary' /> :
+              <DataTable
+                columns={columns}
+                data={paiements}
+                fixedHeader
+                pagination
+                selectableRowsHighlight
+                highlightOnHover
+              >
+              </DataTable>
+            }
+            </Row>
+          </CTable>
         </CCardBody>
+
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+              <Modal.Title>Enregistrement un paiement</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+              <Form onSubmit={handleSubmit}>
+                  <Form.Group className="form-group mt-4">
+                      <Form.Label className="control-label">Sélectionner un élève</Form.Label>
+                      <Form.Select onChange={handleChange} className="form-control" name="student_id" required>
+                          <option>-- select --</option>
+                          {students.map((student, i) => (
+                              <option key={i} value={student.id}>{student.nom +' ' + student.prenom}</option>
+                          ))}
+                      </Form.Select>
+                  </Form.Group>
+                  <Form.Group className="form-group mt-4">
+                      <Form.Label className="control-label">Entrer l'intitulé de la transaction</Form.Label>
+                      <Form.Control onChange={handleChange} className="form-control" name="intitule" required />
+                  </Form.Group>
+                  <Form.Group className="form-group mt-4">
+                      <Form.Label className="control-label">Entrer le montant</Form.Label>
+                      <Form.Control onChange={handleChange} className="form-control" name="montant" required />
+                  </Form.Group><br />
+                  
+                  <Button size='lg' type='submit'>Enregistrer</Button>
+              </Form>
+          </Modal.Body>
+      </Modal>
     </CCard>
   )
 }
