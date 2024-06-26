@@ -7,7 +7,7 @@ import { Col, Form, Modal, Row } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
-import { getClasses } from '../../services/MainControllerApi'
+import { getAllParentsSchool, getClasses } from '../../services/MainControllerApi'
 
 
 const columns = [
@@ -69,7 +69,7 @@ function Eleves() {
   const [show, setShow] = useState(false)
   const [student, setStudent] = useState({})
   const [classes, setClasses] = useState([])
-
+  const [parents, setParents] = useState([])
 
   useEffect(() => {
     getStudents(ecole_id, headers).then((res) => {
@@ -78,9 +78,15 @@ function Eleves() {
     })
     getClasses(ecole_id, headers).then(res => {
       setClasses(res)
-      setLoading(false)
     })
+    getParents().then(() => setLoading(false))
   }, [])
+
+  async function getParents() {
+    await getAllParentsSchool(ecole_id, headers).then((res) => {
+      setParents(res)
+    })
+  }
 
   function handleFilter(event) {
     const newData = students.filter(row => {
@@ -135,7 +141,6 @@ function Eleves() {
             <DataTable
               columns={columns}
               data={data}
-              selectableRows
               fixedHeader
               pagination
               selectableRowsHighlight
@@ -193,6 +198,17 @@ function Eleves() {
                         <option value=''>-- select --</option>
                         <option value='2023 - 2024'>2023 - 2024</option>
                         <option value='2024 - 2025'>2024 - 2025</option>
+                    </Form.Select>
+                </Form.Group>
+                <Form.Group className="form-group mt-4">
+                    <Form.Label className="control-label">Attribuer son parent</Form.Label>
+                    <Form.Select className="form-control" onChange={handleChange} name="parent_id">
+                        <option value=''>-- select --</option>
+                        {
+                          parents.length > 0 && parents.map((parent, i) => (
+                            <option key={i} value={parent.id}>{parent.nom + ' ' + parent.prenom}</option>
+                          ))
+                        }
                     </Form.Select>
                 </Form.Group>
                 <br/>

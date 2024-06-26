@@ -200,3 +200,13 @@ export async function getFeesStudent(id, headers) {
     const response = await AxiosApi.get('/get-fees-student/' + id, {headers});
     return response.data;
 }
+
+export async function deleteLivre(id, headers) {
+    const response = await AxiosApi.delete('/delete-livre/' + id, {headers})
+    return response.data
+}
+
+export async function updateTarif(data, headers) {
+    const response = await AxiosApi.put('/update-tarif', data, {headers});
+    return response.data;
+}

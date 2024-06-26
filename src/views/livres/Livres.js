@@ -1,29 +1,11 @@
-import { CCard, CCardBody, CCardHeader, CFormInput, CInputGroup, CSpinner, CTable } from '@coreui/react'
+import { CButton, CCard, CCardBody, CCardHeader, CFormInput, CInputGroup, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
-import { addLivre, getLivres } from '../../services/MainControllerApi'
+import { addLivre, deleteLivre, getLivres } from '../../services/MainControllerApi'
 import DataTable from 'react-data-table-component'
 import { dateParser } from '../../utils/functions'
 import { ToastContainer, toast } from 'react-toastify'
-
-const columns = [
-  {
-    name: 'Num',
-    selector: row => row.id,
-    sortable: true
-  },
-  {
-    name: 'Nom du livre',
-    selector: row => row.intitule,
-    sortable: true
-  },
-  {
-    name: "Date d'enregistrement",
-    selector: row => dateParser(row.created_at),
-    sortable: true
-  },
-]
 
 function Livres() {
   const [livres, setLivres] = useState([])
@@ -55,6 +37,17 @@ function Livres() {
     setData(newData)
   }
 
+  async function SupprimerLivre(id) {
+    setLoading(true)
+    console.log(id)
+    await deleteLivre(id, headers).then((res) => {
+      toast.success(res)
+      getAllLivres().then(() => setLoading(false))
+    }, (err) => {
+      toast.error(err.response.data.message)
+    })
+  }
+
   const handleChange = ({currentTarget}) => {
     const {name, value} = currentTarget;
     setLivre({...livre, [name]: value})
@@ -73,6 +66,29 @@ function Livres() {
       toast.error(err.response.data.message)
     })
   }
+
+  const columns = [
+    {
+      name: 'Num',
+      selector: row => row.id,
+      sortable: true
+    },
+    {
+      name: 'Nom du livre',
+      selector: row => row.intitule,
+      sortable: true
+    },
+    {
+      name: "Date d'enregistrement",
+      selector: row => dateParser(row.created_at),
+      sortable: true
+    },
+    {
+      name: 'Action',
+      cell: row => <Button className="btn-danger text-white" onClick={() => SupprimerLivre(row.id)}>Supprimer</Button>
+    }
+  ]
+  
 
   return (
     <CCard className="mb-4">

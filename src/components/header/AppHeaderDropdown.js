@@ -19,11 +19,12 @@ import {
   cilSettings,
   cilTask,
   cilUser,
+  cilInstitution,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/4.jpg'
-import { getEcoleStored, getHeaders, getUserStored, removeItem } from '../../services/LocalStorage'
+import { getEcoleStore, getEcoleStored, getHeaders, getUserStored, removeItem } from '../../services/LocalStorage'
 import { getDocumentsAsked, getMessages } from '../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
 import { logout } from '../../services/AuthApi'
@@ -34,6 +35,7 @@ const AppHeaderDropdown = () => {
   const ecole_id = getEcoleStored()
   const headers = getHeaders()
   const user = getUserStored()
+  const ecole = getEcoleStore()
 
   useEffect(() => {
     getMessagesEcole().then()
@@ -76,6 +78,11 @@ const AppHeaderDropdown = () => {
         <CAvatar src={avatar8} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
+        <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Mon école</CDropdownHeader>
+        <CDropdownItem href="#">
+          <CIcon icon={cilInstitution} className="me-2" />
+            {ecole.nom}
+        </CDropdownItem>
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Mon compte</CDropdownHeader>
         <CDropdownItem href="../#/documents">
           <CIcon icon={cilBell} className="me-2" />

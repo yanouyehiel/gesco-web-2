@@ -24,6 +24,13 @@ export function getUserStored() {
     return parsed?.user
 }
 
+export function getEcoleStore() {
+    const data = getItem('gesco')
+    const parsed = JSON.parse(data)
+    
+    return parsed?.ecole
+}
+
 export function getHeaders() {
     const local = getItem('gesco')
     const dataParsed = JSON.parse(local)

@@ -148,8 +148,8 @@ function Events() {
         </Modal.Header>
         <Modal.Body>
           <p style={{fontSize: '18px'}}>{eventM.description}</p>
-          <p>Date de début : <b>{dateParser(eventM.date_debut)}</b></p>
-          <p>Date de fin : <b>{dateParser(eventM.date_fin)}</b></p>
+          <p>Date de début : <b>{dateParser(eventM.start)}</b></p>
+          <p>Date de fin : <b>{dateParser(eventM.end)}</b></p>
         </Modal.Body>
       </Modal>
     </CCard>
