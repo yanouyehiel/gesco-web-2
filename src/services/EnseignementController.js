@@ -21,7 +21,7 @@ export async function getTeacher(matricule, headers) {
 }
 
 export async function getStudentsOfClasse(idSalle, idEcole, headers) {
-    const response = await AxiosApi.get(`/my-students/classe_id=${parseInt(idSalle)}&ecole_id=${parseInt(idEcole)}`, {headers});
+    const response = await AxiosApi.get(`/students/classe_id=${parseInt(idSalle)}&ecole_id=${parseInt(idEcole)}`, {headers});
     return response.data;
 }
 

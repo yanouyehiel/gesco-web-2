@@ -32,6 +32,9 @@ function SaveDirector() {
             await addDirecteur(director).then((res) => {
                 setLoading(false)
                 toast.success(res.message)
+                setTimeout(() => {
+                    window.location.replace('../#/login')
+                }, 3000)
             })
         }
     }

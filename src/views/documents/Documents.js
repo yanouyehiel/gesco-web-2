@@ -42,10 +42,7 @@ function Documents() {
     setShow(false)
     askDocument(doc, headers).then((res) => {
       toast.success(res.message)
-      getDocumentsAsked(ecole_id, headers).then((data) => {
-        setDocuments(data)
-        setLoading(false)
-      })
+      getDocuments().then(() => setLoading(false))
     }, (error) => {
       toast.error(error.response.data.message)
     })

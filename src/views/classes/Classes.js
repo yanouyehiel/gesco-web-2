@@ -1,6 +1,6 @@
 import { CCard, CCardHeader, CCardBody, CFormInput, CTable, CInputGroup, CTableBody, CTableDataCell, CSpinner, CNavLink } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { getClasses, typesClasse, addClasse, deleteClasse } from '../../services/MainControllerApi'
+import { typesClasse, addClasse, deleteClasse } from '../../services/MainControllerApi'
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import AxiosApi from '../../services/AxiosApi'
 import DataTable from 'react-data-table-component'
@@ -61,11 +61,7 @@ const Classes = () => {
   const [teachers, setTeachers] = useState([])
 
   useEffect(() => {
-    AxiosApi.get('/get-classes-school/' + ecole_id, {headers})
-      .then(res => {
-        setClasses(res.data)
-        setData(res.data)
-      })
+    getClasses().then()
     
     typesClasse(headers).then(res => {
       setTypeClasses(res)
@@ -77,6 +73,14 @@ const Classes = () => {
     })
   }, [])
 
+  async function getClasses() {
+    await AxiosApi.get('/get-classes-school/' + ecole_id, {headers})
+    .then(res => {
+      setClasses(res.data)
+      setData(res.data)
+    })
+  }
+
   const handleSubmit = async e => {
     e.preventDefault()
     if (!classe.teacher_id) {
@@ -86,7 +90,7 @@ const Classes = () => {
       classe.ecole_id = ecole_id
       await addClasse(classe, headers).then(res => {
           handleClose()
-          setLoading(false)
+          getClasses().then(() => setLoading(false))
           toast.success(res.message)
       });
     }

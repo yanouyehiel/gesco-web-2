@@ -29,13 +29,8 @@ export async function register(credentials) {
 }
 
 export async function logout(header) {
-    try {
-        const response = await AxiosApi.post('/auth/logout', {}, {header});
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
+    const response = await AxiosApi.post('/auth/logout', {}, {headers: header});
+    return response.data;
 }
 
 export async function verify(data) {

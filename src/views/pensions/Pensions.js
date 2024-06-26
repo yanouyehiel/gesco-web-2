@@ -42,7 +42,7 @@ const columns = [
   },
   {
     name: 'Action',
-    cell: row => <CNavLink to={'/fees-student/' + row.student_id} as={NavLink}>Voir</CNavLink>
+    cell: row => <CNavLink to={'/students/' + row.student_id} as={NavLink}>Voir</CNavLink>
   }
 ]
 
@@ -68,7 +68,6 @@ function Pensions() {
 
   async function getStudentsSchool() {
     await getStudents(ecole_id, headers).then((res) => {
-      console.log(res)
       setStudents(res)
     })
   }

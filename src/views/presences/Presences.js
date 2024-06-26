@@ -1,4 +1,4 @@
-import { CCard, CCardBody, CCardHeader, CFormInput, CInputGroup, CSpinner } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CFormInput, CInputGroup, CRow, CSpinner } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
@@ -81,21 +81,26 @@ function Presences() {
               </Row>
             </Col>
           </Row>
-          <Row>
+          <CRow
+            xs={{ cols: 1, gutter: 4 }}
+            sm={{ cols: 2 }}
+            lg={{ cols: 4 }}
+            xl={{ cols: 5 }}
+          >
             {!loading ? (presences.length > 0 ? presences.map((presence, i) => (
-              <Col xs={3} key={i}>
-                <CCard className='mb-4' onClick={() => handleShow(presence)}>
+              <Col key={i}>
+                <CCard className='mb-4'>
                   <CCardBody>
                     <h5 className='text-primary'>{presence.nom_student +' '+ presence.prenom_student}</h5>
                     <span className='text-danger'>{presence.periode}</span>
-                    <span style={{marginLeft: '30px'}} className='text-success'>{presence.nom_classe}</span>
+                    <span style={{marginLeft: '30px'}}>{presence.nom_classe}</span>
                     <p><em>{"Enregistré le " + dateParser(presence.created_at)}</em></p>
-                    <h5>{presence.titre}</h5>
+                    {/* <h5>{presence.titre}</h5> */}
                   </CCardBody>
                 </CCard>
               </Col>
             )) : <p className='text-center' style={{fontSize: '18px'}}>Aucune donnée</p>) : <CSpinner color='primary' />}
-          </Row>
+          </CRow>
         </CCardBody>
     </CCard>
   )

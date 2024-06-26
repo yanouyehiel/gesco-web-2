@@ -121,6 +121,11 @@ export async function getAbsencesByClasse(id, headers) {
     return response.data;
 }
 
+export async function getAbsencesByStudent(id, headers) {
+    const response = await AxiosApi.get('/get-absences-children/' + id, {headers});
+    return response.data;
+}
+
 export async function getDocumentsAsked(id, headers) {
     const response = await AxiosApi.get('/get-documents-asked/' + id, {headers});
     return response.data;
@@ -188,5 +193,10 @@ export async function addLivre(livre, headers) {
 
 export async function getLivres(id, headers) {
     const response = await AxiosApi.get('/get-livres/' + id, {headers});
+    return response.data;
+}
+
+export async function getFeesStudent(id, headers) {
+    const response = await AxiosApi.get('/get-fees-student/' + id, {headers});
     return response.data;
 }

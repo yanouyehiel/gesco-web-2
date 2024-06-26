@@ -1,4 +1,4 @@
-import { CCard, CCardBody, CCardHeader, CFormInput, CFormSelect, CInputGroup, CSpinner } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CFormInput, CFormSelect, CInputGroup, CRow, CSpinner } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import { getAllCours } from '../../services/EnseignementController'
@@ -88,19 +88,24 @@ function Cours() {
               </Row>
             </Col>
           </Row>
-          <Row>
+          <CRow
+            xs={{ cols: 1, gutter: 4 }}
+            sm={{ cols: 2 }}
+            lg={{ cols: 4 }}
+            xl={{ cols: 5 }}
+          >
             {!loading ? (cours.length > 0 ? cours.map((cour, i) => (
-              <Col xs={3} key={i}>
+              <Col key={i}>
                 <CCard onClick={() => handleShow(cour)} style={{ cursor: 'pointer' }}>
                   <CCardBody>
                     <h5 className='text-primary'>{cour.nom_matiere}</h5>
-                    <span className='text-success'>{dateParser(cour.created_at)}</span>
+                    <span>{dateParser(cour.created_at)}</span>
                     <h5>{cour.titre}</h5>
                   </CCardBody>
                 </CCard>
               </Col>
             )) : <p className='text-center' style={{fontSize: '18px'}}>Aucune donnée</p>) : <CSpinner color='primary' />}
-          </Row>
+          </CRow>
         </CCardBody>
 
         <Modal show={show} onHide={handleClose}>

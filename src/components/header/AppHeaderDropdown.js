@@ -56,13 +56,13 @@ const AppHeaderDropdown = () => {
   async function deconnexion() {
     try {
       toast.success('Déconnexion en cours...')
-      const res = await logout(headers)
-      console.log(res)
-      toast.success(res.message)
-      removeItem('gesco')
-      s/*etTimeout(() => {
-        window.location.replace('../#/login')
-      }, 2000)*/
+      logout(headers).then((res) => {
+        toast.success(res.message)
+        removeItem('gesco')
+        setTimeout(() => {
+          window.location.replace('../#/login')
+        }, 2000)
+      })
     } catch (error) {
       console.error(error)
       toast.error('Erreur lors de la déconnexion')
@@ -71,6 +71,7 @@ const AppHeaderDropdown = () => {
 
   return (
     <CDropdown variant="nav-item">
+      <ToastContainer />
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
         <CAvatar src={avatar8} size="md" />
       </CDropdownToggle>
@@ -128,7 +129,7 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem> */}
         <CDropdownDivider />
-        <CDropdownItem onClick={() => deconnexion()} style={{cursor: 'pointer'}} className='bg-danger text-white'>
+        <CDropdownItem onClick={deconnexion} style={{cursor: 'pointer'}} className='bg-danger text-white'>
           <CIcon icon={cilLockLocked} className="me-2" />
           Se déconnecter
         </CDropdownItem>

@@ -37,12 +37,15 @@ function Livres() {
   const [data, setData] = useState([])
 
   useEffect(() => {
+    getAllLivres().then(() => setLoading(false))
+  }, [])
+
+  async function getAllLivres() {
     getLivres(ecole_id, headers).then(res => {
       setLivres(res)
       setData(res)
-      setLoading(false)
     })
-  }, [])
+  }
 
   function handleFilter(event) {
     const newData = livres.filter(row => {
@@ -65,8 +68,7 @@ function Livres() {
     await addLivre(livre, headers).then((res) => {
       toast.success(res.message)
       handleClose()
-      data.push(res?.livre)
-      setLoading(false)
+      getAllLivres().then(() => setLoading(false))
     }, (err) => {
       toast.error(err.response.data.message)
     })

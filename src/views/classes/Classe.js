@@ -99,8 +99,7 @@ function Classe() {
         await addStudent(student, headers).then((res) => {
             toast.success(res.message)
             handleClose()
-            setLoading(false)
-            data.push(student)
+            getStudents().then(() => setLoading(false))
         }, (err) => {
             console.log(err.response.data.message)
         })
