@@ -1,1 +1,0 @@
-import{A as s}from"./react-toastify.esm-D9zZZXx7.js";async function o(t,e){return(await s.post("/add-student",t,{headers:e})).data}async function r(t,e){return(await s.get("/get-students/"+t,{headers:e})).data}async function d(t,e){return(await s.get("/get-student/"+t,{headers:e})).data}export{o as a,d as b,r as g};

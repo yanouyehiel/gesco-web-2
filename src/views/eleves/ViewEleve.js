@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify'
 import { NavLink, useParams } from 'react-router-dom';
 import { getSingleStudent } from '../../services/StudentController';
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Modal, Row } from 'react-bootstrap';
 import Skeleton from 'react-loading-skeleton';
 import { dateParser, dateParserTime } from '../../utils/functions';
 import { colors } from '../../utils/colors';
@@ -13,6 +13,10 @@ import classNames from 'classnames';
 import CIcon from '@coreui/icons-react';
 import { cilPeople } from '@coreui/icons';
 import avatar4 from 'src/assets/images/avatars/4.jpg'
+import ReactPDF, { PDFViewer } from '@react-pdf/renderer';
+import { PDFStudent } from '../../components/PDFStudent';
+import { compile } from '@fileforge/react-print';
+import { saveAs } from "file-saver";
 
 const ViewEleve = () => {
     const {id} = useParams();
@@ -24,12 +28,10 @@ const ViewEleve = () => {
     const [loadingP, setLoadingP] = useState(true)
     const [fees, setFees] = useState(null)
     const [presences, setPresences] = useState(null)
+    const [show, setShow] = useState(false)
+    const handleClose = () => setShow(false)
+    const handleShow = () => setShow(true)
 
-    const progressExample = [
-        { title: 'Total pension', value: '135 000', percent: 40, color: 'primary' },
-        { title: 'Somme payée', value: '115 000', percent: 20, color: 'success' },
-        { title: 'Reste à payer', value: '20 000', percent: 60, color: 'danger' }
-    ]
 
     useEffect(() => {
         getStudent().then(() => setLoadingS(false))
@@ -53,6 +55,22 @@ const ViewEleve = () => {
         await getAbsencesByStudent(id, headers).then((res) => {
             setPresences(res)
         })
+    }
+
+    async function printPDF() {
+        const pdfHtml = await compile(<PDFStudent />, { emotion: true });
+
+        const pdfFile = new File([pdfHtml], "mon-document.pdf", { type: "application/pdf" });
+        
+        const url = URL.createObjectURL(pdfFile);
+        saveAs(url, "mon-document.pdf");
+        // Use the URL in an iframe
+        const iframe = document.createElement("iframe");
+        iframe.src = url;
+        // Open the file in a new tab
+        window.open(url);
+        console.log(pdfFile)
+    window.print()
     }
 
     return (
@@ -100,133 +118,148 @@ const ViewEleve = () => {
                             </CCard>
                         </Col>
                     </Row>
-                    <CNavLink as={NavLink} to={'/documents/' + id}>
-                        <CButton color='link'>Demander un document</CButton>
-                    </CNavLink>
+                    <CRow>
+                        <CCol>
+                            <CNavLink as={NavLink} to={'/documents'}>
+                                <CButton color='link'>Demander un document</CButton>
+                            </CNavLink>
+                        </CCol>
+                        <CCol>
+                            <CButton onClick={handleShow} color='link'>Imprimer la fiche de l'élève</CButton>
+                        </CCol>
+                    </CRow>
                 </CCardBody>
+
+                <Modal show={show} onHide={handleClose} size='lg'>
+                    <Modal.Body>
+                        <PDFStudent />
+                    </Modal.Body>
+                    <CButton onClick={printPDF} color='link'>Telecharger</CButton>
+                </Modal>
             </CCard>
 
             <CCard className='mb-4'>
                 <CCardHeader>Paiements</CCardHeader>
-                {!loadingF ?
                 <CCardBody>
-                    <CRow>
-                        <CCol xs={12} md={6} xl={6}>
-                        <CRow>
-                            <CCol xs={6}>
-                            <div className="border-start border-start-4 border-start-info py-1 px-3">
-                                <div className="text-body-secondary text-truncate small">Inscription</div>
-                                <div className="fs-5 fw-semibold">{fees?.tarifs.inscription} FCFA</div>
-                            </div>
-                            </CCol>
-                            <CCol xs={6}>
-                            <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-                                <div className="text-body-secondary text-truncate small">Première tranche</div>
-                                <div className="fs-5 fw-semibold">{fees?.tarifs.premiere_tranche} FCFA</div>
-                            </div>
-                            </CCol>
-                        </CRow>
-                        </CCol>
-                        <CCol xs={12} md={6} xl={6}>
-                        <CRow>
-                            <CCol xs={6}>
-                            <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
-                                <div className="text-body-secondary text-truncate small">Deuxième tranche</div>
-                                <div className="fs-5 fw-semibold">{fees?.tarifs.deuxieme_tranche} FCFA</div>
-                            </div>
-                            </CCol>
-                            <CCol xs={6}>
-                            <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
-                                <div className="text-body-secondary text-truncate small">Troisième tranche</div>
-                                <div className="fs-5 fw-semibold">{fees?.tarifs.troisieme_tranche} FCFA</div>
-                            </div>
-                            </CCol>
-                        </CRow>
-                        </CCol>
-                    </CRow>
-                    <hr className="mt-0" />
-                    <CCardFooter>
-                        <CRow
-                            xs={{ cols: 1, gutter: 4 }}
-                            sm={{ cols: 2 }}
-                            lg={{ cols: 4 }}
-                            xl={{ cols: 5 }}
-                            className="mb-2 text-center"
-                        >
-                            <CCol>
-                                <div className="text-body-secondary">Total pension</div>
-                                <div className="fw-semibold text-truncate">
-                                {fees.total} (100%)
-                                </div>
-                                <CProgress thin className="mt-2" color="primary" value={100} />
-                            </CCol>
-                            <CCol>
-                                <div className="text-body-secondary">Somme déjà payée</div>
-                                <div className="fw-semibold text-truncate">
-                                {fees.paye} ({parseInt((fees.paye / fees.total) * 100)}%)
-                                </div>
-                                <CProgress thin className="mt-2" color="success" value={(fees.paye / fees.total) * 100} />
-                            </CCol>
-                            <CCol
-                                className='d-none d-xl-block'
-                            >
-                                <div className="text-body-secondary">Reste à payer</div>
-                                <div className="fw-semibold text-truncate">
-                                {fees.reste} ({Math.floor((fees.reste / fees.total) * 100)}%)
-                                </div>
-                                <CProgress thin className="mt-2" color="danger" value={Math.floor((fees.reste / fees.total) * 100)} />
-                            </CCol>
-                        </CRow>
-                    </CCardFooter>
-                    <br />
+                    {!loadingF ?
+                        <>
+                            <CRow>
+                                <CCol xs={12} md={6} xl={6}>
+                                <CRow>
+                                    <CCol xs={6}>
+                                    <div className="border-start border-start-4 border-start-info py-1 px-3">
+                                        <div className="text-body-secondary text-truncate small">Inscription</div>
+                                        <div className="fs-5 fw-semibold">{fees?.tarifs.inscription} FCFA</div>
+                                    </div>
+                                    </CCol>
+                                    <CCol xs={6}>
+                                    <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                                        <div className="text-body-secondary text-truncate small">Première tranche</div>
+                                        <div className="fs-5 fw-semibold">{fees?.tarifs.premiere_tranche} FCFA</div>
+                                    </div>
+                                    </CCol>
+                                </CRow>
+                                </CCol>
+                                <CCol xs={12} md={6} xl={6}>
+                                <CRow>
+                                    <CCol xs={6}>
+                                    <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                                        <div className="text-body-secondary text-truncate small">Deuxième tranche</div>
+                                        <div className="fs-5 fw-semibold">{fees?.tarifs.deuxieme_tranche} FCFA</div>
+                                    </div>
+                                    </CCol>
+                                    <CCol xs={6}>
+                                    <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
+                                        <div className="text-body-secondary text-truncate small">Troisième tranche</div>
+                                        <div className="fs-5 fw-semibold">{fees?.tarifs.troisieme_tranche} FCFA</div>
+                                    </div>
+                                    </CCol>
+                                </CRow>
+                                </CCol>
+                            </CRow>
+                            <hr className="mt-0" />
+                            <CCardFooter>
+                                <CRow
+                                    xs={{ cols: 1, gutter: 4 }}
+                                    sm={{ cols: 2 }}
+                                    lg={{ cols: 4 }}
+                                    xl={{ cols: 5 }}
+                                    className="mb-2 text-center"
+                                >
+                                    <CCol>
+                                        <div className="text-body-secondary">Total pension</div>
+                                        <div className="fw-semibold text-truncate">
+                                        {fees.total} (100%)
+                                        </div>
+                                        <CProgress thin className="mt-2" color="primary" value={100} />
+                                    </CCol>
+                                    <CCol>
+                                        <div className="text-body-secondary">Somme déjà payée</div>
+                                        <div className="fw-semibold text-truncate">
+                                        {fees.paye} ({parseInt((fees.paye / fees.total) * 100)}%)
+                                        </div>
+                                        <CProgress thin className="mt-2" color="success" value={(fees.paye / fees.total) * 100} />
+                                    </CCol>
+                                    <CCol
+                                        className='d-none d-xl-block'
+                                    >
+                                        <div className="text-body-secondary">Reste à payer</div>
+                                        <div className="fw-semibold text-truncate">
+                                        {fees.reste} ({Math.floor((fees.reste / fees.total) * 100)}%)
+                                        </div>
+                                        <CProgress thin className="mt-2" color="danger" value={Math.floor((fees.reste / fees.total) * 100)} />
+                                    </CCol>
+                                </CRow>
+                            </CCardFooter>
+                            <br />
 
-                    <CTable align="middle" className="mb-0 border" hover responsive>
-                        <CTableHead className="text-nowrap">
-                            <CTableRow>
-                                <CTableHeaderCell className="bg-body-tertiary text-center">
-                                <CIcon icon={cilPeople} />
-                                </CTableHeaderCell>
-                                <CTableHeaderCell className="bg-body-tertiary text-center">Intitulé</CTableHeaderCell>
-                                <CTableHeaderCell className="bg-body-tertiary text-center">Code</CTableHeaderCell>
-                                <CTableHeaderCell className="bg-body-tertiary text-center">Montant</CTableHeaderCell>
-                                <CTableHeaderCell className="bg-body-tertiary text-center">Payé le</CTableHeaderCell>
-                            </CTableRow>
-                        </CTableHead>
-                        <CTableBody>
-                        {fees.paiements.length > 0 ? fees.paiements.map((item, index) => (
-                            <CTableRow v-for="item in tableItems" key={index}>
-                                <CTableDataCell className="text-center">
-                                    <CAvatar size="md" src={avatar4} status='success' />
-                                </CTableDataCell>
-                                <CTableDataCell className="text-center">
-                                    {item.intitule}
-                                </CTableDataCell>
-                                <CTableDataCell className="text-center">
-                                    {item.code}
-                                </CTableDataCell>
-                                <CTableDataCell className="text-center">
-                                    {item.montant} FCFA
-                                </CTableDataCell>
-                                <CTableDataCell className="text-center">
-                                {dateParser(item.created_at)}
-                                </CTableDataCell>
-                            </CTableRow>
-                        )) : <CTableRow><p className="text-center">Aucun paiement effectué</p></CTableRow>}
-                        </CTableBody>
-                    </CTable>
-                    <CRow className='text-left'>
-                        <CButton color='link'>Imprimer la fiche de paiement</CButton>
-                    </CRow>
-                </CCardBody> :
-                <CSpinner color='primary' className='mt-4 mb-4' />
-                }
+                            <CTable align="middle" className="mb-0 border" hover responsive>
+                                <CTableHead className="text-nowrap">
+                                    <CTableRow>
+                                        <CTableHeaderCell className="bg-body-tertiary text-center">
+                                        <CIcon icon={cilPeople} />
+                                        </CTableHeaderCell>
+                                        <CTableHeaderCell className="bg-body-tertiary text-center">Intitulé</CTableHeaderCell>
+                                        <CTableHeaderCell className="bg-body-tertiary text-center">Code</CTableHeaderCell>
+                                        <CTableHeaderCell className="bg-body-tertiary text-center">Montant</CTableHeaderCell>
+                                        <CTableHeaderCell className="bg-body-tertiary text-center">Payé le</CTableHeaderCell>
+                                    </CTableRow>
+                                </CTableHead>
+                                <CTableBody>
+                                {fees.paiements.length > 0 ? fees.paiements.map((item, index) => (
+                                    <CTableRow v-for="item in tableItems" key={index}>
+                                        <CTableDataCell className="text-center">
+                                            <CAvatar size="md" src={avatar4} status='success' />
+                                        </CTableDataCell>
+                                        <CTableDataCell className="text-center">
+                                            {item.intitule}
+                                        </CTableDataCell>
+                                        <CTableDataCell className="text-center">
+                                            {item.code}
+                                        </CTableDataCell>
+                                        <CTableDataCell className="text-center">
+                                            {item.montant} FCFA
+                                        </CTableDataCell>
+                                        <CTableDataCell className="text-center">
+                                        {dateParser(item.created_at)}
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                )) : <CTableRow><p className="text-center">Aucun paiement effectué</p></CTableRow>}
+                                </CTableBody>
+                            </CTable>
+                            <CRow className='text-left'>
+                                <CButton color='link'>Imprimer la fiche de paiement</CButton>
+                            </CRow>
+                        </> : <CSpinner color='primary' className='mt-4 mb-4' />
+                    }
+                </CCardBody>
             </CCard>
 
             <CCard className='mb-4'>
                 <CCardHeader>Les absences</CCardHeader>
                 <CCardBody>
                     {loadingP ?
-                        <CSpinner color='primary' /> :
+                        <CSpinner color='primary' className='mt-4 mb-4' /> :
                         (!loadingP && presences.absences.length > 0) &&
                             <CRow
                                 xs={{ cols: 1, gutter: 4 }}
@@ -251,12 +284,12 @@ const ViewEleve = () => {
                 </CCardBody>
             </CCard>
 
-            <CCard className='mb-4'>
+            {/* <CCard className='mb-4'>
                 <CCardHeader>Les notes</CCardHeader>
                 <CCardBody>
                     <CRow></CRow>
                 </CCardBody>
-            </CCard>
+            </CCard> */}
         </React.Fragment>
     )
 }

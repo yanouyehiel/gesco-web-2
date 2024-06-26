@@ -68,7 +68,7 @@ const Login = () => {
       <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
         <CContainer>
           <CRow className="justify-content-center">
-            <CCol md={8}>
+            <CCol md={12}>
               <CSpinner color='primary' />
             </CCol>
           </CRow>
@@ -82,7 +82,7 @@ const Login = () => {
       <ToastContainer />
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={8}>
+          <CCol md={12}>
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
@@ -98,6 +98,8 @@ const Login = () => {
                         autoComplete="username" 
                         onChange={handleChange} 
                         name="email"
+                        type='email'
+                        required='true'
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -110,6 +112,7 @@ const Login = () => {
                         autoComplete="current-password"
                         onChange={handleChange} 
                         name="password"
+                        required='true'
                       />
                     </CInputGroup>
                     <CRow>
@@ -129,7 +132,7 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
+              <CCard className="text-white bg-primary py-5" style={{ width: screen.availWidth > 800 && '44%' }}>
                 <CCardBody className="text-center">
                   <div>
                     <h2>Créer votre école</h2>
