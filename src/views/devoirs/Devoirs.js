@@ -1,4 +1,4 @@
-import { CCard, CCardBody, CCardHeader, CFormInput, CInputGroup, CSpinner } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CFormInput, CInputGroup, CRow, CSpinner } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
@@ -88,9 +88,14 @@ function Devoirs() {
               </Row>
             </Col>
           </Row>
-          <Row>
+          <CRow
+            xs={{ cols: 1, gutter: 4 }}
+            sm={{ cols: 2 }}
+            lg={{ cols: 4 }}
+            xl={{ cols: 4 }}
+          >
             {!loading ? (devoirs.length > 0 ? devoirs.map((devoir, i) => (
-              <Col xs={3} key={i}>
+              <Col key={i}>
                 <CCard className='mb-4' onClick={() => handleShow(devoir)} style={{cursor: 'pointer'}}>
                   <CCardBody>
                     <h5 className='text-primary'>{devoir.nom_livre}</h5>
@@ -101,7 +106,7 @@ function Devoirs() {
                 </CCard>
               </Col>
             )) : <p className='text-center' style={{fontSize: '18px'}}>Aucune donnée</p>) : <CSpinner color='primary' />}
-          </Row>
+          </CRow>
         </CCardBody>
 
         <Modal show={show} onHide={handleClose}>

@@ -1,6 +1,6 @@
-import { CCard, CCardHeader, CCardBody, CFormInput, CTable, CInputGroup, CTableBody, CTableDataCell, CSpinner, CNavLink } from '@coreui/react'
+import { CCard, CCardHeader, CCardBody, CFormInput, CTable, CInputGroup, CTableBody, CTableDataCell, CSpinner, CNavLink, CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { typesClasse, addClasse, deleteClasse } from '../../services/MainControllerApi'
+import { typesClasse, addClasse, deleteClasse, updateClasse } from '../../services/MainControllerApi'
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import AxiosApi from '../../services/AxiosApi'
 import DataTable from 'react-data-table-component'
@@ -9,43 +9,8 @@ import { Modal, Form, Button, Row, Col } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify'
 import { getTeachers } from '../../services/EnseignementController'
 import { NavLink } from 'react-router-dom'
-
-const columns = [
-  {
-    name: 'Num',
-    selector: row => row.id,
-    sortable: true
-  },
-  {
-    name: 'Nom de la classe',
-    selector: row => row.nom,
-    sortable: true
-  },
-  {
-    name: "Nom de l'enseignant",
-    selector: row => row.nom_teacher,
-    sortable: true
-  },
-  {
-    name: "Prénom de l'enseignant",
-    selector: row => row.prenom_teacher,
-    sortable: true
-  },
-  {
-    name: 'Ecole',
-    selector: row => row.nom_ecole,
-    sortable: true
-  },
-  {
-    name: 'Effectif',
-    selector: row => row.effectif,
-    sortable: true
-  },
-  {
-    name: 'Action',
-    cell: row => <CNavLink to={'/classes/' + row.id} as={NavLink}>Voir</CNavLink>
-  }
-]
+import CIcon from '@coreui/icons-react'
+import { cilOptions } from '@coreui/icons'
 
 const Classes = () => {
   const ecole_id = getEcoleStored()
@@ -58,7 +23,11 @@ const Classes = () => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
   const [show, setShow] = useState(false)
+  const [showUpdate, setShowUpdate] = useState(false)
   const [teachers, setTeachers] = useState([])
+  const handleCloseUpdate = () => setShowUpdate(false)
+  const handleShowUpdate = () => setShowUpdate(true)
+  const [newData, setNewData] = useState({})
 
   useEffect(() => {
     getClasses().then()
@@ -72,6 +41,26 @@ const Classes = () => {
       setLoading(false)
     })
   }, [])
+
+  const handleUpdate = (data) => {
+    setNewData(data)
+    handleShowUpdate()
+  }
+
+  async function handleUpdateSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+    const data = {
+      id: newData.id,
+      nom: classe.nom === undefined ? newData.nom : classe.nom
+    }
+    
+    await updateClasse(data, headers).then((res) => {
+      toast.success(res)
+      getClasses().then(() => setLoading(false))
+      handleCloseUpdate()
+    })
+  }
 
   async function getClasses() {
     await AxiosApi.get('/get-classes-school/' + ecole_id, {headers})
@@ -121,6 +110,52 @@ const Classes = () => {
         setLoading(false)
     })
   }
+
+  const columns = [
+    {
+      name: 'Num',
+      selector: row => row.id,
+      sortable: true
+    },
+    {
+      name: 'Nom de la classe',
+      selector: row => row.nom,
+      sortable: true
+    },
+    {
+      name: "Nom de l'enseignant",
+      selector: row => row.nom_teacher,
+      sortable: true
+    },
+    {
+      name: "Prénom de l'enseignant",
+      selector: row => row.prenom_teacher,
+      sortable: true
+    },
+    {
+      name: 'Ecole',
+      selector: row => row.nom_ecole,
+      sortable: true
+    },
+    {
+      name: 'Effectif',
+      selector: row => row.effectif,
+      sortable: true
+    },
+    {
+      name: 'Action',
+      cell: row => <CDropdown alignment="end">
+        <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
+          <CIcon icon={cilOptions} style={{color: '#000'}} />
+        </CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem href={'/#/classes/' + row.id}>Voir</CDropdownItem>
+          <CDropdownItem onClick={() => handleUpdate(row)} style={{cursor: 'pointer'}}>Modifier</CDropdownItem>
+        </CDropdownMenu>
+      </CDropdown>
+    }
+  ]
+  
 
   return (
     <CCard>
@@ -191,6 +226,26 @@ const Classes = () => {
                   </Button>
               </Form>
           </Modal.Body>
+      </Modal>
+
+      <Modal show={showUpdate} onHide={handleCloseUpdate}>
+        <Modal.Header closeButton>
+          <Modal.Title>Nom de la classe : <b>{newData.nom}</b></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <Form onSubmit={handleUpdateSubmit}>
+              <Form.Group className="form-group mt-4">
+                  <Form.Label className="control-label">Nouveau nom de la classe</Form.Label>
+                  <Form.Control onChange={handleChange} className="form-control" 
+                    name="nom" type="text"
+                    placeholder={newData.nom} />
+              </Form.Group>
+              <br/>
+              <Button size='lg' type='submit' disabled={loading}>
+                {!loading ? 'Modifier' : 'Traitement...'}
+              </Button>
+            </Form>
+        </Modal.Body>
       </Modal>
     </CCard>
   )

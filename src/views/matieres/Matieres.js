@@ -51,9 +51,8 @@ function Matieres() {
   }, [])
 
   function handleFilter(event) {
-    const newData = data.filter(row => {
-      return row.num.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      row.intitule.toLowerCase().includes(event.target.value.toLowerCase()) ||
+    const newData = matieres.filter(row => {
+      return row.intitule.toLowerCase().includes(event.target.value.toLowerCase()) ||
       row.code.toLowerCase().includes(event.target.value.toLowerCase())
     })
     setData(newData)
@@ -101,7 +100,7 @@ function Matieres() {
             </Col>
           </Row>
           <Row>
-            {loading ? <CSpinner color='primary' /> :
+            {loading ? <CSpinner color='primary ml-4' /> :
               <DataTable
                 columns={columns}
                 data={data}

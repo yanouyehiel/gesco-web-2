@@ -83,9 +83,9 @@ function Administration() {
     const newData = personnel.filter(row => {
       return row.nom.toLowerCase().includes(event.target.value.toLowerCase()) ||
       row.prenom.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      row.telephone.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      row.role.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      row.matricule.toLowerCase().includes(event.target.value.toLowerCase())
+      //row.telephone.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      row.role.toLowerCase().includes(event.target.value.toLowerCase())
+      //row.matricule.toLowerCase().includes(event.target.value.toLowerCase())
     })
     setData(newData)
   }

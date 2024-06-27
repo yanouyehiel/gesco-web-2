@@ -210,3 +210,18 @@ export async function updateTarif(data, headers) {
     const response = await AxiosApi.put('/update-tarif', data, {headers});
     return response.data;
 }
+
+export async function updateClasse(data, headers) {
+    const response = await AxiosApi.put('/update-classe', data, {headers});
+    return response.data;
+}
+
+export async function updateEvent(data, headers) {
+    const response = await AxiosApi.put('/update-event', data, {headers});
+    return response.data;
+}
+
+export async function addMessage(message, headers) {
+    const response = await AxiosApi.post('/add-message', message, {headers});
+    return response.data;
+}

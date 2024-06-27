@@ -31,8 +31,7 @@ function Livres() {
 
   function handleFilter(event) {
     const newData = livres.filter(row => {
-      return row.num.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      row.intitule.toLowerCase().includes(event.target.value.toLowerCase())
+      return row.intitule.toLowerCase().includes(event.target.value.toLowerCase())
     })
     setData(newData)
   }

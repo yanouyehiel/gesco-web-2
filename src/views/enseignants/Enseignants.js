@@ -41,6 +41,7 @@ const columns = [
 function Enseignants() {
   const [loading, setLoading] = useState(true)
   const [teachers, setTeachers] = useState([])
+  const [data, setData] = useState([])
   const ecole_id = getEcoleStored()
   const headers = getHeaders()
 
@@ -51,16 +52,17 @@ function Enseignants() {
   async function getAllTeachers() {
     await getTeachers(ecole_id, headers).then((res) => {
       setTeachers(res)
+      setData(res)
     })
   }
 
   function handleFilter(event) {
     const newData = teachers.filter(row => {
       return row.nom.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      row.prenom.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      row.matricule.toLowerCase().includes(event.target.value.toLowerCase())
+      row.prenom.toLowerCase().includes(event.target.value.toLowerCase())
+      //row.matricule.toLowerCase().includes(event.target.value.toLowerCase())
     })
-    setTeachers(newData)
+    setData(newData)
   }
 
 
@@ -84,7 +86,7 @@ function Enseignants() {
             {loading ? <CSpinner color='primary' /> :
               <DataTable
                 columns={columns}
-                data={teachers}
+                data={data}
                 fixedHeader
                 pagination
                 selectableRowsHighlight
