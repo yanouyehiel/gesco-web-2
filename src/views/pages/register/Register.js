@@ -16,7 +16,7 @@ import {
   CSpinner
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilBank, cilDoor, cilFactory, cilInstitution, cilLockLocked, cilMap, cilUser } from '@coreui/icons'
+import { cilBank, cilDoor, cilFactory, cilGlobeAlt, cilInstitution, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
 import { Link, useNavigate, useNavigation } from 'react-router-dom'
 import { addEcole, typesEtablissements } from '../../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
@@ -100,6 +100,17 @@ const Register = () => {
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
+                        <CIcon icon={cilPhone} />
+                      </CInputGroupText>
+                      <CFormInput 
+                        placeholder="Téléphone" 
+                        autoComplete="telephone" 
+                        onChange={handleChange} 
+                        name="telephone"
+                      />
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
                         <CIcon icon={cilMap} />
                       </CInputGroupText>
                       <CFormInput 
@@ -107,6 +118,17 @@ const Register = () => {
                         autoComplete="localisation" 
                         onChange={handleChange} 
                         name="localisation"
+                      />
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilGlobeAlt} />
+                      </CInputGroupText>
+                      <CFormInput 
+                        placeholder="Site internet" 
+                        autoComplete="site_web" 
+                        onChange={handleChange} 
+                        name="site_web"
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
@@ -119,7 +141,7 @@ const Register = () => {
                         name="type_etablissement_id"
                         onChange={handleChange} 
                       >
-                        <option>Sélectionnner une classe</option>
+                        <option>Choisir le type d'établissement</option>
                         {types.map((type, i) => (
                           <option key={i} value={type.id}>{type.intitule}</option>
                         ))}

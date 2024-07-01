@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import { NavLink, useParams } from 'react-router-dom';
 import { getSingleStudent } from '../../services/StudentController';
-import { getEcoleStored, getHeaders } from '../../services/LocalStorage';
+import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage';
 import { Col, Modal, Row } from 'react-bootstrap';
 import Skeleton from 'react-loading-skeleton';
 import { dateParser, dateParserTime } from '../../utils/functions';
@@ -13,10 +13,11 @@ import classNames from 'classnames';
 import CIcon from '@coreui/icons-react';
 import { cilPeople } from '@coreui/icons';
 import avatar4 from 'src/assets/images/avatars/4.jpg'
-import ReactPDF, { PDFViewer } from '@react-pdf/renderer';
+import ReactPDF, { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { PDFStudent } from '../../components/PDFStudent';
 import { compile } from '@fileforge/react-print';
 import { saveAs } from "file-saver";
+import PDFPaiement from '../../components/PDFPaiement';
 
 const ViewEleve = () => {
     const {id} = useParams();
@@ -30,7 +31,16 @@ const ViewEleve = () => {
     const [presences, setPresences] = useState(null)
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
-    const handleShow = () => setShow(true)
+    const handleShow = (text) => {
+        if (text === "fiche_student") {
+            setTemplate("fiche_student")
+        } else if (text === "fiche_paiement") {
+            setTemplate("fiche_paiement")
+        }
+        setShow(true)
+    }
+    const [template, setTemplate] = useState("")
+    const ecole = getEcoleStore()
 
 
     useEffect(() => {
@@ -57,20 +67,12 @@ const ViewEleve = () => {
         })
     }
 
-    async function printPDF() {
-        const pdfHtml = await compile(<PDFStudent />, { emotion: true });
-
-        const pdfFile = new File([pdfHtml], "mon-document.pdf", { type: "application/pdf" });
-        
-        const url = URL.createObjectURL(pdfFile);
-        saveAs(url, "mon-document.pdf");
-        // Use the URL in an iframe
-        const iframe = document.createElement("iframe");
-        iframe.src = url;
-        // Open the file in a new tab
-        window.open(url);
-        console.log(pdfFile)
-    window.print()
+    async function printPDF(template) {
+        if (template === "fiche_student") {
+            return <PDFStudent />
+        } else if (template === "paiement") {
+            return <PDFPaiement />
+        }
     }
 
     return (
@@ -106,8 +108,8 @@ const ViewEleve = () => {
                                 <CCardBody>
                                     <CCardSubtitle className="mb-2 text-body-secondary">Matricule</CCardSubtitle>
                                     {student.student?.matricule ? <CCardText>{student.student?.matricule}</CCardText> : <Skeleton width={200} />}
-                                    <CCardSubtitle className="mb-2 text-body-secondary">Type de classe</CCardSubtitle>
-                                    {student.classe?.type_classe_id ? <CCardText>{student.classe?.type_classe_id}</CCardText> : <Skeleton width={200} />}
+                                    {/* <CCardSubtitle className="mb-2 text-body-secondary">Type de classe</CCardSubtitle>
+                                    {student.classe?.type_classe_id ? <CCardText>{student.classe?.type_classe_id}</CCardText> : <Skeleton width={200} />} */}
                                     <CCardSubtitle className="mb-2 text-body-secondary">Salle de classe</CCardSubtitle>
                                     {student.classe?.nom ? <CCardText>{student.classe?.nom}</CCardText> : <Skeleton width={200} />}
                                     <CCardSubtitle className="mb-2 text-body-secondary">Année scolaire</CCardSubtitle>
@@ -125,16 +127,28 @@ const ViewEleve = () => {
                             </CNavLink>
                         </CCol>
                         <CCol>
-                            <CButton onClick={handleShow} color='link'>Imprimer la fiche de l'élève</CButton>
+                            <CButton onClick={() => handleShow("fiche_student")} color='link'>Imprimer la fiche de l'élève</CButton>
                         </CCol>
                     </CRow>
                 </CCardBody>
 
                 <Modal show={show} onHide={handleClose} size='lg'>
+                    <Modal.Header closeButton>
+                        {template === "fiche_student" && "La fiche de scolarité"}
+                        {template === "fiche_paiement" && "La fiche de paiements"}
+                    </Modal.Header>
                     <Modal.Body>
-                        <PDFStudent />
+                        {template === "fiche_student" && <PDFStudent student={student} ecole={ecole} />}
+                        {template === "fiche_paiement" && <PDFPaiement student={student.student} ecole={ecole} fees={fees} />}
                     </Modal.Body>
-                    <CButton onClick={printPDF} color='link'>Telecharger</CButton>
+                    {template === "fiche_student" && <PDFDownloadLink document={<PDFStudent student={student} ecole={ecole} />} fileName={`fiche_${student.student?.nom}_${student.student?.prenom}`}>
+                        {({loading}) => (loading ? <CSpinner color='primary' /> : 
+                        <CButton color='link'>Télécharger</CButton>)}
+                    </PDFDownloadLink>}
+                    {template === "fiche_paiement" && <PDFDownloadLink document={<PDFPaiement student={student.student} ecole={ecole} fees={fees} />} fileName={`paiement_${student.student?.nom}_${student.student?.prenom}`}>
+                        {({loading}) => (loading ? <CSpinner color='primary' /> : 
+                        <CButton color='link'>Télécharger</CButton>)}
+                    </PDFDownloadLink>}
                 </Modal>
             </CCard>
 
@@ -248,7 +262,7 @@ const ViewEleve = () => {
                                 </CTableBody>
                             </CTable>
                             <CRow className='text-left'>
-                                <CButton color='link'>Imprimer la fiche de paiement</CButton>
+                                <CButton onClick={() => handleShow("fiche_paiement")} color='link'>Imprimer la fiche de paiement</CButton>
                             </CRow>
                         </> : <CSpinner color='primary' className='mt-4 mb-4' />
                     }

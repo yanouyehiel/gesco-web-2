@@ -82,7 +82,7 @@ const Login = () => {
       <ToastContainer />
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={12}>
+          <CCol md={8}>
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
