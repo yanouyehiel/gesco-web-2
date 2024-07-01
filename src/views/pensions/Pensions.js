@@ -1,50 +1,16 @@
-import { CCard, CCardBody, CCardHeader, CFormInput, CInputGroup, CNavLink, CSpinner, CTable } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormInput, CInputGroup, CNavLink, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { getEcoleStored, getHeaders } from '../../services/LocalStorage';
-import { addPaiement, getPaiementSchool } from '../../services/MainControllerApi';
+import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage';
+import { addPaiement, getFeesStudent, getPaiementSchool } from '../../services/MainControllerApi';
 import { getStudents } from '../../services/StudentController';
 import { ToastContainer, toast } from 'react-toastify';
-import { NavLink } from 'react-router-dom';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { dateParser } from '../../utils/functions';
-
-const columns = [
-  {
-    name: 'Code',
-    selector: row => row.code,
-    sortable: true
-  },
-  {
-    name: 'Intitule',
-    selector: row => row.intitule,
-    sortable: true
-  },
-  {
-    name: "Nom de l'élève",
-    selector: row => row.nom_student,
-    sortable: true
-  },
-  {
-    name: "Prénom de l'élève",
-    selector: row => row.prenom_student,
-    sortable: true
-  },
-  {
-    name: 'Montant',
-    selector: row => row.montant + ' XAF',
-    sortable: true
-  },
-  {
-    name: 'Date',
-    selector: row => dateParser(row.created_at),
-    sortable: true
-  },
-  {
-    name: 'Action',
-    cell: row => <CNavLink to={'/students/' + row.student_id} as={NavLink}>Voir</CNavLink>
-  }
-]
+import CIcon from '@coreui/icons-react';
+import { cilOptions } from '@coreui/icons';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import PDFPaiementSingle from '../../components/PDFPaiementSingle';
 
 function Pensions() {
   const [show, setShow] = useState(false);
@@ -54,6 +20,9 @@ function Pensions() {
   const [students, setStudents] = useState([])
   const ecole_id = getEcoleStored()
   const headers = getHeaders()
+  const ecole = getEcoleStore()
+  const [loadingPDF, setLoadingPDF] = useState(true)
+  const [fees, setFees] = useState(null)
 
   useEffect(() => {
     getStudentsSchool() 
@@ -63,6 +32,12 @@ function Pensions() {
   async function getPaiements() {
     await getPaiementSchool(ecole_id, headers).then((res) => {
       setPaiements(res)
+    })
+  }
+
+  async function getFees(id) {
+    await getFeesStudent(id, headers).then((res) => {
+        setFees(res)
     })
   }
 
@@ -91,9 +66,65 @@ function Pensions() {
     })  
   }
 
-  const handleFilter = () => {
-
+  function generatePDF(id) {
+    setLoadingPDF(true)
+    getFees(id).then(() => setLoadingPDF(false))
   }
+
+  const handleFilter = () => {}
+
+  const columns = [
+    {
+      name: 'Code',
+      selector: row => row.code,
+      sortable: true
+    },
+    {
+      name: 'Intitule',
+      selector: row => row.intitule,
+      sortable: true
+    },
+    {
+      name: "Nom de l'élève",
+      selector: row => row.nom_student,
+      sortable: true
+    },
+    {
+      name: "Prénom de l'élève",
+      selector: row => row.prenom_student,
+      sortable: true
+    },
+    {
+      name: 'Montant',
+      selector: row => row.montant + ' XAF',
+      sortable: true
+    },
+    {
+      name: 'Date',
+      selector: row => dateParser(row.created_at),
+      sortable: true
+    },
+    {
+      name: 'Action',
+      cell: row => <CDropdown alignment="end">
+          <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
+            <CIcon icon={cilOptions} style={{color: '#000'}} />
+          </CDropdownToggle>
+          <CDropdownMenu>
+            <CDropdownItem href={'/students/' + row.student_id}>Voir</CDropdownItem>
+            <CDropdownItem onClick={() => generatePDF(row.student_id)} style={{cursor: 'pointer'}}>
+              {!loadingPDF && <PDFDownloadLink
+                document={<PDFPaiementSingle fees={row} total={fees?.total} paye={fees?.paye} reste={fees?.reste} tarifs={fees?.tarifs} ecole={ecole} />}
+                fileName={`paiement_${row.nom_student+'_'+row.prenom_student}`}
+              >
+                Télécharger le reçu
+              </PDFDownloadLink>}
+              {loadingPDF && 'Générer le reçu'}
+            </CDropdownItem>
+          </CDropdownMenu>
+        </CDropdown>
+    }
+  ]
 
   return (
     <CCard className="mb-4">

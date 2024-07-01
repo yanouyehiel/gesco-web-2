@@ -67,14 +67,6 @@ const ViewEleve = () => {
         })
     }
 
-    async function printPDF(template) {
-        if (template === "fiche_student") {
-            return <PDFStudent />
-        } else if (template === "paiement") {
-            return <PDFPaiement />
-        }
-    }
-
     return (
         <React.Fragment>
             <CCard className='mb-4'>

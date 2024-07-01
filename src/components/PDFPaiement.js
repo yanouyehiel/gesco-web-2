@@ -1,51 +1,6 @@
-import { cilPeople } from '@coreui/icons';
-import CIcon from '@coreui/icons-react';
-import { CAvatar, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
 import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
 import React from 'react'
-import { dateParser, dateParserTime } from '../utils/functions';
-import avatar4 from 'src/assets/images/avatars/4.jpg'
-
-const styles = StyleSheet.create({
-    body: {
-        paddingBottom: 65,
-        paddingTop: 35,
-        paddingHorizontal: 35
-    },
-    header: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start'
-    },
-    title: {
-        fontSize: 20,
-        borderColor: 'black' ,
-        borderWidth: 1,
-        padding: 10,
-        marginBottom: 10
-    },
-    content: {
-        marginTop: 30
-    },
-    tableHeader: {
-        width: '25%', 
-        fontWeight: 'bold'
-    },
-    tableHeaderText: {
-        fontSize: 17,
-        textAlign: 'center'
-    },
-    tableRowText: {
-        fontSize: 15,
-        textAlign: 'center'
-    },
-    footer: {
-        marginTop: 50,
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end'
-    }
-})
+import { dateParser } from '../utils/functions';
 
 function PDFPaiement({ fees, student, ecole }) {
   return (
@@ -62,7 +17,7 @@ function PDFPaiement({ fees, student, ecole }) {
                 <View>
                     <View style={styles.title}>
                         <Text style={{textAlign: 'center'}}>Paiement frais de scolarité</Text>
-                        <Text style={{textAlign: 'center'}}>2023 - 2024</Text>
+                        <Text style={{textAlign: 'center'}}>2024 - 2025</Text>
                     </View>
                     <Text>{student.nom +' '+ student.prenom}</Text>
                     <Text style={{marginTop: 10}}>FRAIS CONCERNES : Tous</Text>
@@ -169,5 +124,46 @@ function PDFPaiement({ fees, student, ecole }) {
     </Document>
   )
 }
+
+const styles = StyleSheet.create({
+    body: {
+        paddingBottom: 65,
+        paddingTop: 35,
+        paddingHorizontal: 35
+    },
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
+    },
+    title: {
+        fontSize: 20,
+        borderColor: 'black' ,
+        borderWidth: 1,
+        padding: 10,
+        marginBottom: 10
+    },
+    content: {
+        marginTop: 30
+    },
+    tableHeader: {
+        width: '25%', 
+        fontWeight: 'bold'
+    },
+    tableHeaderText: {
+        fontSize: 17,
+        textAlign: 'center'
+    },
+    tableRowText: {
+        fontSize: 15,
+        textAlign: 'center'
+    },
+    footer: {
+        marginTop: 50,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end'
+    }
+})
 
 export default PDFPaiement
