@@ -111,7 +111,7 @@ function Pensions() {
             <CIcon icon={cilOptions} style={{color: '#000'}} />
           </CDropdownToggle>
           <CDropdownMenu>
-            <CDropdownItem href={'/students/' + row.student_id}>Voir</CDropdownItem>
+            <CDropdownItem href={'#/students/' + row.student_id}>Voir</CDropdownItem>
             <CDropdownItem onClick={() => generatePDF(row.student_id)} style={{cursor: 'pointer'}}>
               {!loadingPDF && <PDFDownloadLink
                 document={<PDFPaiementSingle fees={row} total={fees?.total} paye={fees?.paye} reste={fees?.reste} tarifs={fees?.tarifs} ecole={ecole} />}

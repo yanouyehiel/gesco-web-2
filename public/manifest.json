@@ -1,9 +1,9 @@
 {
-  "short_name": "CoreUI-React",
-  "name": "CoreUI-React sample",
+  "short_name": "Gesco",
+  "name": "Gesco Web App",
   "icons": [
     {
-      "src": "./assets/img/favicon.png",
+      "src": "./logo_noir_sans_bg.png",
       "sizes": "100x100",
       "type": "image/png"
     }
