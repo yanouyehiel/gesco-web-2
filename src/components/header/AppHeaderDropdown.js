@@ -24,7 +24,7 @@ import {
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/4.jpg'
-import { getEcoleStore, getEcoleStored, getHeaders, getUserStored, removeItem } from '../../services/LocalStorage'
+import { getEcoleStore, getEcoleStored, getHeaders, getTokenId, getUserStored, removeItem } from '../../services/LocalStorage'
 import { getDocumentsAsked, getMessages } from '../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
 import { logout } from '../../services/AuthApi'
@@ -36,6 +36,7 @@ const AppHeaderDropdown = () => {
   const headers = getHeaders()
   const user = getUserStored()
   const ecole = getEcoleStore()
+  const tokenId = getTokenId()
 
   useEffect(() => {
     getMessagesEcole().then()
@@ -58,7 +59,11 @@ const AppHeaderDropdown = () => {
   async function deconnexion() {
     try {
       toast.success('Déconnexion en cours...')
-      logout(headers).then((res) => {
+      const data = {
+        token_id: parseInt(tokenId)
+      }
+      
+      logout(data, headers).then((res) => {
         toast.success(res.message)
         removeItem('gesco')
         setTimeout(() => {

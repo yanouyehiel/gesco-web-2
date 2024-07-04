@@ -17,6 +17,13 @@ export function getEcoleStored() {
     return parsed?.user?.ecole_id
 }
 
+export function getTokenId() {
+    const data = getItem('gesco')
+    const parsed = JSON.parse(data)
+    
+    return parsed?.token_id
+}
+
 export function getUserStored() {
     const data = getItem('gesco')
     const parsed = JSON.parse(data)

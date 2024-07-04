@@ -28,8 +28,8 @@ export async function register(credentials) {
     }
 }
 
-export async function logout(header) {
-    const response = await AxiosApi.post('/auth/logout', {}, {headers: header});
+export async function logout(data, header) {
+    const response = await AxiosApi.post('/auth/logout', data, {headers: header});
     return response.data;
 }
 
