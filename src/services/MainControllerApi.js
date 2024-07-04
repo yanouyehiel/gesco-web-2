@@ -230,3 +230,8 @@ export async function getFeesEcole(id, headers) {
     const response = await AxiosApi.get('/get-fees-ecole/'+parseInt(id), {headers});
     return response.data;
 }
+
+export async function getDirecteur(id, headers) {
+    const response = await AxiosApi.get('/get-school/'+parseInt(id), {headers});
+    return response.data;
+}

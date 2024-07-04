@@ -8,7 +8,7 @@ import { Col, Modal, Row } from 'react-bootstrap';
 import Skeleton from 'react-loading-skeleton';
 import { dateParser, dateParserTime } from '../../utils/functions';
 import { colors } from '../../utils/colors';
-import { getAbsencesByStudent, getFeesStudent } from '../../services/MainControllerApi';
+import { getAbsencesByStudent, getDirecteur, getFeesStudent } from '../../services/MainControllerApi';
 import classNames from 'classnames';
 import CIcon from '@coreui/icons-react';
 import { cilPeople } from '@coreui/icons';
@@ -33,7 +33,7 @@ const ViewEleve = () => {
     const handleClose = () => setShow(false)
     const handleShow = (text) => {
         if (text === "fiche_student") {
-            setTemplate("fiche_student")
+            directeur().then(() => setTemplate("fiche_student"))
         } else if (text === "fiche_paiement") {
             setTemplate("fiche_paiement")
         }
@@ -41,7 +41,11 @@ const ViewEleve = () => {
     }
     const [template, setTemplate] = useState("")
     const ecole = getEcoleStore()
+    const [director, setDirector] = useState(null)
 
+    async function directeur() {
+        await getDirecteur(ecole_id, headers).then((res) => setDirector(res))
+    }
 
     useEffect(() => {
         getStudent().then(() => setLoadingS(false))
@@ -119,7 +123,7 @@ const ViewEleve = () => {
                             </CNavLink>
                         </CCol>
                         <CCol>
-                            <CButton onClick={() => handleShow("fiche_student")} color='link'>Imprimer la fiche de l'élève</CButton>
+                            <CButton onClick={() => handleShow("fiche_student")} color='link'>Imprimer le certificat de l'élève</CButton>
                         </CCol>
                     </CRow>
                 </CCardBody>
@@ -130,16 +134,16 @@ const ViewEleve = () => {
                         {template === "fiche_paiement" && "La fiche de paiements"}
                     </Modal.Header>
                     <Modal.Body>
-                        {template === "fiche_student" && <PDFStudent student={student} ecole={ecole} />}
+                        {template === "fiche_student" && <PDFStudent student={student} ecole={ecole} director={director} />}
                         {template === "fiche_paiement" && <PDFPaiement student={student.student} ecole={ecole} fees={fees} />}
                     </Modal.Body>
-                    {template === "fiche_student" && <PDFDownloadLink document={<PDFStudent student={student} ecole={ecole} />} fileName={`Fiche_${student.student?.nom}_${student.student?.prenom}`}>
+                    {template === "fiche_student" && <PDFDownloadLink document={<PDFStudent student={student} ecole={ecole} director={director} />} fileName={`Fiche_${student.student?.nom}_${student.student?.prenom}`}>
                         {({loading}) => (loading ? <CSpinner color='primary' /> : 
-                        <CButton color='link'>Télécharger</CButton>)}
+                        <CButton className='mt-4' color='link'>Télécharger</CButton>)}
                     </PDFDownloadLink>}
                     {template === "fiche_paiement" && <PDFDownloadLink document={<PDFPaiement student={student.student} ecole={ecole} fees={fees} />} fileName={`paiement_${student.student?.nom}_${student.student?.prenom}`}>
                         {({loading}) => (loading ? <CSpinner color='primary' /> : 
-                        <CButton color='link'>Télécharger</CButton>)}
+                        <CButton className='mt-4' color='link'>Télécharger</CButton>)}
                     </PDFDownloadLink>}
                 </Modal>
             </CCard>

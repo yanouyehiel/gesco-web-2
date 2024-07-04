@@ -217,7 +217,7 @@ function Administration() {
                 }
             </Form>
         </Modal.Body>
-    </Modal>
+      </Modal>
     </CCard>
   )
 }
