@@ -133,7 +133,7 @@ const ViewEleve = () => {
                         {template === "fiche_student" && <PDFStudent student={student} ecole={ecole} />}
                         {template === "fiche_paiement" && <PDFPaiement student={student.student} ecole={ecole} fees={fees} />}
                     </Modal.Body>
-                    {template === "fiche_student" && <PDFDownloadLink document={<PDFStudent student={student} ecole={ecole} />} fileName={`fiche_${student.student?.nom}_${student.student?.prenom}`}>
+                    {template === "fiche_student" && <PDFDownloadLink document={<PDFStudent student={student} ecole={ecole} />} fileName={`Fiche_${student.student?.nom}_${student.student?.prenom}`}>
                         {({loading}) => (loading ? <CSpinner color='primary' /> : 
                         <CButton color='link'>Télécharger</CButton>)}
                     </PDFDownloadLink>}

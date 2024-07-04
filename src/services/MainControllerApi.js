@@ -225,3 +225,8 @@ export async function addMessage(message, headers) {
     const response = await AxiosApi.post('/add-message', message, {headers});
     return response.data;
 }
+
+export async function getFeesEcole(id, headers) {
+    const response = await AxiosApi.get('/get-fees-ecole/'+parseInt(id), {headers});
+    return response.data;
+}

@@ -1,13 +1,15 @@
 import { CCard, CCardBody, CCardHeader, CTable, CInputGroup, CFormInput, CSpinner, CNavLink } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import { useParams, NavLink } from "react-router-dom";
-import { getEcoleStored, getHeaders } from '../../services/LocalStorage';
+import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage';
 import { Button, Col, Row, Modal, Form } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { getStudentsOfClasse } from '../../services/EnseignementController';
 import { getClasses, infoClasse } from '../../services/MainControllerApi';
 import { ToastContainer, toast } from "react-toastify";
 import { addStudent } from "../../services/StudentController";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import PDFClasse from '../../components/PDFClasse';
 
 const columns = [
     {
@@ -47,7 +49,7 @@ const columns = [
       },
       {
         name: 'Action',
-        cell: row => <CNavLink to={'/students/' + row.id} as={NavLink}>Voir</CNavLink>
+        cell: row => <CNavLink className='text-primary' to={'/students/' + row.id} as={NavLink}>Voir</CNavLink>
       }
 ]
 
@@ -61,6 +63,7 @@ function Classe() {
     const [student, setStudent] = useState({})
     const [data, setData] = useState([])
     const headers = getHeaders()
+    const ecole = getEcoleStore()
 
     useEffect(() => {
         getInfoClasse()
@@ -91,7 +94,6 @@ function Classe() {
     const handleSubmit = async e => {
         e.preventDefault()
         setLoading(true)
-        console.log(student)
         
         student.ecole_id = getEcoleStored()
         student.classe_id = parseInt(id)
@@ -123,7 +125,7 @@ function Classe() {
             <CCardBody>
                 <CTable>
                     <Row>
-                        <Col>
+                        <Col xl={6}>
                             <CInputGroup className="mb-3">
                                 <CFormInput
                                     placeholder="Rechercher"
@@ -133,8 +135,17 @@ function Classe() {
                                 />
                             </CInputGroup>
                         </Col>
-                        <Col>
+                        <Col xl={3}>
                             <Button onClick={handleShow}>Ajouter un élève</Button>
+                        </Col>
+                        <Col xl={3}>
+                            <PDFDownloadLink
+                                document={<PDFClasse students={students} classe={classe} ecole={ecole} />}
+                                fileName={`Fiche_${classe.nom}`}
+                            >
+                                {({loading}) => (loading ? <CSpinner color='primary' /> :
+                                <Button className='bg-primary'>Télécharger la fiche</Button>)}
+                            </PDFDownloadLink>
                         </Col>
                     </Row>
                     {loading ? <CSpinner color='primary' /> :

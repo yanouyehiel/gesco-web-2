@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { CWidgetStatsD, CRow, CCol } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
@@ -33,10 +33,15 @@ const WidgetsBrand = (props) => {
       },
     },
   }
+  const [dataSet, setDataSet] = useState([])
+
+  /*useEffect(() => {
+
+  }, [])*/
 
   return (
     <CRow className={props.className} xs={{ gutter: 4 }}>
-      <CCol sm={6} xl={4} xxl={3}>
+      {/* <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsD
           {...(props.withCharts && {
             chart: (
@@ -137,17 +142,17 @@ const WidgetsBrand = (props) => {
             '--cui-card-cap-bg': '#4875b4',
           }}
         />
-      </CCol>
+      </CCol> */}
       <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsD
-          color="warning"
-          {...(props.withCharts && {
+          color="primary"
+          /*{...(props.withCharts && {
             chart: (
               <CChart
                 className="position-absolute w-100 h-100"
                 type="line"
                 data={{
-                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                  labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
                   datasets: [
                     {
                       backgroundColor: 'rgba(255,255,255,.1)',
@@ -162,11 +167,11 @@ const WidgetsBrand = (props) => {
                 options={chartOptions}
               />
             ),
-          })}
+          })}*/
           icon={<CIcon icon={cilCalendar} height={52} className="my-4 text-white" />}
           values={[
-            { title: 'events', value: '12+' },
-            { title: 'meetings', value: '4' },
+            { title: 'Planning', value: props.events+'+' },
+            //{ title: 'meetings', value: '4' },
           ]}
         />
       </CCol>

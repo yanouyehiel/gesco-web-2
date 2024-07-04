@@ -1,0 +1,98 @@
+import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
+import React from 'react'
+import { dateParser } from '../utils/functions'
+
+function PDFClasse({ students, ecole, classe }) {
+    return (
+        <Document>
+            {(students, ecole, classe) && <Page style={styles.body}>
+                <View style={styles.header}>
+                    <View>
+                        <Text>{ecole.nom}</Text>
+                        <Text>{ecole.localisation}</Text>
+                        <Text>{ecole.ville}</Text>
+                        <Text>{ecole.telephone}</Text>
+                        <Text>{ecole.site_web}</Text>
+                    </View>
+                </View>
+                <View style={styles.content}>
+                    <Text style={{textAlign: 'center', textDecoration: 'underline'}}>Liste des élèves de {classe.nom}</Text>
+                    <View style={styles.content}>
+                        <View style={{ flexDirection: 'row', borderBottom: '1px solid black', paddingVertical: 8 }}>
+                            <View style={styles.tableHeader}>
+                                <Text style={styles.tableHeaderText}>Matricule</Text>
+                            </View>
+                            <View style={styles.tableHeader}>
+                                <Text style={styles.tableHeaderText}>Noms</Text>
+                            </View>
+                            <View style={styles.tableHeader}>
+                                <Text style={styles.tableHeaderText}>Prénoms</Text>
+                            </View>
+                        </View>
+                        {students.length > 0 && students.map((row, index) => (
+                            <View
+                                key={index}
+                                style={{
+                                    flexDirection: 'row',
+                                    borderBottom: index < students.length - 1 ? '1px solid #ccc' : 'none',
+                                    paddingVertical: 8
+                                }}
+                            >
+                                <View style={{ width: '33.33%' }}>
+                                    <Text style={styles.tableRowText}>{row.matricule}</Text>
+                                </View>
+                                <View style={{ width: '33.33%' }}>
+                                    <Text style={styles.tableRowText}>{row.nom}</Text>
+                                </View>
+                                <View style={{ width: '33.33%' }}>
+                                    <Text style={styles.tableRowText}>{row.prenom}</Text>
+                                </View>
+                            </View>
+                        ))}
+                        <View style={styles.footer}>
+                            <Text>Fait à {ecole.ville},</Text>
+                            <Text>Le {new Date().toLocaleDateString('fr-FR')}</Text>
+                            <Text style={{marginTop: 20}}>Le Sécrétariat</Text>
+                        </View>
+                    </View>
+                </View>
+            </Page>}
+        </Document>
+    )
+}
+
+const styles = StyleSheet.create({
+    body: {
+        paddingBottom: 65,
+        paddingTop: 35,
+        paddingHorizontal: 35
+    },
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
+    },
+    content: {
+        marginTop: 30
+    },
+    tableHeader: {
+        width: '33.33%', 
+        fontWeight: 'bold'
+    },
+    tableHeaderText: {
+        fontSize: 17,
+        textAlign: 'center'
+    },
+    tableRowText: {
+        fontSize: 15,
+        textAlign: 'center'
+    },
+    footer: {
+        marginTop: 50,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end'
+    }
+})
+
+export default PDFClasse

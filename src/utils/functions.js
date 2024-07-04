@@ -48,3 +48,19 @@ export function getTimeElapsed(dateStr) {
   
     return `${days}jour ${hours}h ${minutes}min`
 }
+
+export function isMonthInCarbonDate(carbonDate, month) {
+    const monthsInEnglish = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+  
+    // Convertir le mois en index (0-11)
+    const monthIndex = monthsInEnglish.indexOf(month);
+  
+    // Récupérer le mois de la date Carbon
+    const carbonMonth = carbonDate.month();
+  
+    // Comparer les mois
+    return carbonMonth === monthIndex;
+  }

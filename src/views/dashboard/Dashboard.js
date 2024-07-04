@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 import {
@@ -12,6 +12,7 @@ import {
   CCol,
   CProgress,
   CRow,
+  CSpinner,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -53,6 +54,9 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import MainChart from './MainChart'
+import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
+import { getFeesEcole } from '../../services/MainControllerApi'
+import { dateParser } from '../../utils/functions'
 
 const Dashboard = () => {
   const progressExample = [
@@ -175,11 +179,26 @@ const Dashboard = () => {
       activity: 'Last week',
     },
   ]
+  const ecole_id = getEcoleStored()
+  const headers = getHeaders()
+  const [fees, setFees] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [nbTeachers, setNbTeachers] = useState(0)
+  const [nbParents, setNbParents] = useState(0)
+  const [nbDirecteurs, setNbDirecteurs] = useState(0)
+
+  useEffect(() => {
+    getFeesSchool().then(() => setLoading(false))
+  }, [])
+
+  async function getFeesSchool() {
+    await getFeesEcole(ecole_id, headers).then((res) => setFees(res))
+  }
 
   return (
     <>
-      <WidgetsDropdown className="mb-4" />
-      <CCard className="mb-4">
+      {fees && <WidgetsDropdown className="mb-4" nbDirecteurs={fees.nb_directeurs} nbTeachers={fees.nb_teachers} nbParents={fees.nb_parents} nb_students={fees.nb_students} />}
+      {/* <CCard className="mb-4">
         <CCardBody>
           <CRow>
             <CCol sm={5}>
@@ -232,14 +251,14 @@ const Dashboard = () => {
             ))}
           </CRow>
         </CCardFooter>
-      </CCard>
-      <WidgetsBrand className="mb-4" withCharts />
+      </CCard> */}
+      {fees?.nb_events && <WidgetsBrand className="mb-4" withCharts events={fees?.nb_events} />}
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Traffic {' & '} Sales</CCardHeader>
+            <CCardHeader>Paiements effectués aujourd'hui</CCardHeader>
             <CCardBody>
-              <CRow>
+              {/* <CRow>
                 <CCol xs={12} md={6} xl={6}>
                   <CRow>
                     <CCol xs={6}>
@@ -321,61 +340,62 @@ const Dashboard = () => {
                 </CCol>
               </CRow>
 
-              <br />
+              <br /> */}
 
-              <CTable align="middle" className="mb-0 border" hover responsive>
+              {(fees?.paiements_today && !loading) ? <CTable align="middle" className="mb-0 border" hover responsive>
                 <CTableHead className="text-nowrap">
                   <CTableRow>
                     <CTableHeaderCell className="bg-body-tertiary text-center">
                       <CIcon icon={cilPeople} />
                     </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">User</CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">Noms</CTableHeaderCell>
                     <CTableHeaderCell className="bg-body-tertiary text-center">
-                      Country
+                      Code
                     </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">Usage</CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">intitulé</CTableHeaderCell>
                     <CTableHeaderCell className="bg-body-tertiary text-center">
-                      Payment Method
+                      Montant
                     </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">Activity</CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">Payé le</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {tableExample.map((item, index) => (
+                  {fees?.paiements_today.length > 0 ? fees?.paiements_today.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       <CTableDataCell className="text-center">
-                        <CAvatar size="md" src={item.avatar.src} status={item.avatar.status} />
+                        <CAvatar size="md" src={avatar6} /*status={item.avatar.status}*/ />
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div>{item.user.name}</div>
-                        <div className="small text-body-secondary text-nowrap">
+                        <div>{item.nom_student + ' ' + item.prenom_student}</div>
+                        {/* <div className="small text-body-secondary text-nowrap">
                           <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
                           {item.user.registered}
-                        </div>
+                        </div> */}
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.country.flag} title={item.country.name} />
+                        <div>{item.code}</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div className="d-flex justify-content-between text-nowrap">
+                        <div>{item.intitule}</div>
+                        {/* <div className="d-flex justify-content-between text-nowrap">
                           <div className="fw-semibold">{item.usage.value}%</div>
                           <div className="ms-3">
                             <small className="text-body-secondary">{item.usage.period}</small>
                           </div>
-                        </div>
-                        <CProgress thin color={item.usage.color} value={item.usage.value} />
+                        </div> */}
+                        {/* <CProgress thin color={item.usage.color} value={item.usage.value} /> */}
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.payment.icon} />
+                        <div>{item.montant} FCFA</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div className="small text-body-secondary text-nowrap">Last login</div>
-                        <div className="fw-semibold text-nowrap">{item.activity}</div>
+                        <div className="small text-body-secondary text-nowrap">Date paiement</div>
+                        <div className="fw-semibold text-nowrap">{dateParser(item.created_at)}</div>
                       </CTableDataCell>
                     </CTableRow>
-                  ))}
+                  )) : <p className="text-center">Auncun paiement effectué aujourd'hui</p>}
                 </CTableBody>
-              </CTable>
+              </CTable> : <CSpinner color='primary' />}
             </CCardBody>
           </CCard>
         </CCol>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import {
@@ -14,6 +14,8 @@ import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
+import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
+import { getFeesEcole } from '../../services/MainControllerApi'
 
 const WidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null)
@@ -44,14 +46,14 @@ const WidgetsDropdown = (props) => {
           color="primary"
           value={
             <>
-              26K{' '}
-              <span className="fs-6 fw-normal">
+              {props.nb_students}{' '}
+              {/* <span className="fs-6 fw-normal">
                 (-12.4% <CIcon icon={cilArrowBottom} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Users"
-          action={
+          title="Nombre d'élèves"
+          /*action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
                 <CIcon icon={cilOptions} />
@@ -63,17 +65,17 @@ const WidgetsDropdown = (props) => {
                 <CDropdownItem disabled>Disabled action</CDropdownItem>
               </CDropdownMenu>
             </CDropdown>
-          }
-          chart={
+          }*/
+          /*chart={
             <CChartLine
               ref={widgetChartRef1}
               className="mt-3 mx-3"
               style={{ height: '70px' }}
               data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: ['Septembre', 'Octobre', 'Novembre', 'Décembre', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août'],
                 datasets: [
                   {
-                    label: 'My First dataset',
+                    label: 'Effectif',
                     backgroundColor: 'transparent',
                     borderColor: 'rgba(255,255,255,.55)',
                     pointBackgroundColor: getStyle('--cui-primary'),
@@ -126,7 +128,7 @@ const WidgetsDropdown = (props) => {
                 },
               }}
             />
-          }
+          }*/
         />
       </CCol>
       <CCol sm={6} xl={4} xxl={3}>
@@ -134,14 +136,14 @@ const WidgetsDropdown = (props) => {
           color="info"
           value={
             <>
-              6.200{' '}
-              <span className="fs-6 fw-normal">
+              {props.nbDirecteurs}{' '}
+              {/* <span className="fs-6 fw-normal">
                 (40.9% <CIcon icon={cilArrowTop} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Income"
-          action={
+          title="Directeur"
+          /*action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
                 <CIcon icon={cilOptions} />
@@ -215,7 +217,7 @@ const WidgetsDropdown = (props) => {
                 },
               }}
             />
-          }
+          }*/
         />
       </CCol>
       <CCol sm={6} xl={4} xxl={3}>
@@ -223,14 +225,14 @@ const WidgetsDropdown = (props) => {
           color="warning"
           value={
             <>
-              2.49%{' '}
-              <span className="fs-6 fw-normal">
+              {props.nbTeachers}{' '}
+              {/* <span className="fs-6 fw-normal">
                 (84.7% <CIcon icon={cilArrowTop} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Conversion Rate"
-          action={
+          title="Nombre d'enseignants"
+          /*action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
                 <CIcon icon={cilOptions} />
@@ -287,7 +289,7 @@ const WidgetsDropdown = (props) => {
                 },
               }}
             />
-          }
+          }*/
         />
       </CCol>
       <CCol sm={6} xl={4} xxl={3}>
@@ -295,14 +297,14 @@ const WidgetsDropdown = (props) => {
           color="danger"
           value={
             <>
-              44K{' '}
-              <span className="fs-6 fw-normal">
+              {props.nbParents}{' '}
+              {/* <span className="fs-6 fw-normal">
                 (-23.6% <CIcon icon={cilArrowBottom} />)
-              </span>
+              </span> */}
             </>
           }
-          title="Sessions"
-          action={
+          title="Nombre de parents"
+          /*action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
                 <CIcon icon={cilOptions} />
@@ -381,7 +383,7 @@ const WidgetsDropdown = (props) => {
                 },
               }}
             />
-          }
+          }*/
         />
       </CCol>
     </CRow>
