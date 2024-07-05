@@ -39,7 +39,7 @@ const Login = () => {
     const data = getItem('gesco')
     const json = JSON.parse(data)
     if (json.user) {
-      navigate("/dashboard")
+      navigate("../dashboard")
     } else {
       setLoading(false)
     }
@@ -55,9 +55,14 @@ const Login = () => {
     setLoading(true)
     
     await login(user, headers).then((res) => {
-      addItem('gesco', JSON.stringify(res))
-      setLoading(false)
-      navigate("../dashboard")
+      if (res?.status_code === 401) {
+        setLoading(false)
+        toast.error(res.message)
+      } else {
+        addItem('gesco', JSON.stringify(res))
+        setLoading(false)
+        navigate("../dashboard")
+      }
     }, (error) => {
       toast.error(error.response.data.message)
     });
