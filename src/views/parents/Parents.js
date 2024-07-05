@@ -54,10 +54,44 @@ const columns = [
   }
 ]
 
+const columnsUnlinked = [
+  {
+    name: 'Num',
+    selector: row => row.id,
+    sortable: true
+  },
+  {
+    name: 'Matricule',
+    selector: row => row.matricule,
+    sortable: true
+  },
+  {
+    name: "Nom",
+    selector: row => row.nom,
+    sortable: true
+  },
+  {
+    name: "Prénom",
+    selector: row => row.prenom,
+    sortable: true
+  },
+  {
+    name: 'Téléphone',
+    selector: row => row.telephone,
+    sortable: true
+  },
+  {
+    name: 'Email',
+    selector: row => row.email,
+    sortable: true
+  }
+]
+
 function Parents() {
   const [loading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
   const [parents, setParents] = useState([])
+  const [parentsUnlinked, setParentsUnlinked] = useState([])
   const ecole_id = getEcoleStored()
   const headers = getHeaders()
   const [parent, setParent] = useState({})
@@ -66,7 +100,7 @@ function Parents() {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-      getParents().then(() => setLoading(false))
+    getParents().then(() => setLoading(false))
   }, [])
 
   const handleChange = ({currentTarget}) => {
@@ -76,7 +110,8 @@ function Parents() {
 
   async function getParents() {
     await getAllParentsSchool(ecole_id, headers).then((res) => {
-      setParents(res)
+      setParents(res.linked)
+      setParentsUnlinked(res.unlinked)
     })
   }
 
@@ -112,30 +147,21 @@ function Parents() {
   }
 
   return (
-    <CCard className='mb-4'>
+    <>
       <ToastContainer />
-        <CCardHeader>Parents</CCardHeader>
+      <CCard className='mb-4'>
+        <CCardHeader>Parents non liés</CCardHeader>
         <CCardBody>
           <CTable>
             <Row>
-              <Col>
-                <CInputGroup className="mb-3">
-                  <CFormInput
-                    placeholder="Rechercher"
-                    aria-label="Rechercher"
-                    aria-describedby="basic-addon1"
-                    onChange={handleFilter}
-                  />
-                </CInputGroup>
-              </Col>
               <Col>
                 <Button onClick={handleShow}>Ajouter un parent</Button>
               </Col>
             </Row>
             {loading ? <CSpinner color='primary' /> :
               <DataTable
-                columns={columns}
-                data={parents}
+                columns={columnsUnlinked}
+                data={parentsUnlinked}
                 fixedHeader
                 pagination
                 selectableRowsHighlight
@@ -202,7 +228,38 @@ function Parents() {
               </Form>
           </Modal.Body>
         </Modal>
-    </CCard>
+      </CCard>
+      <CCard className='mb-4'>
+        <CCardHeader>Parents déjà liés</CCardHeader>
+        <CCardBody>
+          <CTable>
+            <Row>
+              <Col xl={4}>
+                <CInputGroup className="mb-3">
+                  <CFormInput
+                    placeholder="Rechercher"
+                    aria-label="Rechercher"
+                    aria-describedby="basic-addon1"
+                    onChange={handleFilter}
+                  />
+                </CInputGroup>
+              </Col>
+            </Row>
+            {loading ? <CSpinner color='primary' /> :
+              <DataTable
+                columns={columns}
+                data={parents}
+                fixedHeader
+                pagination
+                selectableRowsHighlight
+                highlightOnHover
+              >
+              </DataTable>
+            }
+          </CTable>
+        </CCardBody>
+      </CCard>
+    </>
   )
 }
 
