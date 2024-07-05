@@ -18,9 +18,8 @@ function EmailVerify() {
         await verify(params).then((res) => {
             setLoading(false)
             toast.success(res?.message)
-        }, (err) => {
-            console.log(err.response.data.message)
-            toast.error(err.response.data.message)
+        }, (error) => {
+            toast.error(error.response.data.message)
         })
     }, [])
 

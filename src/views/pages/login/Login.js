@@ -39,7 +39,7 @@ const Login = () => {
     const data = getItem('gesco')
     const json = JSON.parse(data)
     if (json.user) {
-      navigate("../dashboard")
+      navigate("/dashboard")
     } else {
       setLoading(false)
     }
@@ -61,7 +61,7 @@ const Login = () => {
       } else {
         addItem('gesco', JSON.stringify(res))
         setLoading(false)
-        navigate("../dashboard")
+        navigate("/dashboard")
       }
     }, (error) => {
       toast.error(error.response.data.message)

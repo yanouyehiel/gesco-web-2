@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import { CButton, CCard, CCardBody, CCardGroup, CCol, CContainer, CForm, CFormInput, CImage, CInputGroup, CInputGroupText, CRow } from '@coreui/react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import CIcon from '@coreui/icons-react';
 import { cilEnvelopeClosed } from '@coreui/icons';
 import { resetPassword } from '../../../services/AuthApi';
@@ -12,6 +12,7 @@ function PasswordReset() {
     const [password, setPassword] = useState("")
     const [cpassword, setCpassword] = useState("")
     const params = useParams();
+    const navigation = useNavigate()
 
     useEffect(async () => {
         const themeS = localStorage.getItem('coreui-free-react-admin-template-theme')
@@ -38,10 +39,10 @@ function PasswordReset() {
                     toast.success(res.message)
                     setLoading(false)
                     setTimeout(() => {
-                        window.location.replace('/#/login');
+                        navigation('/login');
                     }, 3000)
-                }, (err) => {
-                    toast.error(err.response.data.message)
+                }, (error) => {
+                    toast.error(error.response.data.message)
                 })
             }
         }

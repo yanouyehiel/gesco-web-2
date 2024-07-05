@@ -38,23 +38,21 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    console.log(ecole)
 
     await addEcole(ecole).then((res) => {
       toast.success(res.message)
       setLoading(false)
       setTimeout(() => {
         navigate("/save-director", {state: {ecole: res.data}})
-      }, 4000)
-    }, (err) => {
-      toast.error(err.response.data.message)
+      }, 3000)
+    }, (error) => {
+      toast.error(error.response.data.message)
     });
   }
 
   async function getTypesEtablissement() {
     await typesEtablissements().then((res) => {
       setTypes(res)
-      console.log(res)
       setLoading(false)
     })
   }
@@ -85,6 +83,7 @@ const Register = () => {
                         autoComplete="nom" 
                         onChange={handleChange} 
                         name="nom"
+                        required="true"
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
@@ -96,6 +95,7 @@ const Register = () => {
                         autoComplete="ville" 
                         onChange={handleChange} 
                         name="ville"
+                        required="true"
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
@@ -107,6 +107,7 @@ const Register = () => {
                         autoComplete="telephone" 
                         onChange={handleChange} 
                         name="telephone"
+                        required="true"
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
@@ -118,6 +119,7 @@ const Register = () => {
                         autoComplete="localisation" 
                         onChange={handleChange} 
                         name="localisation"
+                        required="true"
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
@@ -140,6 +142,7 @@ const Register = () => {
                         autoComplete="type_etablissement_id" 
                         name="type_etablissement_id"
                         onChange={handleChange} 
+                        required="true"
                       >
                         <option>Choisir le type d'établissement</option>
                         {types.map((type, i) => (
@@ -163,7 +166,7 @@ const Register = () => {
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <Link to="/login">
+                        <Link to="../login">
                           <CButton color="link" className="px-0">
                             Déjà membre ?
                           </CButton>

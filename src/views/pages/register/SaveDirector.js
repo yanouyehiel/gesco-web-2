@@ -35,6 +35,8 @@ function SaveDirector() {
                 setTimeout(() => {
                     window.location.replace('../#/login')
                 }, 3000)
+            }, (error) => {
+                toast.error(error.response.data.message)
             })
         }
     }
