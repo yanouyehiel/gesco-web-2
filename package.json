@@ -1,17 +1,17 @@
 {
-  "name": "@coreui/coreui-free-react-admin-template",
+  "name": "gesco-web",
   "version": "5.0.0",
-  "description": "CoreUI Free React Admin Template",
+  "description": "Gesco Web App",
   "homepage": ".",
   "bugs": {
-    "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
+    "url": "https://github.com/yanouyehiel/gesco-web-2.git"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
+    "url": "git@github.com:yanouyehiel/gesco-web-2.git"
   },
   "license": "MIT",
-  "author": "The CoreUI Team (https://github.com/orgs/coreui/people)",
+  "author": "Yehiel Yanou Team (https://github.com/yanouyehiel)",
   "scripts": {
     "build": "vite build",
     "lint": "eslint \"src/**/*.js\"",

@@ -57,12 +57,17 @@ function Pensions() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setShow(false);
     setLoading(true)
     paiement.ecole_id = ecole_id
     await addPaiement(paiement, headers).then((res) => {
-      toast.success(res.message)
-      getPaiements().then(() => setLoading(false)) 
+      if (res.status_code === 500) {
+        toast.error(res.message)
+      } else {
+        toast.success(res.message)
+        setShow(false);
+        getPaiements().then(() => setLoading(false)) 
+      }
+      setLoading(false)
     })  
   }
 
@@ -187,7 +192,7 @@ function Pensions() {
                       <Form.Control onChange={handleChange} className="form-control" name="montant" required />
                   </Form.Group><br />
                   
-                  <Button size='lg' type='submit'>Enregistrer</Button>
+                  <Button size='lg' type='submit' disabled={loading}>Enregistrer</Button>
               </Form>
           </Modal.Body>
       </Modal>
