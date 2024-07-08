@@ -32,18 +32,24 @@ function Pensions() {
   async function getPaiements() {
     await getPaiementSchool(ecole_id, headers).then((res) => {
       setPaiements(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
   async function getFees(id) {
     await getFeesStudent(id, headers).then((res) => {
         setFees(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
   async function getStudentsSchool() {
     await getStudents(ecole_id, headers).then((res) => {
       setStudents(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -68,6 +74,8 @@ function Pensions() {
         getPaiements().then(() => setLoading(false)) 
       }
       setLoading(false)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })  
   }
 

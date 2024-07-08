@@ -39,6 +39,8 @@ function Planning() {
         event.end = new Date(event.end)
       });
       setEvents(data)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 

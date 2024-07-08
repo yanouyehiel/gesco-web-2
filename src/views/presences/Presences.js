@@ -24,12 +24,16 @@ function Presences() {
     await getAllPresences(ecole_id, headers).then((res) => {
       setPresences(res)
       setData(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
   async function getAllClasses() {
     await getClasses(ecole_id, headers).then((res) => {
       setClasses(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 

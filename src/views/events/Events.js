@@ -48,6 +48,8 @@ function Events() {
       getAllEvents((res) => {
         setEvents(res)
       })
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -116,6 +118,8 @@ function Events() {
       toast.success(res)
       getAllEvents().then(() => setLoading(false))
       handleCloseUpdate()
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 

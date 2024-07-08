@@ -31,12 +31,16 @@ function Cours() {
     await getAllCours(ecole_id, headers).then((res) => {
       setCours(res)
       setData(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
   async function getAllClasses() {
     await getClasses(ecole_id, headers).then((res) => {
       setClasses(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 

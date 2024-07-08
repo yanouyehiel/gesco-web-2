@@ -112,6 +112,8 @@ function Parents() {
     await getAllParentsSchool(ecole_id, headers).then((res) => {
       setParents(res.linked)
       setParentsUnlinked(res.unlinked)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -129,8 +131,8 @@ function Parents() {
         setShow(false);
         toast.success(res.message)
         getParents().then(() => setLoading(false))
-      }, (err) => {
-        toast.error(err.response.data.message)
+      }, (error) => {
+        toast.error(error.response.data.message)
         setLoading(false)
       })
     }

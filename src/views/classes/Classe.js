@@ -74,13 +74,17 @@ function Classe() {
         await getStudentsOfClasse(id, ecole_id, headers).then((res) => {
             setStudents(res)
             setData(res)
-        })
+        }, (error) => {
+            toast.error(error.response.data.message)
+          })
     }
 
     async function getInfoClasse() {
         await infoClasse(id, headers).then((res) => {
             setClasse(res)
-        })
+        }, (error) => {
+            toast.error(error.response.data.message)
+          })
     }
 
     const handleChange = ({currentTarget}) => {
@@ -102,9 +106,9 @@ function Classe() {
             toast.success(res.message)
             handleClose()
             getStudents().then(() => setLoading(false))
-        }, (err) => {
-            console.log(err.response.data.message)
-        })
+        }, (error) => {
+            toast.error(error.response.data.message)
+          })
     }
 
     function handleFilter(event) {

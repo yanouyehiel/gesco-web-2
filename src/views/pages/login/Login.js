@@ -53,18 +53,32 @@ const Login = () => {
   const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
-    
+    console.log(user)
     await login(user, headers).then((res) => {
       if (res?.status_code === 401) {
         setLoading(false)
         toast.error(res.message)
       } else {
-        addItem('gesco', JSON.stringify(res))
+        if (res.user.role_id === 2 || res.user.role_id === 3) {
+          toast.error("Vous n'êtes pas un administrateur de l'école.")
+        } else if (res.user.role_id === 1) {
+          if (res.user.ecole.bloque === 1) {
+            toast.error("Désolé, votre école est pour l'instant bloquée.")
+          } else if (res.user.ecole.bloque === 0) {
+            addItem('gesco', JSON.stringify(res))
+            navigate("/dashboard")
+          }
+        }
         setLoading(false)
-        navigate("/dashboard")
       }
     }, (error) => {
-      toast.error(error.response.data.message)
+      console.log(error)
+      setLoading(false)
+      if (error.message) {
+        toast.error(error.message)
+      } else {
+        toast.error(error.response.data.message)
+      }
     });
   }
 

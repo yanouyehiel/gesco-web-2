@@ -53,6 +53,8 @@ function Enseignants() {
     await getTeachers(ecole_id, headers).then((res) => {
       setTeachers(res)
       setData(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 

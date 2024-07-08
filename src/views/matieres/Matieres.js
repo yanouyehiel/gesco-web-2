@@ -47,6 +47,8 @@ function Matieres() {
       setMatieres(res)
       setData(res)
       setLoading(false)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }, [])
 
@@ -73,8 +75,8 @@ function Matieres() {
       toast.success(res.message)
       data.push(res?.data)
       setLoading(false)
-    }, (err) => {
-      toast.error(err.response.data.message)
+    }, (error) => {
+      toast.error(error.response.data.message)
     }) 
   }
 

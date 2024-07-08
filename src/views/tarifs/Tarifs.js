@@ -27,6 +27,8 @@ function Tarifs() {
   async function getAllClasses() {
     await typesClasse(headers).then((res) => {
         setClasses(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -34,6 +36,8 @@ function Tarifs() {
     await getAllTarifs(ecole_id, headers).then((res) => {
       setTarifs(res)
       setData(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -59,6 +63,8 @@ function Tarifs() {
         setShow(false);
         toast.success(res.message)
         getTarifs().then(() => setLoading(false))
+      }, (error) => {
+        toast.error(error.response.data.message)
       })
     }
   }
@@ -89,6 +95,8 @@ function Tarifs() {
       toast.success(res.message)
       getTarifs().then(() => setLoading(false))
       handleCloseUpdate()
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 

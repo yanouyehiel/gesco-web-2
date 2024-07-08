@@ -31,6 +31,8 @@ function Messagerie() {
     getMessages(ecole, user.id, headers).then((res) => {
       const filtered = res.filter(m => (m.receveur === null || m.receveur === user.id))
       setMessages(filtered)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
     getPersonnel().then(() => setLoading(false))
   }, [])
@@ -44,6 +46,8 @@ function Messagerie() {
     await getAllEmployes(ecole, headers).then((res) => {
       const personnelFiltered = res.filter(p => p.role !== "Parent")
       setPersonnel(personnelFiltered)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -64,6 +68,8 @@ function Messagerie() {
         setMessages(res.filter(m => (m.receveur === null || m.receveur === user.id)))
         setLoading(false)
       })
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -134,6 +140,8 @@ function Messagerie() {
       toast.success(res.message)
       setLoading(false)
       handleCloseMessage()
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 

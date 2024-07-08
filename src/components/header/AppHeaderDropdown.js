@@ -87,6 +87,9 @@ const AppHeaderDropdown = () => {
           <CIcon icon={cilInstitution} className="me-2" />
             {ecole.nom}
         </CDropdownItem>
+        <CDropdownItem href="#">
+          ID : {ecole.id}
+        </CDropdownItem>
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Mon compte</CDropdownHeader>
         <CDropdownItem href="../#/documents">
           <CIcon icon={cilBell} className="me-2" />

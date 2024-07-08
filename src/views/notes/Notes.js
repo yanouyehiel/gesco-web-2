@@ -57,6 +57,8 @@ function Notes() {
     getStudents(ecole_id, headers).then((res) => {
       setStudents(res)
       setLoading(false)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }, [])
 
@@ -64,12 +66,16 @@ function Notes() {
     await getAllNotes(ecole_id, headers).then((res) => {
       setNotes(res)
       setData(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
   async function getAllClasses() {
     await getClasses(ecole_id, headers).then((res) => {
       setClasses(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -86,7 +92,7 @@ function Notes() {
   const handleSubmit = () => {
     const classe_id = parseInt(classe)
     const student_id = parseInt(student)
-    console.log(classe_id, student_id)
+    
     if (classe_id === 0 && student_id === 0) {
       setData(notes)
     } else {

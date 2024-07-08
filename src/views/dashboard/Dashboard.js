@@ -183,9 +183,6 @@ const Dashboard = () => {
   const headers = getHeaders()
   const [fees, setFees] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [nbTeachers, setNbTeachers] = useState(0)
-  const [nbParents, setNbParents] = useState(0)
-  const [nbDirecteurs, setNbDirecteurs] = useState(0)
 
   useEffect(() => {
     getFeesSchool().then(() => setLoading(false))

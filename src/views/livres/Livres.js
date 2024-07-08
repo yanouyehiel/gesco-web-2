@@ -26,6 +26,8 @@ function Livres() {
     getLivres(ecole_id, headers).then(res => {
       setLivres(res)
       setData(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -38,12 +40,12 @@ function Livres() {
 
   async function SupprimerLivre(id) {
     setLoading(true)
-    console.log(id)
+    
     await deleteLivre(id, headers).then((res) => {
       toast.success(res)
       getAllLivres().then(() => setLoading(false))
-    }, (err) => {
-      toast.error(err.response.data.message)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -61,8 +63,8 @@ function Livres() {
       toast.success(res.message)
       handleClose()
       getAllLivres().then(() => setLoading(false))
-    }, (err) => {
-      toast.error(err.response.data.message)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 

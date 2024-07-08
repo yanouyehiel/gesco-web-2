@@ -56,19 +56,25 @@ const ViewEleve = () => {
     async function getStudent() {
         await getSingleStudent(id, headers).then((res) => {
             setStudent(res)
-        })
+        }, (error) => {
+            toast.error(error.response.data.message)
+          })
     }
 
     async function getFees() {
         await getFeesStudent(id, headers).then((res) => {
             setFees(res)
-        })
+        }, (error) => {
+            toast.error(error.response.data.message)
+          })
     }
 
     async function getAbsences() {
         await getAbsencesByStudent(id, headers).then((res) => {
             setPresences(res)
-        })
+        }, (error) => {
+            toast.error(error.response.data.message)
+          })
     }
 
     return (

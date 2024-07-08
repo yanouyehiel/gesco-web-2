@@ -34,11 +34,15 @@ const Classes = () => {
     
     typesClasse(headers).then(res => {
       setTypeClasses(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
 
     getTeachers(ecole_id, headers).then(res => {
       setTeachers(res)
       setLoading(false)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }, [])
 
@@ -59,6 +63,8 @@ const Classes = () => {
       toast.success(res)
       getClasses().then(() => setLoading(false))
       handleCloseUpdate()
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -67,6 +73,8 @@ const Classes = () => {
     .then(res => {
       setClasses(res.data)
       setData(res.data)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -78,9 +86,11 @@ const Classes = () => {
       setLoading(true)
       classe.ecole_id = ecole_id
       await addClasse(classe, headers).then(res => {
-          handleClose()
-          getClasses().then(() => setLoading(false))
-          toast.success(res.message)
+        handleClose()
+        getClasses().then(() => setLoading(false))
+        toast.success(res.message)
+      }, (error) => {
+        toast.error(error.response.data.message)
       });
     }
   }
@@ -102,12 +112,14 @@ const Classes = () => {
   async function handleDeleteClasse(id) {
     setLoading(true)
     await deleteClasse(id, headers).then((res) => {
-        toast.success(res.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        const newClasses = classes.filter(c => c.id !== id)
-        setClasses(newClasses)
-        setLoading(false)
+      toast.success(res.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      const newClasses = classes.filter(c => c.id !== id)
+      setClasses(newClasses)
+      setLoading(false)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 

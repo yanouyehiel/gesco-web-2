@@ -7,7 +7,9 @@ import { Col, Form, Modal, Row } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
-import { getAllParentsSchool, getClasses } from '../../services/MainControllerApi'
+import { getAllParentsSchool, getClasses, importListStudents } from '../../services/MainControllerApi'
+import CIcon from '@coreui/icons-react'
+import { cilFile } from '@coreui/icons'
 
 
 const columns = [
@@ -67,24 +69,37 @@ function Eleves() {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
   const [show, setShow] = useState(false)
+  const handleCloseUpload = () => setShowUp(false)
+  const handleShowUpload = () => setShowUp(true)
+  const [showUp, setShowUp] = useState(false)
   const [student, setStudent] = useState({})
   const [classes, setClasses] = useState([])
   const [parents, setParents] = useState([])
 
   useEffect(() => {
-    getStudents(ecole_id, headers).then((res) => {
-      setStudents(res)
-      setData(res)
-    })
+    getAllStudents().then()
     getClasses(ecole_id, headers).then(res => {
       setClasses(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
     getParents().then(() => setLoading(false))
   }, [])
 
+  async function getAllStudents() {
+    await getStudents(ecole_id, headers).then((res) => {
+      setStudents(res)
+      setData(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
+    })
+  }
+
   async function getParents() {
     await getAllParentsSchool(ecole_id, headers).then((res) => {
       setParents(res)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
   }
 
@@ -104,16 +119,28 @@ function Eleves() {
   const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
-    student.ecole_id = getEcoleStored()
+    student.ecole_id = ecole_id
 
     await addStudent(student, headers).then((res) => {
         toast.success(res.message)
         handleClose()
         data.push(student)
         setLoading(false)
-    }, (err) => {
-        toast.error(err.response.data.message)
+    }, (error) => {
+      toast.error(error.response.data.message)
     })
+  }
+
+  const handleSubmitUpload = async e => {
+    e.preventDefault()
+    setLoading(true)
+    student.ecole_id = ecole_id
+    console.log(student)
+
+    /*await importListStudents(student, headers).then((res) => {
+      toast.success(res.message)
+      setLoading(false)
+    })*/
   }
 
   return (
@@ -135,6 +162,12 @@ function Eleves() {
             </Col>
             <Col>
               <Button onClick={handleShow}>Ajouter un élève</Button>
+            </Col>
+            <Col>
+              <Button onClick={handleShowUpload}>
+                <CIcon icon={cilFile} className="me-2" />
+                Importer une liste Excel
+              </Button>
             </Col>
           </Row>
           {loading ? <CSpinner color='primary' /> :
@@ -216,6 +249,39 @@ function Eleves() {
                     {loading && <CSpinner />} Enregistrer
                 </Button>
             </Form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showUp} onHide={handleCloseUpload}>
+        <Modal.Header closeButton>
+          <Modal.Title>Enregistrement massif d'élèves</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmitUpload}>
+            <Form.Group className="form-group mt-4">
+              <Form.Label className="control-label">Année scolaire</Form.Label>
+              <Form.Select className="form-control" onChange={handleChange} name="annee_scolaire" required>
+                <option value='' disabled>-- select --</option>
+                <option value='2023-2024'>2023 - 2024</option>
+                <option value='2024-2025'>2024 - 2025</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="form-group mt-4">
+              <Form.Label className="control-label">Classe</Form.Label>
+              <Form.Select className="form-control" onChange={handleChange} name="classe_id" required>
+                  <option value='' disabled>-- select --</option>
+                  {
+                    classes.length > 0 && classes.map((classe, i) => (
+                        <option key={i} value={classe.id}>{classe.nom}</option>
+                    ))
+                  }
+              </Form.Select>
+            </Form.Group>
+            <br/>
+            <Button size='lg' type='submit' disabled={loading ? true : false}>
+              {loading && <CSpinner />} Importer
+            </Button>
+          </Form>
         </Modal.Body>
       </Modal>
     </CCard>

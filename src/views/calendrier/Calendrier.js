@@ -52,12 +52,16 @@ function Calendrier() {
         setLoading(false)
         toast.success(res.message)
         getAllCalendars().then(() => setLoading(false))
+      }, (error) => {
+        toast.error(error.response.data.message)
       })
   }
 
   async function getAllCalendars() {
       await getCalendars(ecole, headers).then(res => {
           setCalendars(res)
+      }, (error) => {
+        toast.error(error.response.data.message)
       })
   }
 

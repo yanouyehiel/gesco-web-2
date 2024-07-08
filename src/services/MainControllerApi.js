@@ -235,3 +235,13 @@ export async function getDirecteur(id, headers) {
     const response = await AxiosApi.get('/get-school/'+parseInt(id), {headers});
     return response.data;
 }
+
+export async function updateEmploye(data, headers) {
+    const response = await AxiosApi.put('/update-employe', data, {headers});
+    return response.data;
+}
+
+export async function importListStudents(data, headers) {
+    const response = await AxiosApi.post('/import-list-students', data, {headers});
+    return response.data;
+}
