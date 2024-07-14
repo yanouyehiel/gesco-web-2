@@ -213,12 +213,12 @@ function Events() {
                 <Form.Group className="form-group mt-4">
                     <Form.Label className="control-label">Date et heure de début</Form.Label>
                     <input type="datetime-local" class="form-control" 
-                      name='start' onChange={handleChange} />
+                      name='start' value={newData.start} onChange={handleChange} />
                 </Form.Group>
                 <Form.Group className="form-group mt-4">
-                    <Form.Label className="control-label">Date et heure defin</Form.Label>
+                    <Form.Label className="control-label">Date et heure de fin</Form.Label>
                     <input type="datetime-local" class="form-control" 
-                      name='end' onChange={handleChange} />
+                      name='end' value={newData.end} onChange={handleChange} />
                 </Form.Group>
                 <br/>
                 <Button size='lg' type='submit' disabled={loading}>

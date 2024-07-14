@@ -161,7 +161,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Evènements',
+    name: 'Planning',
     to: '/events',
     icon: <CIcon icon={cilHistory} customClassName="nav-icon" />,
   },

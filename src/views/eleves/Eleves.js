@@ -10,7 +10,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import { getAllParentsSchool, getClasses, importListStudents } from '../../services/MainControllerApi'
 import CIcon from '@coreui/icons-react'
 import { cilFile } from '@coreui/icons'
-
+import * as XLSX from 'xlsx';
 
 const columns = [
   {
@@ -76,6 +76,7 @@ function Eleves() {
   const [student, setStudent] = useState({})
   const [classes, setClasses] = useState([])
   const [parents, setParents] = useState([])
+  const [studentsData, setStudentsData] = useState([])
 
   useEffect(() => {
     getAllStudents().then()
@@ -135,28 +136,38 @@ function Eleves() {
   const handleSubmitUpload = async e => {
     e.preventDefault()
     setLoading(true)
-    //student.ecole_id = ecole_id
-    //student.classe_id = parseInt(student.classe_id)
-    //console.log(student)
-    const formData = new FormData();
-    formData.append('file', student.file);
-    formData.append('annee_scolaire', student.annee_scolaire);
-    formData.append('classe_id', parseInt(student.classe_id));
-    formData.append('ecole_id', ecole_id);
-
-    await importListStudents(formData, headersForm).then((res) => {
+    student.ecole_id = ecole_id
+    student.classe_id = parseInt(student.classe_id)
+    student.annee_scolaire = student.annee_scolaire
+    student.file = studentsData
+    
+    await importListStudents(student, headersForm).then((res) => {
       toast.success(res.message)
       setLoading(false)
+      getClasses(ecole_id, headers).then(res => {
+        setClasses(res)
+      }, (error) => {
+        toast.error(error.response.data.message)
+      })
     }, (err) => {
-      console.log(err.response)
+      setLoading(false)
       toast.error(err.response.data.message)
     })
   }
 
-  const handleFileChange = (e) => {
-    student.file = e.target.files[0]
-    //student.file = new File(e.target.files[0], URL.createObjectURL(e.target.files[0]))
-  };
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const workbook = XLSX.read(event.target.result, { type: 'binary' });
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+      const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+      setStudentsData(data);
+    };
+    reader.readAsBinaryString(file);
+  }
 
   return (
     <CCard className='mb-4'>
@@ -272,6 +283,8 @@ function Eleves() {
           <Modal.Title>Enregistrement massif d'élèves</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <p>Insérer une liste Excel contenant les données suivantes en respectant l'ordre : matricule, noms, prénoms, date de naissance, lieu de naissance et sexe.</p>
+          <p>NB: N'insérez pas les titres des colonnes mais seulement les valeurs directement.</p>
           <Form onSubmit={handleSubmitUpload} encType='multipart/form-data'>
             <Form.Group className="form-group mt-4">
               <Form.Label className="control-label">Année scolaire</Form.Label>
@@ -294,7 +307,7 @@ function Eleves() {
             </Form.Group>
             <Form.Group className="form-group mt-4">
               <Form.Label className="control-label">Importer le fichier</Form.Label>
-              <Form.Control className="form-control" type='file' name='file' onChange={handleFileChange} required />
+              <input className="form-control" type="file" name='file' accept=".xlsx" onChange={handleFileChange} />
             </Form.Group>
             <br/>
             <Button size='lg' type='submit' disabled={loading ? true : false}>
