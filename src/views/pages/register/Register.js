@@ -120,7 +120,6 @@ const Register = () => {
                         autoComplete="email" 
                         onChange={handleChange} 
                         name="email"
-                        required="true"
                         type='email'
                       />
                     </CInputGroup>
