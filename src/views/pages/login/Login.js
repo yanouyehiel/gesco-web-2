@@ -54,7 +54,8 @@ const Login = () => {
     e.preventDefault()
     setLoading(true)
     console.log(user)
-    await login(user, headers).then((res) => {
+    await login(user).then((res) => {
+      console.log(res)
       if (res?.status_code === 401) {
         setLoading(false)
         toast.error(res.message)
@@ -69,8 +70,8 @@ const Login = () => {
             navigate("/dashboard")
           }
         }
-        setLoading(false)
       }
+      setLoading(false)
     }, (error) => {
       console.log(error)
       setLoading(false)
@@ -151,7 +152,7 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: screen.availWidth > 800 && '44%' }}>
+              <CCard className="text-white bg-primary py-5">
                 <CCardBody className="text-center">
                   <div>
                     <h2>Créer votre école</h2>

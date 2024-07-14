@@ -101,7 +101,7 @@ function PasswordReset() {
                                     </CForm>
                                 </CCardBody>
                             </CCard>
-                            <CCard className="text-white bg-primary py-5" style={{ width: screen.availWidth > 800 && '44%' }}>
+                            <CCard className="text-white bg-primary py-5" /*style={{ width: screen.availWidth > 800 && '44%' }}*/>
                                 <CCardBody className="text-center">
                                     <CImage 
                                         align='center' 

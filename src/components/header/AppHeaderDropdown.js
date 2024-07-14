@@ -63,7 +63,7 @@ const AppHeaderDropdown = () => {
         token_id: parseInt(tokenId)
       }
       
-      logout(data, headers).then((res) => {
+      await logout(data, headers).then((res) => {
         toast.success(res.message)
         removeItem('gesco')
         setTimeout(() => {

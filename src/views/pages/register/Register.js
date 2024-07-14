@@ -16,7 +16,7 @@ import {
   CSpinner
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilBank, cilDoor, cilFactory, cilGlobeAlt, cilInstitution, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
+import { cilBank, cilDoor, cilEnvelopeLetter, cilFactory, cilGlobeAlt, cilInstitution, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
 import { Link, useNavigate, useNavigation } from 'react-router-dom'
 import { addEcole, typesEtablissements } from '../../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
@@ -108,6 +108,20 @@ const Register = () => {
                         onChange={handleChange} 
                         name="telephone"
                         required="true"
+                        type='tel'
+                      />
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilEnvelopeLetter} />
+                      </CInputGroupText>
+                      <CFormInput 
+                        placeholder="Email" 
+                        autoComplete="email" 
+                        onChange={handleChange} 
+                        name="email"
+                        required="true"
+                        type='email'
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
@@ -176,7 +190,7 @@ const Register = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: screen.availWidth > 800 && '44%' }}>
+              <CCard className="text-white bg-primary py-5" /*style={{ width: screen.availWidth > 800 && '44%' }}*/>
                 <CCardBody className="text-center">
                   <CImage 
                     align='center' 

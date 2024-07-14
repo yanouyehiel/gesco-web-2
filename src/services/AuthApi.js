@@ -3,7 +3,8 @@ import { getItem, removeItem } from "./LocalStorage";
 
 const headers = {
     'Accept': 'application/json',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
 }
 
 export function hasAuthenticated() {
@@ -13,14 +14,14 @@ export function hasAuthenticated() {
     return isValid;
 }
 
-export async function login(credentials, headers) {
-    const response = await AxiosApi.post('/auth/login', credentials, {headers});
+export async function login(credentials) {
+    const response = await AxiosApi.post('/auth/login', credentials);
     return response.data;
 }
 
 export async function register(credentials) {
     try {
-        const response = await AxiosApi.post('/register', credentials);
+        const response = await AxiosApi.post('/register', credentials, {headers: header});
         return response.data;
     } catch (error) {
         console.error(error);

@@ -1,6 +1,6 @@
 import { CBadge, CCard, CCardBody, CCardHeader, CFormInput, CInputGroup, CNavLink, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
+import { getEcoleStored, getHeaders, getHeadersWithForm } from '../../services/LocalStorage'
 import { addStudent, getStudents } from '../../services/StudentController'
 import DataTable from 'react-data-table-component'
 import { Col, Form, Modal, Row } from 'react-bootstrap'
@@ -64,6 +64,7 @@ function Eleves() {
   const [students, setStudents] = useState([])
   const ecole_id = getEcoleStored()
   const headers = getHeaders()
+  const headersForm = getHeadersWithForm()
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState([])
   const handleClose = () => setShow(false)
@@ -134,14 +135,28 @@ function Eleves() {
   const handleSubmitUpload = async e => {
     e.preventDefault()
     setLoading(true)
-    student.ecole_id = ecole_id
-    console.log(student)
+    //student.ecole_id = ecole_id
+    //student.classe_id = parseInt(student.classe_id)
+    //console.log(student)
+    const formData = new FormData();
+    formData.append('file', student.file);
+    formData.append('annee_scolaire', student.annee_scolaire);
+    formData.append('classe_id', parseInt(student.classe_id));
+    formData.append('ecole_id', ecole_id);
 
-    /*await importListStudents(student, headers).then((res) => {
+    await importListStudents(formData, headersForm).then((res) => {
       toast.success(res.message)
       setLoading(false)
-    })*/
+    }, (err) => {
+      console.log(err.response)
+      toast.error(err.response.data.message)
+    })
   }
+
+  const handleFileChange = (e) => {
+    student.file = e.target.files[0]
+    //student.file = new File(e.target.files[0], URL.createObjectURL(e.target.files[0]))
+  };
 
   return (
     <CCard className='mb-4'>
@@ -257,11 +272,11 @@ function Eleves() {
           <Modal.Title>Enregistrement massif d'élèves</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmitUpload}>
+          <Form onSubmit={handleSubmitUpload} encType='multipart/form-data'>
             <Form.Group className="form-group mt-4">
               <Form.Label className="control-label">Année scolaire</Form.Label>
-              <Form.Select className="form-control" onChange={handleChange} name="annee_scolaire" required>
-                <option value='' disabled>-- select --</option>
+              <Form.Select className="form-control" onChange={handleChange} name="annee_scolaire" required="true">
+                <option value=''>-- select --</option>
                 <option value='2023-2024'>2023 - 2024</option>
                 <option value='2024-2025'>2024 - 2025</option>
               </Form.Select>
@@ -269,13 +284,17 @@ function Eleves() {
             <Form.Group className="form-group mt-4">
               <Form.Label className="control-label">Classe</Form.Label>
               <Form.Select className="form-control" onChange={handleChange} name="classe_id" required>
-                  <option value='' disabled>-- select --</option>
+                  <option value=''>-- select --</option>
                   {
                     classes.length > 0 && classes.map((classe, i) => (
                         <option key={i} value={classe.id}>{classe.nom}</option>
                     ))
                   }
               </Form.Select>
+            </Form.Group>
+            <Form.Group className="form-group mt-4">
+              <Form.Label className="control-label">Importer le fichier</Form.Label>
+              <Form.Control className="form-control" type='file' name='file' onChange={handleFileChange} required />
             </Form.Group>
             <br/>
             <Button size='lg' type='submit' disabled={loading ? true : false}>
