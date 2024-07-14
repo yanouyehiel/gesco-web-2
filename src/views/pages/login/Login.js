@@ -55,7 +55,6 @@ const Login = () => {
     setLoading(true)
     console.log(user)
     await login(user).then((res) => {
-      console.log(res)
       if (res?.status_code === 401) {
         setLoading(false)
         toast.error(res.message)

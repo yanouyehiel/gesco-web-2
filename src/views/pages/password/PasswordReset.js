@@ -105,7 +105,9 @@ function PasswordReset() {
                                 <CCardBody className="text-center">
                                     <CImage 
                                         align='center' 
-                                        fluid={true} 
+                                        fluid={true}
+                                        height={200}
+                                        width={200}  
                                         src={theme !== 'light' ? '../src/assets/images/logo_noir_sans_bg.png' : '../src/assets/images/logo_blanc.png'} 
                                     />
                                 </CCardBody>

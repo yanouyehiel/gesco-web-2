@@ -71,7 +71,9 @@ function PasswordForgot() {
                             <CCard className="text-white bg-primary py-5" /*style={{ width: screen.availWidth > 800 && '44%' }}*/>
                                 <CCardBody className="text-center">
                                     <CImage 
-                                        align='center' 
+                                        align='center'
+                                        height={150}
+                                        width={150} 
                                         fluid={true} 
                                         src={theme !== 'light' ? '../src/assets/images/logo_noir_sans_bg.png' : '../src/assets/images/logo_blanc.png'} 
                                     />
