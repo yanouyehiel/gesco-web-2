@@ -67,7 +67,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Les documents',
+    name: 'Les requêtes',
     to: '/documents',
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
   },

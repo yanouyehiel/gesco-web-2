@@ -5,6 +5,7 @@ import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import { getClasses } from '../../services/MainControllerApi'
 import { getAllDevoirs } from '../../services/EnseignementController'
 import { dateParser } from '../../utils/functions'
+import { toast, ToastContainer } from 'react-toastify'
 
 function Devoirs() {
   const [loading, setLoading] = useState(true)
@@ -61,6 +62,7 @@ function Devoirs() {
 
   return (
     <CCard className="mb-4">
+      <ToastContainer />
         <CCardHeader>Devoirs</CCardHeader>
         <CCardBody>
           <Row>

@@ -2,7 +2,7 @@ import { CCard, CCardBody, CCardHeader, CDropdown, CDropdownItem, CDropdownMenu,
 import React, { useEffect, useState } from 'react'
 import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage';
 import { addPaiement, getFeesStudent, getPaiementSchool } from '../../services/MainControllerApi';
-import { getStudents } from '../../services/StudentController';
+import { getAllStudents, getStudents } from '../../services/StudentController';
 import { ToastContainer, toast } from 'react-toastify';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
@@ -46,7 +46,7 @@ function Pensions() {
   }
 
   async function getStudentsSchool() {
-    await getStudents(ecole_id, headers).then((res) => {
+    await getAllStudents(ecole_id, headers).then((res) => {
       setStudents(res)
     }, (error) => {
       toast.error(error.response.data.message)

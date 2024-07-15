@@ -245,7 +245,7 @@ function Tarifs() {
               </Form.Group>
               <br/>
               <Button size='lg' type='submit' disabled={loading}>
-                {!loading ? 'Enregistrer' : 'Traitement...'}
+                {!loading ? 'Modifier' : 'Traitement...'}
               </Button>
             </Form>
         </Modal.Body>

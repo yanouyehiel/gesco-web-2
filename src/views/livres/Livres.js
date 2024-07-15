@@ -86,7 +86,7 @@ function Livres() {
     },
     {
       name: 'Action',
-      cell: row => <Button className="btn-danger text-white" onClick={() => SupprimerLivre(row.id)}>Supprimer</Button>
+      cell: row => <Button disabled={true} className="btn-danger text-white" onClick={() => SupprimerLivre(row.id)}>Supprimer</Button>
     }
   ]
   

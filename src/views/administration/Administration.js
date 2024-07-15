@@ -28,8 +28,8 @@ function Administration() {
     setEmploye({...employe, [name]: value})
   }
 
-  function getPersonnel() {
-    getAllEmployes(ecole_id, headers).then((res) => {
+  async function getPersonnel() {
+    await getAllEmployes(ecole_id, headers).then((res) => {
       const personnelFiltered = res.filter(p => p.role !== "Parent")
       setData(personnelFiltered)
       setPersonnel(personnelFiltered)
@@ -90,7 +90,10 @@ function Administration() {
   }
   const [showUpdate, setShowUpdate] = useState(false)
   const handleCloseUpdate = () => setShowUpdate(false)
-  const handleShowUpdate = () => setShowUpdate(true)
+  const handleShowUpdate = () => {
+    getAllRoles()
+    setShowUpdate(true)
+  }
   const [newsData, setNewsData] = useState({})
   const handleUpdate = (data) => {
     setNewsData(data)
