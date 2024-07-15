@@ -245,3 +245,8 @@ export async function importListStudents(data, headers) {
     const response = await AxiosApi.post('/import-list-students', data, {headers});
     return response.data;
 }
+
+export async function linkStudentToParent(data, headers) {
+    const response = await AxiosApi.post('/link-student-parent', data, {headers});
+    return response.data;
+}

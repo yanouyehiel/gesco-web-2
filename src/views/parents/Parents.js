@@ -5,6 +5,8 @@ import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import { addPersonne, getAllParentsSchool } from '../../services/MainControllerApi'
 import DataTable from 'react-data-table-component'
 import { toast, ToastContainer } from 'react-toastify'
+import CIcon from '@coreui/icons-react'
+import { cilFile } from '@coreui/icons'
 
 const columns = [
   {
@@ -37,64 +39,16 @@ const columns = [
     selector: row => row.email,
     sortable: true
   },
-  {
-    name: 'Nom enfant',
-    selector: row => row.nom_student,
-    sortable: true
-  },
-  {
-    name: 'Prénom enfant',
-    selector: row => row.prenom_student,
-    sortable: true
-  },
-  {
-    name: 'Nom de la classe',
-    selector: row => row.nom_classe,
-    sortable: true
-  }
-]
-
-const columnsUnlinked = [
-  {
-    name: 'Num',
-    selector: row => row.id,
-    sortable: true
-  },
-  {
-    name: 'Matricule',
-    selector: row => row.matricule,
-    sortable: true
-  },
-  {
-    name: "Nom",
-    selector: row => row.nom,
-    sortable: true
-  },
-  {
-    name: "Prénom",
-    selector: row => row.prenom,
-    sortable: true
-  },
-  {
-    name: 'Téléphone',
-    selector: row => row.telephone,
-    sortable: true
-  },
-  {
-    name: 'Email',
-    selector: row => row.email,
-    sortable: true
-  }
 ]
 
 function Parents() {
   const [loading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
   const [parents, setParents] = useState([])
-  const [parentsUnlinked, setParentsUnlinked] = useState([])
   const ecole_id = getEcoleStored()
   const headers = getHeaders()
   const [parent, setParent] = useState({})
+  const [data, setData] = useState([])
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -110,8 +64,8 @@ function Parents() {
 
   async function getParents() {
     await getAllParentsSchool(ecole_id, headers).then((res) => {
-      setParents(res.linked)
-      setParentsUnlinked(res.unlinked)
+      setParents(res)
+      setData(res)
     }, (error) => {
       toast.error(error.response.data.message)
     })
@@ -142,28 +96,43 @@ function Parents() {
     const newData = parents.filter(row => {
       return row.nom.toLowerCase().includes(event.target.value.toLowerCase()) ||
       row.prenom.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      row.nom_student.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      row.prenom_student.toLowerCase().includes(event.target.value.toLowerCase())
+      row.matricule.toLowerCase().includes(event.target.value.toLowerCase())
     })
-    setParents(newData)
+    setData(newData)
   }
 
   return (
     <>
       <ToastContainer />
       <CCard className='mb-4'>
-        <CCardHeader>Parents non liés</CCardHeader>
+        <CCardHeader>Parents</CCardHeader>
         <CCardBody>
           <CTable>
             <Row>
-              <Col>
+              <Col xl={8}>
+                <CInputGroup className="mb-3">
+                  <CFormInput
+                    placeholder="Rechercher"
+                    aria-label="Rechercher"
+                    aria-describedby="basic-addon1"
+                    onChange={handleFilter}
+                  />
+                </CInputGroup>
+              </Col>
+              <Col xl={4}>
                 <Button onClick={handleShow}>Ajouter un parent</Button>
               </Col>
+              {/* <Col xl={4}>
+                <Button onClick={handleShowUpload}>
+                  <CIcon icon={cilFile} className="me-2" />
+                  Importer une liste Excel
+                </Button>
+              </Col> */}
             </Row>
             {loading ? <CSpinner color='primary' /> :
               <DataTable
-                columns={columnsUnlinked}
-                data={parentsUnlinked}
+                columns={columns}
+                data={data}
                 fixedHeader
                 pagination
                 selectableRowsHighlight
@@ -230,36 +199,6 @@ function Parents() {
               </Form>
           </Modal.Body>
         </Modal>
-      </CCard>
-      <CCard className='mb-4'>
-        <CCardHeader>Parents déjà liés</CCardHeader>
-        <CCardBody>
-          <CTable>
-            <Row>
-              <Col xl={4}>
-                <CInputGroup className="mb-3">
-                  <CFormInput
-                    placeholder="Rechercher"
-                    aria-label="Rechercher"
-                    aria-describedby="basic-addon1"
-                    onChange={handleFilter}
-                  />
-                </CInputGroup>
-              </Col>
-            </Row>
-            {loading ? <CSpinner color='primary' /> :
-              <DataTable
-                columns={columns}
-                data={parents}
-                fixedHeader
-                pagination
-                selectableRowsHighlight
-                highlightOnHover
-              >
-              </DataTable>
-            }
-          </CTable>
-        </CCardBody>
       </CCard>
     </>
   )
