@@ -63,7 +63,7 @@ function Devoirs() {
   return (
     <CCard className="mb-4">
       <ToastContainer />
-        <CCardHeader>Devoirs</CCardHeader>
+        <CCardHeader>Tous les devoirs enregistrés</CCardHeader>
         <CCardBody>
           <Row>
             <Col xs={6}>

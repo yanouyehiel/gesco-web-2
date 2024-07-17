@@ -1,4 +1,4 @@
-import { CBadge, CCard, CCardBody, CCardHeader, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormInput, CInputGroup, CNavLink, CSpinner, CTable } from '@coreui/react'
+import { CBadge, CCard, CCardBody, CCardHeader, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormInput, CImage, CInputGroup, CNavLink, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { getEcoleStored, getHeaders, getHeadersWithForm } from '../../services/LocalStorage'
 import { addStudent, getStudents } from '../../services/StudentController'
@@ -11,6 +11,7 @@ import { getAllParentsSchool, getClasses, importListStudents, linkStudentToParen
 import CIcon from '@coreui/icons-react'
 import { cilFile, cilOptions } from '@coreui/icons'
 import * as XLSX from 'xlsx';
+import excel from "./../../assets/images/exemple.png"
 
 const columns = [
   {
@@ -367,14 +368,14 @@ function Eleves() {
             <Modal.Title>Enregistrement massif d'élèves</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Insérer une liste Excel contenant les données suivantes en respectant l'ordre : matricule, noms, prénoms, date de naissance, lieu de naissance et sexe.</p>
+            <p>Insérer une liste Excel contenant les données suivantes en respectant l'ordre : <b>matricule, noms, prénoms, date de naissance, lieu de naissance et sexe</b>.</p>
             <p>NB: N'insérez pas les titres des colonnes mais seulement les valeurs directement.</p>
+            <CImage src={excel} width={'100%'} height={'50%'} />
             <Form onSubmit={handleSubmitUpload} encType='multipart/form-data'>
               <Form.Group className="form-group mt-4">
                 <Form.Label className="control-label">Année scolaire</Form.Label>
                 <Form.Select className="form-control" onChange={handleChange} name="annee_scolaire" required="true">
                   <option value=''>-- select --</option>
-                  <option value='2023-2024'>2023 - 2024</option>
                   <option value='2024-2025'>2024 - 2025</option>
                 </Form.Select>
               </Form.Group>

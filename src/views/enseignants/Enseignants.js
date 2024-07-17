@@ -70,7 +70,7 @@ function Enseignants() {
 
   return (
     <CCard className='mb-4'>
-        <CCardHeader>Enseignants</CCardHeader>
+        <CCardHeader>Tous les enseignants</CCardHeader>
         <CCardBody>
           <CTable>
             <Row>

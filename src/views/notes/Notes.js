@@ -109,7 +109,7 @@ function Notes() {
   }
   return (
     <CCard className="mb-4">
-        <CCardHeader>Notes</CCardHeader>
+        <CCardHeader>Toutes les notes</CCardHeader>
         <CCardBody>
           <CTable>
             <Row>

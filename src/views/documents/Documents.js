@@ -144,7 +144,6 @@ function Documents() {
                       <Form.Label className="control-label">Type de document</Form.Label>
                       <Form.Select className="form-control" name="intitule" onChange={handleChange} required>
                           <option>-- select --</option>
-                          <option value="Requête d'un rélevé de notes">Requête d'un rélevé de notes</option>
                           <option value="Requête d'un bulletin de notes">Requête d'un bulletin de notes</option>
                           <option value="Requête d'une autorisation de sortie">Requête d'une autorisation de sortie</option>
                           <option value="requête d'un certificat de scolarité">Requête d'un certificat de scolarité</option>
@@ -154,9 +153,7 @@ function Documents() {
                       <Form.Label className="control-label">Choisissez l'année scolaire</Form.Label>
                       <Form.Select className="form-control" name="annee_scolaire" onChange={handleChange} required>
                           <option>-- select --</option>
-                          <option>2021-2022</option>
-                          <option>2022-2023</option>
-                          <option>2023-2024</option>
+                          <option value="2024-2025">2024-2025</option>
                       </Form.Select>
                   </Form.Group>
                   <Form.Group className="form-group mt-4 mb-4">
