@@ -5,7 +5,8 @@ import DataTable from 'react-data-table-component'
 import { getAllNotes } from '../../services/EnseignementController'
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import { getClasses } from '../../services/MainControllerApi'
-import { getStudents } from '../../services/StudentController'
+import { getAllStudents, getStudents } from '../../services/StudentController'
+import { toast } from 'react-toastify'
 
 const columns = [
   {
@@ -54,7 +55,7 @@ function Notes() {
   useEffect(() => {
     getNotes().then()
     getAllClasses().then()
-    getStudents(ecole_id, headers).then((res) => {
+    getAllStudents(ecole_id, headers).then((res) => {
       setStudents(res)
       setLoading(false)
     }, (error) => {
@@ -75,7 +76,8 @@ function Notes() {
     await getClasses(ecole_id, headers).then((res) => {
       setClasses(res)
     }, (error) => {
-      toast.error(error.response.data.message)
+      console.log(error)
+      //toast.error(error.response.data.message)
     })
   }
 
