@@ -88,7 +88,7 @@ const AppHeaderDropdown = () => {
             {ecole.nom}
         </CDropdownItem>
         <CDropdownItem href="#">
-          ID : {ecole.id}
+          ID : {ecole?.matricule}
         </CDropdownItem>
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Mon compte</CDropdownHeader>
         <CDropdownItem href="../#/documents">

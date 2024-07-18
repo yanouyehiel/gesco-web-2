@@ -75,8 +75,9 @@ function Pensions() {
       }
       setLoading(false)
     }, (error) => {
+      console.log(error.response.data)
       toast.error(error.response.data.message)
-    })  
+    })
   }
 
   function generatePDF(id) {
