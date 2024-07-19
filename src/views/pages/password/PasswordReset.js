@@ -39,9 +39,11 @@ function PasswordReset() {
                     toast.success(res.message)
                     setLoading(false)
                     setTimeout(() => {
-                        navigation('/login');
+                        navigation('#/login');
                     }, 3000)
                 }, (error) => {
+                    setLoading(false)
+                    console.log(error.response)
                     toast.error(error.response.data.message)
                 })
             }

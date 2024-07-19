@@ -44,7 +44,7 @@ const Register = () => {
       setLoading(false)
       setTimeout(() => {
         navigate("/save-director", {state: {ecole: res.data}})
-      }, 3000)
+      }, 2000)
     }, (error) => {
       toast.error(error.response.data.message)
     });

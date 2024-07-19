@@ -45,23 +45,14 @@ export async function verify(data) {
 }
 
 export async function sendLinkResetPassword(data) {
-    try {
-        const response = await AxiosApi.post(`/auth/password/email`, data, {headers});
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
+    console.log(data)
+    const response = await AxiosApi.post('/auth/password/email', data, {headers});
+    return response.data;
 }
 
 export async function resetPassword(data, credentials) {
-    try {
-        const response = await AxiosApi.post(`/auth/password/reset/${data.email}/${data.expires}/${data.signature}`, credentials, {headers});
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
+    const response = await AxiosApi.post(`/auth/password/reset/${data.email}/${data.expires}/${data.signature}`, credentials, {headers});
+    return response.data;
 }
 
 function tokenIsValid(token) {

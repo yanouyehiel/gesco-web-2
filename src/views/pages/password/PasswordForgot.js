@@ -23,6 +23,7 @@ function PasswordForgot() {
             setLoading(false)
             toast.success(res.message)
         }, (error) => {
+            setLoading(false)
             toast.error(error.response.data.message)
         })
     }
