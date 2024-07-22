@@ -54,19 +54,15 @@ function Tarifs() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     tarif.ecole_id = ecole_id;
-    const data = tarifs.filter(t => t.type_classe_id === tarif.type_classe_id)
-    if (data) {
-      toast.error("Le tarif de cette classe existe déjà")
-    } else {
-      setLoading(true)
-      await addTarif(tarif, headers).then((res) => {
-        setShow(false);
-        toast.success(res.message)
-        getTarifs().then(() => setLoading(false))
-      }, (error) => {
-        toast.error(error.response.data.message)
-      })
-    }
+    setLoading(true)
+    await addTarif(tarif, headers).then((res) => {
+      setShow(false);
+      toast.success(res.message)
+      getTarifs().then(() => setLoading(false))
+    }, (error) => {
+      toast.error(error.response.data.message)
+    })
+    setLoading(false)
   }
 
   const handleFilter = () => {

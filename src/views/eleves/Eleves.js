@@ -153,15 +153,11 @@ function Eleves() {
       toast.success(res.message)
       setLoading(false)
       handleCloseUpload()
-      getClasses(ecole_id, headers).then(res => {
-        setClasses(res)
-      }, (error) => {
-        toast.error(error.response.data.message)
-      })
+      getAllStudents().then()
     }, (err) => {
-      setLoading(false)
       toast.error(err.response.data.message)
     })
+    setLoading(false)
   }
 
   function linkToParent(item) {
@@ -244,7 +240,6 @@ function Eleves() {
     studentUnlinked.parent_id = parseInt(studentUnlinked.parent_id)
     
     await linkStudentToParent(studentUnlinked, headers).then((res) => {
-      console.log(res)
       setLoadingLink(false)
       handleCloseLink()
       toast.success(res.message)

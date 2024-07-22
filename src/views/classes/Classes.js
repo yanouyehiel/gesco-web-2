@@ -233,8 +233,8 @@ const Classes = () => {
                       </Form.Select>
                   </Form.Group>
                   <br/>
-                  <Button size='lg' type='submit' disabled={loading ? true : false}>
-                      Enregistrer
+                  <Button size='lg' type='submit' disabled={loading}>
+                  {!loading ? 'Enregistrer' : 'Traitement...'}
                   </Button>
               </Form>
           </Modal.Body>

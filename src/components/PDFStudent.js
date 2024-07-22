@@ -10,13 +10,15 @@ export const PDFStudent = ({ student, ecole, director }) => {
                 <View style={styles.header}>
                     <View>
                         <Text>{ecole.nom}</Text>
-                        <Text>{ecole.localisation}</Text>
+                        {/* <Text>{ecole.localisation}</Text> */}
                         <Text>{ecole.ville}</Text>
-                    </View>
-                    <View>
                         <Text>{ecole.telephone}</Text>
                         <Text>{ecole.site_web}</Text>
                     </View>
+                    {/* <View>
+                        <Text>{ecole.telephone}</Text>
+                        <Text>{ecole.site_web}</Text>
+                    </View> */}
                 </View>
                 <View style={styles.content}>
                     <View style={styles.title}>

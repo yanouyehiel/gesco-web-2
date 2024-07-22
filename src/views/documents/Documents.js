@@ -38,15 +38,20 @@ function Documents() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    doc.ecole_id = ecole_id       
-    setLoading(true)
-    setShow(false)
-    askDocument(doc, headers).then((res) => {
-      toast.success(res.message)
-      getDocuments().then(() => setLoading(false))
-    }, (error) => {
-      toast.error(error.response.data.message)
-    })
+    doc.ecole_id = ecole_id  
+    if (!doc.intitule && !doc.annee_scolaire && !doc.student_id) {
+      toast.error("Veuillez remplir tous les champs")
+    } else {
+      setLoading(true)
+      setShow(false)
+      askDocument(doc, headers).then((res) => {
+        toast.success(res.message)
+        getDocuments().then(() => setLoading(false))
+      }, (error) => {
+        toast.error(error.response.data.message)
+      })
+    }  
+    setLoading(false)
   }
 
   const handleChange = ({currentTarget}) => {
@@ -138,23 +143,23 @@ function Documents() {
               <Form onSubmit={handleSubmit}>
                   <Form.Group className="form-group mt-4">
                       <Form.Label className="control-label">Type de document</Form.Label>
-                      <Form.Select className="form-control" name="intitule" onChange={handleChange} required>
-                          <option>-- select --</option>
-                          <option value="Requête d'un bulletin de notes">Requête d'un bulletin de notes</option>
-                          <option value="Requête d'une autorisation de sortie">Requête d'une autorisation de sortie</option>
-                          <option value="requête d'un certificat de scolarité">Requête d'un certificat de scolarité</option>
+                      <Form.Select className="form-control" name="intitule" onChange={handleChange} required='true'>
+                        <option>-- select --</option>
+                        <option value="Requête d'un bulletin de notes">Requête d'un bulletin de notes</option>
+                        <option value="Requête d'une autorisation de sortie">Requête d'une autorisation de sortie</option>
+                        <option value="requête d'un certificat de scolarité">Requête d'un certificat de scolarité</option>
                       </Form.Select>
                   </Form.Group>
                   <Form.Group className="form-group mt-4">
                       <Form.Label className="control-label">Choisissez l'année scolaire</Form.Label>
-                      <Form.Select className="form-control" name="annee_scolaire" onChange={handleChange} required>
+                      <Form.Select className="form-control" name="annee_scolaire" onChange={handleChange} required='true'>
                           <option>-- select --</option>
                           <option value="2024-2025">2024-2025</option>
                       </Form.Select>
                   </Form.Group>
                   <Form.Group className="form-group mt-4 mb-4">
                       <Form.Label className="control-label">Sélectionner l'élève</Form.Label>
-                      <Form.Select className="form-control" name="student_id" onChange={handleChange} required>
+                      <Form.Select className="form-control" name="student_id" onChange={handleChange} required='true'>
                           <option>-- select --</option>
                           {students.length > 0 &&
                               students.map((student, i) => (
@@ -164,8 +169,8 @@ function Documents() {
                       </Form.Select>
                   </Form.Group>
                   
-                  <Button size='lg' type='submit'>
-                      Demander
+                  <Button size='lg' type='submit' disabled={loading}>
+                    {loading ? 'Traitement...' : 'Demander'}
                   </Button>
               </Form>
           </Modal.Body>

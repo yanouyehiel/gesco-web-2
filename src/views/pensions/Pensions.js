@@ -73,11 +73,10 @@ function Pensions() {
         setShow(false);
         getPaiements().then(() => setLoading(false)) 
       }
-      setLoading(false)
     }, (error) => {
-      console.log(error.response.data)
       toast.error(error.response.data.message)
     })
+    setLoading(false)
   }
 
   function generatePDF(id) {
@@ -201,7 +200,9 @@ function Pensions() {
                       <Form.Control onChange={handleChange} className="form-control" name="montant" required />
                   </Form.Group><br />
                   
-                  <Button size='lg' type='submit' disabled={loading}>Enregistrer</Button>
+                  <Button size='lg' type='submit' disabled={loading}>
+                    {loading ? 'Traitement...' : 'Enregistrer'}
+                  </Button>
               </Form>
           </Modal.Body>
       </Modal>
