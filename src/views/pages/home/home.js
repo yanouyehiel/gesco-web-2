@@ -109,7 +109,7 @@ function home() {
                                     <img className="d-block w-100" src="../../../src/assets/images/carousel4.png" alt="slide 4" />
                                 </CCarouselItem>
                                 <CCarouselItem>
-                                    <img className="d-block w-100" src="../../../src/assets/images/carousel5.png" alt="slide 4" />
+                                    <img className="d-block w-100" src="../../../src/assets/images/carousel5.png" alt="slide 5" />
                                 </CCarouselItem>
                             </CCarousel>
                         </CCardBody>
