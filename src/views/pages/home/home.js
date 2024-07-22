@@ -33,7 +33,7 @@ function home() {
                             <CButton color="primary" className='text-white'>Se connecter</CButton>
                         </CNavItem>
                         <CNavItem href='#/register'>
-                            <CButton className='text-white'>S'enregistrer</CButton>
+                            <CButton>S'enregistrer</CButton>
                         </CNavItem>
                     </CHeaderNav>
                 </CHeader>
