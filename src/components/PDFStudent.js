@@ -1,6 +1,6 @@
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import * as React from "react";
-import { dateParser } from "../utils/functions";
+import { dateParserTime } from "../utils/functions";
 
 export const PDFStudent = ({ student, ecole, director }) => {
   
@@ -27,7 +27,7 @@ export const PDFStudent = ({ student, ecole, director }) => {
                         <Text>Je soussigné, M./Mme {director.nom+' '+director.prenom}, Directeur de {ecole.nom}, certifie que :</Text>
                         <View style={{justifyContent: 'center', alignItems: 'center', margin: 20}}>
                             <Text style={styles.text}>{student.student.nom + ' ' + student.student.prenom}</Text>
-                            <Text>né le <Text style={styles.text}>{dateParser(student.student.date_naissance)} à {student.student.lieu_naissance}</Text></Text>
+                            <Text>né le <Text style={styles.text}>{dateParserTime(student.student.date_naissance)} à {student.student.lieu_naissance}</Text></Text>
                             <Text>avec pour matricule <Text style={styles.text}>{student.student.matricule}</Text></Text>
                         </View>
                         <Text>est bien inscrit dans notre établissement, en classe de {student.classe.nom}, pour l'année scolaire {student.student.date_scolarisation}</Text>

@@ -4,9 +4,9 @@ import { getEcoleStored, getHeaders } from '../../services/LocalStorage';
 import { askDocument, getDocumentsAsked, validateRequest } from '../../services/MainControllerApi';
 import { ToastContainer, toast } from 'react-toastify';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import { getStudents } from '../../services/StudentController';
+import { getAllStudents, getStudents } from '../../services/StudentController';
 import DataTable from 'react-data-table-component';
-import { dateParserTime } from '../../utils/functions'
+import { dateParser, dateParserTime } from '../../utils/functions'
 
 function Documents() {
   const [show, setShow] = useState(false);
@@ -20,7 +20,7 @@ function Documents() {
 
 
   useEffect(() => {
-    getStudents(ecole_id, headers).then((res) => setStudents(res))
+    getAllStudents(ecole_id, headers).then((res) => setStudents(res))
     getDocuments().then(() => setLoading(false))
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -29,9 +29,10 @@ function Documents() {
     setLoadingB(true)
     validateRequest(data, headers)
     .then((res) => {
-      console.log(res)
+      setLoading(true)
       setLoadingB(false)
       toast.success(res.message)
+      getDocuments().then(() => setLoading(false))
     })
   }
 
@@ -72,13 +73,8 @@ function Documents() {
       sortable: true
     },
     {
-      name: "Nom de l'élève",
-      selector: row => row.nom_student,
-      sortable: true
-    },
-    {
-      name: "Prénom de l'élève",
-      selector: row => row.prenom_student,
+      name: "Noms et prénoms de l'élève",
+      selector: row => row.nom_student +' '+row.prenom_student,
       sortable: true
     },
     {
@@ -88,12 +84,12 @@ function Documents() {
     },
     {
       name: 'Date de requête',
-      selector: row => dateParserTime(row.created_at),
+      selector: row => dateParser(row.created_at),
       sortable: true
     },
     {
       name: 'Action',
-      cell: row => <Button onClick={(row) => validate(row)} type='button'>{loadingB ? 'Traitement...' : 'Valider'}</Button>
+      cell: row => <Button onClick={() => validate(row)} type='button'>{loadingB ? 'Traitement...' : 'Valider'}</Button>
     }
   ]
 

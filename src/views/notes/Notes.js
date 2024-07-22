@@ -38,6 +38,11 @@ const columns = [
     name: "Séquence",
     selector: row => row.sequence,
     sortable: true
+  },
+  {
+    name: "Année scolaire",
+    selector: row => row.annee_scolaire,
+    sortable: true
   }
 ]
 
@@ -76,8 +81,7 @@ function Notes() {
     await getClasses(ecole_id, headers).then((res) => {
       setClasses(res)
     }, (error) => {
-      console.log(error)
-      //toast.error(error.response.data.message)
+      toast.error(error.response.data.message)
     })
   }
 

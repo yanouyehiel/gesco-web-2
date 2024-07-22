@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react'
-import { HashRouter, Route, Routes, Navigate, useNavigate } from 'react-router-dom'
+import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { CSpinner, useColorModes } from '@coreui/react'
@@ -19,12 +19,12 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 const SaveDirector = React.lazy(() => import('./views/pages/register/SaveDirector'))
 const PasswordForgot = React.lazy(() => import('./views/pages/password/PasswordForgot'))
 const PasswordReset = React.lazy(() => import('./views/pages/password/PasswordReset'))
+const Home = React.lazy(() => import('./views/pages/home/home'))
 
 const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const storedTheme = useSelector((state) => state.theme)
   const [gesco, setGesco] = useState(null);
-  //const navigate = useNavigate();
 
   useEffect(() => {
     const storedGesco = localStorage.getItem('gesco');
@@ -77,7 +77,8 @@ const App = () => {
         }
       >
         <Routes>
-          <Route exact path="/" element={<Login />} />
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/home" element={<Home />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />}/>
           <Route exact path="/save-director" element={<SaveDirector />}/>
@@ -86,7 +87,7 @@ const App = () => {
           <Route exact path="/auth/password/reset/:email/:expires/:signature" element={<PasswordReset />}/>
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          <Route exact path="*" name="Home" element={<DefaultLayout />} />
+          <Route exact path="*" name="Dashboard" element={<DefaultLayout />} />
         </Routes>
       </Suspense>
     </HashRouter>

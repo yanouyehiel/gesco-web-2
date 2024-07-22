@@ -8,11 +8,11 @@ function PDFClasse({ students, ecole, classe }) {
             {(students, ecole, classe) && <Page style={styles.body}>
                 <View style={styles.header}>
                     <View>
-                        <Text>{ecole.nom}</Text>
-                        <Text>{ecole.localisation}</Text>
-                        <Text>{ecole.ville}</Text>
-                        <Text>{ecole.telephone}</Text>
-                        <Text>{ecole.site_web}</Text>
+                        <Text style={styles.text}>{ecole.nom}</Text>
+                        <Text style={styles.text}>{ecole.localisation}</Text>
+                        <Text style={styles.text}>{ecole.ville}</Text>
+                        <Text style={styles.text}>{ecole.telephone}</Text>
+                        <Text style={styles.text}>{ecole?.site_web}</Text>
                     </View>
                 </View>
                 <View style={styles.content}>
@@ -50,9 +50,9 @@ function PDFClasse({ students, ecole, classe }) {
                             </View>
                         ))}
                         <View style={styles.footer}>
-                            <Text>Fait à {ecole.ville},</Text>
-                            <Text>Le {new Date().toLocaleDateString('fr-FR')}</Text>
-                            <Text style={{marginTop: 20}}>Le Sécrétariat</Text>
+                            <Text style={styles.text}>Fait à {ecole.ville},</Text>
+                            <Text style={styles.text}>Le {new Date().toLocaleDateString('fr-FR')}</Text>
+                            <Text style={{marginTop: 20, fontSize: 12}}>Le Sécrétariat</Text>
                         </View>
                     </View>
                 </View>
@@ -81,17 +81,20 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     tableHeaderText: {
-        fontSize: 17,
+        fontSize: 14,
         textAlign: 'center'
     },
     tableRowText: {
-        fontSize: 15,
+        fontSize: 12,
         textAlign: 'center'
     },
     footer: {
         marginTop: 50,
         justifyContent: 'flex-end',
         alignItems: 'flex-end'
+    },
+    text: {
+        fontSize: 12
     }
 })
 

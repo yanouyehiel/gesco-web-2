@@ -5,15 +5,15 @@ const AppFooter = () => {
   return (
     <CFooter className="px-4">
       <div>
-        <a href="" target="_blank" rel="noopener noreferrer">
+        <a href="#" target="_blank" rel="noopener noreferrer">
           Gesco
         </a>
         <span className="ms-1">&copy; 2024 Progiciel de gestion scolaire.</span>
       </div>
       <div className="ms-auto">
         <span className="me-1">Développé par</span>
-        <a href="" target="_blank" rel="noopener noreferrer">
-          Yehiel Yanou
+        <a href="mailto:contact@gesco-app.com" rel="noopener noreferrer">
+          Gesco Team
         </a>
       </div>
     </CFooter>

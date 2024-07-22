@@ -340,8 +340,7 @@ function Eleves() {
                       <Form.Label className="control-label">Année de scolarisation</Form.Label>
                       <Form.Select className="form-control" onChange={handleChange} name="annee_scolaire" required>
                           <option value=''>-- select --</option>
-                          <option value='2023 - 2024'>2023 - 2024</option>
-                          <option value='2024 - 2025'>2024 - 2025</option>
+                          <option value='2024-2025'>2024 - 2025</option>
                       </Form.Select>
                   </Form.Group>
                   <Form.Group className="form-group mt-4">

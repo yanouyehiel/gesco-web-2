@@ -1,6 +1,6 @@
 import { CAvatar, CButton, CCard, CCardBody, CCardFooter, CCardHeader, CCardLink, CCardSubtitle, CCardText, CCardTitle, CCol, CNavLink, CProgress, CRow, CSpinner, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import { NavLink, useParams } from 'react-router-dom';
 import { getSingleStudent } from '../../services/StudentController';
 import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage';
@@ -205,25 +205,25 @@ const ViewEleve = () => {
                                     <CCol>
                                         <div className="text-body-secondary">Total pension</div>
                                         <div className="fw-semibold text-truncate">
-                                        {fees.total} (100%)
+                                        {fees?.total} (100%)
                                         </div>
                                         <CProgress thin className="mt-2" color="primary" value={100} />
                                     </CCol>
                                     <CCol>
                                         <div className="text-body-secondary">Somme déjà payée</div>
                                         <div className="fw-semibold text-truncate">
-                                        {fees.paye} ({parseInt((fees.paye / fees.total) * 100)}%)
+                                        {fees?.paye} ({parseInt((fees?.paye / fees?.total) * 100)}%)
                                         </div>
-                                        <CProgress thin className="mt-2" color="success" value={(fees.paye / fees.total) * 100} />
+                                        <CProgress thin className="mt-2" color="success" value={(fees?.paye / fees?.total) * 100} />
                                     </CCol>
                                     <CCol
                                         className='d-none d-xl-block'
                                     >
                                         <div className="text-body-secondary">Reste à payer</div>
                                         <div className="fw-semibold text-truncate">
-                                        {fees.reste} ({Math.floor((fees.reste / fees.total) * 100)}%)
+                                        {fees?.reste} ({Math.floor((fees?.reste / fees?.total) * 100)}%)
                                         </div>
-                                        <CProgress thin className="mt-2" color="danger" value={Math.floor((fees.reste / fees.total) * 100)} />
+                                        <CProgress thin className="mt-2" color="danger" value={Math.floor((fees?.reste / fees?.total) * 100)} />
                                     </CCol>
                                 </CRow>
                             </CCardFooter>
@@ -241,8 +241,8 @@ const ViewEleve = () => {
                                         <CTableHeaderCell className="bg-body-tertiary text-center">Payé le</CTableHeaderCell>
                                     </CTableRow>
                                 </CTableHead>
+                                {fees?.paiements.length > 0 ? fees?.paiements.map((item, index) => (
                                 <CTableBody>
-                                {fees.paiements.length > 0 ? fees.paiements.map((item, index) => (
                                     <CTableRow v-for="item in tableItems" key={index}>
                                         <CTableDataCell className="text-center">
                                             <CAvatar size="md" src={avatar4} status='success' />
@@ -260,8 +260,10 @@ const ViewEleve = () => {
                                         {dateParser(item.created_at)}
                                         </CTableDataCell>
                                     </CTableRow>
-                                )) : <CTableRow><p className="text-center">Aucun paiement effectué</p></CTableRow>}
                                 </CTableBody>
+                                )) : <CRow>
+                                    <p className="text-center">Aucun paiement effectué</p>
+                                </CRow>}
                             </CTable>
                             <CRow className='text-left'>
                                 <CButton onClick={() => handleShow("fiche_paiement")} color='link'>Imprimer la fiche de paiement</CButton>
@@ -276,7 +278,7 @@ const ViewEleve = () => {
                 <CCardBody>
                     {loadingP ?
                         <CSpinner color='primary' className='mt-4 mb-4' /> :
-                        (!loadingP && presences.absences.length > 0) &&
+                        (!loadingP && presences.absences.length > 0) ?
                             <CRow
                                 xs={{ cols: 1, gutter: 4 }}
                                 sm={{ cols: 2 }}
@@ -287,7 +289,7 @@ const ViewEleve = () => {
                                 <Col key={i}>
                                     <CCard className='mb-4'>
                                     <CCardBody>
-                                        <h5>{presences.student.nom +' '+ presences.student.prenom}</h5>
+                                        <h5>{presences?.student?.nom +' '+ presences?.student?.prenom}</h5>
                                         <span className='text-danger'>{ab.periode}</span>
                                         <span style={{marginLeft: '30px'}}>{ab.nom_classe}</span>
                                         <p><em>{"Enregistré le " + dateParser(ab.created_at)}</em></p>
@@ -295,6 +297,9 @@ const ViewEleve = () => {
                                     </CCard>
                                 </Col>
                             ))}
+                        </CRow> :
+                        <CRow>
+                            <p className='text-center'>Aucune absence enregistrée</p>
                         </CRow>
                     }
                 </CCardBody>
