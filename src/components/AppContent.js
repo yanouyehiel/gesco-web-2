@@ -26,6 +26,7 @@ const AppContent = () => {
             )
           })}
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Dashboard />} />
         </Routes>
       </Suspense>
     </CContainer>

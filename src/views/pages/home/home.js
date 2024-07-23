@@ -1,6 +1,5 @@
 import { CAccordion, CAccordionBody, CAccordionHeader, CAccordionItem, CButton, CCard, CCardBody, CCardGroup, CCardHeader, CCarousel, CCarouselCaption, CCarouselItem, CCol, CContainer, CHeader, CHeaderNav, CImage, CNavItem, CNavLink, CRow, CWidgetStatsC } from '@coreui/react'
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { getItem } from '../../../services/LocalStorage'
 import { AppFooter } from '../../../components'
 import CIcon from '@coreui/icons-react'
@@ -13,16 +12,6 @@ import carousel4 from "../../../assets/images/carousel4.png"
 import carousel5 from "../../../assets/images/carousel5.png"
 
 function home() {
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        const data = getItem('gesco')
-        const json = JSON.parse(data)
-        if (json.user) {
-            navigate("/dashboard")
-        }
-    }, [])
-
     
     return (
         <div className="bg-body-tertiary min-vh-100">

@@ -7,6 +7,7 @@ import './scss/style.scss'
 import 'react-toastify/dist/ReactToastify.css'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { getItem } from './services/LocalStorage'
+import Dashboard from './views/dashboard/Dashboard'
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
@@ -59,6 +60,7 @@ const App = () => {
         <Routes>
           {!gesco?.user && <Route exact path="/" element={<Home />} />}
           {gesco?.user && <Route exact path="/" element={<Navigate to='dashboard' />} />}
+          <Route exact path='/dashboard' element={<DefaultLayout />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />}/>
           <Route exact path="/save-director" element={<SaveDirector />}/>
