@@ -28,6 +28,7 @@ import { getEcoleStore, getEcoleStored, getHeaders, getTokenId, getUserStored, r
 import { getDocumentsAsked, getMessages } from '../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
 import { logout } from '../../services/AuthApi'
+import { useNavigate } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
   const [notifs, setNotifs] = useState([])
@@ -37,6 +38,7 @@ const AppHeaderDropdown = () => {
   const user = getUserStored()
   const ecole = getEcoleStore()
   const tokenId = getTokenId()
+  const navigate = useNavigate()
 
   useEffect(() => {
     getMessagesEcole().then()
@@ -67,7 +69,7 @@ const AppHeaderDropdown = () => {
         toast.success(res.message)
         removeItem('gesco')
         setTimeout(() => {
-          window.location.replace('../#/login')
+          navigate('/login')
         }, 2000)
       })
     } catch (error) {
