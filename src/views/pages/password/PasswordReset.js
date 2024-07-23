@@ -5,6 +5,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import CIcon from '@coreui/icons-react';
 import { cilEnvelopeClosed } from '@coreui/icons';
 import { resetPassword } from '../../../services/AuthApi';
+import logo_noir from '../../../assets/images/logo_noir_sans_bg.png'
+import logo_light from '../../../assets/images/logo_blanc.png'
 
 function PasswordReset() {
     const [theme, setTheme] = useState("")
@@ -110,7 +112,7 @@ function PasswordReset() {
                                         fluid={true}
                                         height={200}
                                         width={200}  
-                                        src={theme !== 'light' ? '../src/assets/images/logo_noir_sans_bg.png' : '../src/assets/images/logo_blanc.png'} 
+                                        src={theme !== 'light' ? logo_noir : logo_light} 
                                     />
                                 </CCardBody>
                             </CCard>

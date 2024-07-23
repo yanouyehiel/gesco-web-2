@@ -4,6 +4,7 @@ import { CContainer, CSpinner } from '@coreui/react'
 
 // routes config
 import routes from '../routes'
+import Dashboard from '../views/dashboard/Dashboard'
 
 const AppContent = () => {
 
@@ -24,7 +25,7 @@ const AppContent = () => {
               )
             )
           })}
-          <Route path="/dashboard" element={<Navigate to="dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </Suspense>
     </CContainer>

@@ -20,6 +20,8 @@ import { cilBank, cilDoor, cilEnvelopeLetter, cilFactory, cilGlobeAlt, cilInstit
 import { Link, useNavigate, useNavigation } from 'react-router-dom'
 import { addEcole, typesEtablissements } from '../../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
+import logo_noir from '../../../assets/images/logo_noir_sans_bg.png'
+import logo_light from '../../../assets/images/logo_blanc.png'
 
 const Register = () => {
   const [ecole, setEcole] = useState({})
@@ -194,7 +196,7 @@ const Register = () => {
                   <CImage 
                     align='center' 
                     fluid={true} 
-                    src={theme !== 'light' ? '../src/assets/images/logo_noir_sans_bg.png' : '../src/assets/images/logo_blanc.png'} 
+                    src={theme !== 'light' ? logo_noir : logo_light} 
                   />
                 </CCardBody>
               </CCard>

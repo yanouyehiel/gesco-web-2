@@ -1,11 +1,16 @@
 import { CAccordion, CAccordionBody, CAccordionHeader, CAccordionItem, CButton, CCard, CCardBody, CCardGroup, CCardHeader, CCarousel, CCarouselCaption, CCarouselItem, CCol, CContainer, CHeader, CHeaderNav, CImage, CNavItem, CNavLink, CRow, CWidgetStatsC } from '@coreui/react'
 import React, { useEffect } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { getItem } from '../../../services/LocalStorage'
-import { Button } from '@coreui/coreui'
 import { AppFooter } from '../../../components'
 import CIcon from '@coreui/icons-react'
 import { cilEnvelopeLetter, cilLink, cilPhone } from '@coreui/icons'
+import img from '../../../assets/images/ob1-removebg.png'
+import carousel1 from "../../../assets/images/carousel1.png"
+import carousel2 from "../../../assets/images/carousel2.png"
+import carousel3 from "../../../assets/images/carousel3.png"
+import carousel4 from "../../../assets/images/carousel4.png"
+import carousel5 from "../../../assets/images/carousel5.png"
 
 function home() {
     const navigate = useNavigate()
@@ -45,7 +50,7 @@ function home() {
                         <CButton color="primary" className='text-white' href='#/login'>Commencer</CButton>
                     </CCol>
                     <CCol xs={4} className='flex-end'>
-                        <CImage src='../../../src/assets/images/ob1-removebg.png' width={200} height={200} />
+                        <CImage src={img} width={200} height={200} />
                     </CCol>
                 </CRow>
 
@@ -97,19 +102,19 @@ function home() {
                         <CCardBody>
                             <CCarousel controls indicators dark>
                                 <CCarouselItem>
-                                    <img className="d-block w-100" src="../../../src/assets/images/carousel1.png" alt="slide 1" />
+                                    <img className="d-block w-100" src={carousel1} alt="slide 1" />
                                 </CCarouselItem>
                                 <CCarouselItem>
-                                    <img className="d-block w-100" src="../../../src/assets/images/carousel2.png" alt="slide 2" />
+                                    <img className="d-block w-100" src={carousel2} alt="slide 2" />
                                 </CCarouselItem>
                                 <CCarouselItem>
-                                    <img className="d-block w-100" src="../../../src/assets/images/carousel3.png" alt="slide 3" />
+                                    <img className="d-block w-100" src={carousel3} alt="slide 3" />
                                 </CCarouselItem>
                                 <CCarouselItem>
-                                    <img className="d-block w-100" src="../../../src/assets/images/carousel4.png" alt="slide 4" />
+                                    <img className="d-block w-100" src={carousel4} alt="slide 4" />
                                 </CCarouselItem>
                                 <CCarouselItem>
-                                    <img className="d-block w-100" src="../../../src/assets/images/carousel5.png" alt="slide 5" />
+                                    <img className="d-block w-100" src={carousel5} alt="slide 5" />
                                 </CCarouselItem>
                             </CCarousel>
                         </CCardBody>

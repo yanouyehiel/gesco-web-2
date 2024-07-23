@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { verify } from '../../../services/AuthApi';
 import { ToastContainer, toast } from 'react-toastify';
+import logo_noir from '../../../assets/images/logo_noir_sans_bg.png'
+import logo_light from '../../../assets/images/logo_blanc.png'
 
 function EmailVerify() {
     const params = useParams();
@@ -50,7 +52,7 @@ function EmailVerify() {
                                     <CImage 
                                         align='center' 
                                         fluid={true} 
-                                        src={theme !== 'light' ? '../src/assets/images/logo_noir_sans_bg.png' : '../src/assets/images/logo_blanc.png'} 
+                                        src={theme !== 'light' ? logo_noir : logo_light} 
                                     />
                                 </CCardBody>
                             </CCard>

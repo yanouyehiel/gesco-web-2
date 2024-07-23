@@ -1,18 +1,7 @@
 import React, { useEffect } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { getItem } from '../services/LocalStorage'
 
 const DefaultLayout = () => {
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    const data = getItem('gesco')
-    const json = JSON.parse(data)
-    if (!json.user) {
-      navigate("/login")
-    }
-  }, [])
 
   return (
     <div>

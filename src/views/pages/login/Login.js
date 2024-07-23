@@ -53,7 +53,6 @@ const Login = () => {
   const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
-    console.log(user)
     await login(user).then((res) => {
       if (res?.status_code === 401) {
         setLoading(false)
