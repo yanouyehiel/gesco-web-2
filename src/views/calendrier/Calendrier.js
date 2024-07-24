@@ -49,12 +49,12 @@ function Calendrier() {
       addCalendar(calendar, headers).then((res) => {
         setShowLoader(false)
         setShow(false)
-        setLoading(false)
         toast.success(res.message)
         getAllCalendars().then(() => setLoading(false))
       }, (error) => {
         toast.error(error.response.data.message)
       })
+      setLoading(false)
   }
 
   async function getAllCalendars() {
