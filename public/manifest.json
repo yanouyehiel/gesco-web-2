@@ -1,14 +1,20 @@
 {
   "short_name": "Gesco",
-  "name": "Gesco Web App",
+  "name": "Gesco App",
+  "description": "GESCO APP est un progiciel de gestion des établissements scolaires primaires et secondaires",
   "icons": [
     {
-      "src": "./logo_noir_sans_bg.png",
-      "sizes": "100x100",
+      "src": "./icone_couleur.png",
+      "sizes": "8001x8001",
+      "type": "image/png"
+    },
+    {
+      "src": "./icone_blanc.png",
+      "sizes": "8001x8001",
       "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "https://gesco-app.com",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"

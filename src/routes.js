@@ -38,7 +38,7 @@ const routes = [
   { path: '/administration', name: 'Administration', element: Administration },
   { path: '/teachers', name: 'Enseignants', element: Enseignants },
   { path: '/students', name: 'Elèves', element: Eleves },
-  { path: '/students/:id', name: 'Elèves', element: ViewEleve },
+  { path: '/students/:id', name: "Voir l'élève", element: ViewEleve },
   { path: '/parents', name: 'Parents', element: Parents },
   { path: '/planning', name: 'Emploi du temps', element: Planning },
   { path: '/events', name: 'Evènements', element: Events },
