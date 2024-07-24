@@ -12,11 +12,9 @@ import { getAbsencesByStudent, getDirecteur, getFeesStudent } from '../../servic
 import classNames from 'classnames';
 import CIcon from '@coreui/icons-react';
 import { cilPeople } from '@coreui/icons';
-import avatar4 from 'src/assets/images/avatars/4.jpg'
+import avatar from 'src/assets/images/user1.jpg'
 import ReactPDF, { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { PDFStudent } from '../../components/PDFStudent';
-import { compile } from '@fileforge/react-print';
-import { saveAs } from "file-saver";
 import PDFPaiement from '../../components/PDFPaiement';
 
 const ViewEleve = () => {
@@ -245,7 +243,7 @@ const ViewEleve = () => {
                                 <CTableBody>
                                     <CTableRow v-for="item in tableItems" key={index}>
                                         <CTableDataCell className="text-center">
-                                            <CAvatar size="md" src={avatar4} status='success' />
+                                            <CAvatar size="md" src={avatar} status='success' />
                                         </CTableDataCell>
                                         <CTableDataCell className="text-center">
                                             {item.intitule}
