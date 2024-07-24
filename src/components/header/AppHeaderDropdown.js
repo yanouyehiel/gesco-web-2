@@ -23,7 +23,7 @@ import {
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-import avatar8 from './../../assets/images/avatars/4.jpg'
+import avatar from './../../assets/images/user1.jpg'
 import { getEcoleStore, getEcoleStored, getHeaders, getTokenId, getUserStored, removeItem } from '../../services/LocalStorage'
 import { getDocumentsAsked, getMessages } from '../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
@@ -81,7 +81,7 @@ const AppHeaderDropdown = () => {
     <CDropdown variant="nav-item">
       <ToastContainer />
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+        <CAvatar src={avatar} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Mon école</CDropdownHeader>

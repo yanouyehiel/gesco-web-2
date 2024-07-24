@@ -3,14 +3,10 @@ import classNames from 'classnames'
 
 import {
   CAvatar,
-  CButton,
-  CButtonGroup,
   CCard,
   CCardBody,
-  CCardFooter,
   CCardHeader,
   CCol,
-  CProgress,
   CRow,
   CSpinner,
   CTable,
@@ -21,36 +17,8 @@ import {
   CTableRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-} from '@coreui/icons'
-
-import avatar1 from 'src/assets/images/avatars/1.jpg'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import avatar3 from 'src/assets/images/avatars/3.jpg'
-import avatar4 from 'src/assets/images/avatars/4.jpg'
-import avatar5 from 'src/assets/images/avatars/5.jpg'
-import avatar6 from 'src/assets/images/avatars/6.jpg'
-
+import {cilPeople} from '@coreui/icons'
+import avatar from './../../assets/images/user1.jpg'
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import { getFeesEcole } from '../../services/MainControllerApi'
 import { dateParser } from '../../utils/functions'
@@ -105,7 +73,7 @@ const Dashboard = () => {
                   {fees?.paiements_today.length > 0 ? fees?.paiements_today.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       <CTableDataCell className="text-center">
-                        <CAvatar size="md" src={avatar6} /*status={item.avatar.status}*/ />
+                        <CAvatar size="md" src={avatar} /*status={item.avatar.status}*/ />
                       </CTableDataCell>
                       <CTableDataCell>
                         <div>{item.nom_student + ' ' + item.prenom_student}</div>
