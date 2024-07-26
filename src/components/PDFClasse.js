@@ -20,6 +20,9 @@ function PDFClasse({ students, ecole, classe }) {
                     <View style={styles.content}>
                         <View style={{ flexDirection: 'row', borderBottom: '1px solid black', paddingVertical: 8 }}>
                             <View style={styles.tableHeader}>
+                                <Text style={styles.tableHeaderText}>Num</Text>
+                            </View>
+                            <View style={styles.tableHeader}>
                                 <Text style={styles.tableHeaderText}>Matricule</Text>
                             </View>
                             <View style={styles.tableHeader}>
@@ -38,13 +41,16 @@ function PDFClasse({ students, ecole, classe }) {
                                     paddingVertical: 8
                                 }}
                             >
-                                <View style={{ width: '33.33%' }}>
+                                <View style={{ width: '25%' }}>
+                                    <Text style={styles.tableRowText}>{index+1}</Text>
+                                </View>
+                                <View style={{ width: '25%' }}>
                                     <Text style={styles.tableRowText}>{row.matricule}</Text>
                                 </View>
-                                <View style={{ width: '33.33%' }}>
+                                <View style={{ width: '25%' }}>
                                     <Text style={styles.tableRowText}>{row.nom}</Text>
                                 </View>
-                                <View style={{ width: '33.33%' }}>
+                                <View style={{ width: '25%' }}>
                                     <Text style={styles.tableRowText}>{row.prenom}</Text>
                                 </View>
                             </View>
@@ -77,7 +83,7 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
     tableHeader: {
-        width: '33.33%', 
+        width: '25%', 
         fontWeight: 'bold'
     },
     tableHeaderText: {

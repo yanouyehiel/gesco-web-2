@@ -96,6 +96,11 @@ export async function getPaiementSchool(id, headers) {
     return response.data;
 }
 
+export async function getPaiementSchoolChart(id, headers) {
+    const response = await AxiosApi.get('/get-paiements-chart/' + id, {headers});
+    return response.data;
+}
+
 export async function getAllParentsSchool(id, headers) {
     const response = await AxiosApi.get('/get-parents/' + id, {headers});
     return response.data;

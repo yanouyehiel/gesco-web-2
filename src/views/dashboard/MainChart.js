@@ -1,10 +1,26 @@
-import React, { useEffect, useRef } from 'react'
-
+import React, { useEffect, useRef, useState } from 'react'
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle } from '@coreui/utils'
+import { getPaiementSchoolChart } from '../../services/MainControllerApi'
+import { toast } from 'react-toastify'
+import { CSpinner } from '@coreui/react'
 
-const MainChart = () => {
+const MainChart = ({ecole_id, headers}) => {
   const chartRef = useRef(null)
+  let dataCharts = []
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getPaiements().then(() => setLoading(false)) 
+  }, [])
+
+  async function getPaiements() {
+    await getPaiementSchoolChart(ecole_id, headers).then((res) => {
+      res.filter(p => dataCharts.push(p.montant))
+    }, (error) => {
+      toast.error(error.response.data.message)
+    })
+  }
 
   useEffect(() => {
     document.documentElement.addEventListener('ColorSchemeChange', () => {
@@ -26,58 +42,24 @@ const MainChart = () => {
     })
   }, [chartRef])
 
-  const random = () => Math.round(Math.random() * 100)
-
   return (
     <>
+      {loading ? <CSpinner color='primary' /> :
       <CChartLine
         ref={chartRef}
         style={{ height: '300px', marginTop: '40px' }}
         data={{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          labels: ['Septembre', 'Octobre', 'Novembre', 'Décembre', 'Janvier'],
           datasets: [
             {
-              label: 'My First dataset',
+              label: 'Paiement',
               backgroundColor: `rgba(${getStyle('--cui-info-rgb')}, .1)`,
               borderColor: getStyle('--cui-info'),
               pointHoverBackgroundColor: getStyle('--cui-info'),
               borderWidth: 2,
-              data: [
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-              ],
+              data: dataCharts,
               fill: true,
-            },
-            {
-              label: 'My Second dataset',
-              backgroundColor: 'transparent',
-              borderColor: getStyle('--cui-success'),
-              pointHoverBackgroundColor: getStyle('--cui-success'),
-              borderWidth: 2,
-              data: [
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-              ],
-            },
-            {
-              label: 'My Third dataset',
-              backgroundColor: 'transparent',
-              borderColor: getStyle('--cui-danger'),
-              pointHoverBackgroundColor: getStyle('--cui-danger'),
-              borderWidth: 1,
-              borderDash: [8, 5],
-              data: [65, 65, 65, 65, 65, 65, 65],
-            },
+            }
           ],
         }}
         options={{
@@ -105,11 +87,11 @@ const MainChart = () => {
               grid: {
                 color: getStyle('--cui-border-color-translucent'),
               },
-              max: 250,
+              max: 1000000,
               ticks: {
                 color: getStyle('--cui-body-color'),
-                maxTicksLimit: 5,
-                stepSize: Math.ceil(250 / 5),
+                maxTicksLimit: 6,
+                stepSize: Math.ceil(1000000 / 5),
               },
             },
           },
@@ -125,7 +107,7 @@ const MainChart = () => {
             },
           },
         }}
-      />
+      />}
     </>
   )
 }
