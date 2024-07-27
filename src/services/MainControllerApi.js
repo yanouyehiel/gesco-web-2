@@ -146,6 +146,11 @@ export async function getMessages(id, idUser, headers) {
     return response.data;
 }
 
+export async function getSingleMatiere(id, headers) {
+    const response = await AxiosApi.get('/get-matiere/'+id, {headers});
+    return response.data;
+}
+
 export async function readMessage(data, headers) {
     const response = await AxiosApi.put('/update-message', data, {headers});
     return response.data;
@@ -158,6 +163,16 @@ export async function getEvents(id, headers) {
 
 export async function addEvent(event, headers) {
     const response = await AxiosApi.post('/add-event', event, {headers});
+    return response.data;
+}
+
+export async function addGroupeMatiere(groupe, headers) {
+    const response = await AxiosApi.post('/add-groupe-matiere', groupe, {headers});
+    return response.data;
+}
+
+export async function getGroupeMatieres(id, headers) {
+    const response = await AxiosApi.get('/get-groupes-matiere/' + id, {headers});
     return response.data;
 }
 

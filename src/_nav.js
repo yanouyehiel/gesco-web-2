@@ -29,6 +29,8 @@ import {
   cilSchool,
   cilEnvelopeLetter,
   cilCalendarCheck,
+  cilGroup,
+  cilObjectGroup,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -38,10 +40,10 @@ const _nav = [
     name: 'Dashboard',
     to: '/dashboard',
     icon: <CIcon icon={cilInstitution} customClassName="nav-icon" />,
-    /*badge: {
+    badge: {
       color: 'primary',
       text: 'NEW',
-    },*/
+    },
   },
   {
     component: CNavTitle,
@@ -80,6 +82,16 @@ const _nav = [
   {
     component: CNavTitle,
     name: 'Gestion des enseignements',
+  },
+  {
+    component: CNavItem,
+    name: 'Les groupes de matières',
+    to: '/groupes-matieres',
+    icon: <CIcon icon={cilObjectGroup} customClassName="nav-icon" />,
+    badge: {
+      color: 'secondary',
+      text: 'NEW',
+    },
   },
   {
     component: CNavItem,

@@ -1,3 +1,4 @@
+import { element } from 'prop-types'
 import React from 'react'
 
 const Classes = React.lazy(() => import('./views/classes/Classes'))
@@ -20,6 +21,7 @@ const Parents = React.lazy(() => import('./views/parents/Parents'))
 const Planning = React.lazy(() => import('./views/planning/Planning'))
 const Events = React.lazy(() => import('./views/events/Events'))
 const Messagerie = React.lazy(() => import('./views/messagerie/Messagerie'))
+const Groupes = React.lazy(() => import('./views/groupes_matiere/Groupes'))
 
 const routes = [
   { path: '/dashboard', exact: true, name: 'Dashboard' },
@@ -43,6 +45,7 @@ const routes = [
   { path: '/planning', name: 'Emploi du temps', element: Planning },
   { path: '/events', name: 'Evènements', element: Events },
   { path: '/messages', name: 'Messagerie', element: Messagerie },
+  { path: '/groupes-matieres', name: 'Groupes de matières', element: Groupes}
 ]
 
 export default routes

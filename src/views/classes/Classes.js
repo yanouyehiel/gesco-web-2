@@ -1,14 +1,12 @@
-import { CCard, CCardHeader, CCardBody, CFormInput, CTable, CInputGroup, CTableBody, CTableDataCell, CSpinner, CNavLink, CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/react'
+import { CCard, CCardHeader, CCardBody, CFormInput, CTable, CInputGroup, CSpinner, CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { typesClasse, addClasse, deleteClasse, updateClasse } from '../../services/MainControllerApi'
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import AxiosApi from '../../services/AxiosApi'
 import DataTable from 'react-data-table-component'
-import { colors } from '../../utils/colors'
 import { Modal, Form, Button, Row, Col } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify'
 import { getTeachers } from '../../services/EnseignementController'
-import { NavLink } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { cilOptions } from '@coreui/icons'
 
@@ -224,11 +222,19 @@ const Classes = () => {
                       </Form.Select>
                   </Form.Group>
                   <Form.Group className="form-group mt-4">
+                    <Form.Label className="control-label">A quel cycle appartient-elle ?</Form.Label>
+                    <Form.Select onChange={handleChange} name='cycle_id' className="form-control">
+                        <option>-- select --</option>
+                        <option value={1}>Premier Cycle</option>
+                        <option value={2}>Second Cycle</option>
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group className="form-group mt-4">
                       <Form.Label className="control-label">Nommer un enseignant principal</Form.Label>
                       <Form.Select onChange={handleChange} name='teacher_id' className="form-control" required='true'>
                           <option>-- select --</option>
                           {teachers.length > 0 && teachers.map((teacher, i) => (
-                              <option key={i} value={teacher.id}>{teacher.nom + ' ' + teacher.prenom}</option>
+                            <option key={i} value={teacher.id}>{teacher.nom + ' ' + teacher.prenom}</option>
                           ))}
                       </Form.Select>
                   </Form.Group>
