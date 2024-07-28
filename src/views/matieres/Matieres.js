@@ -31,7 +31,10 @@ function Matieres() {
     coefficient: ""
   })
   const [classes, setClasses] = useState([])
-  const [matiereShow, setMatiereShow] = useState({})
+  const [matiereShow, setMatiereShow] = useState({
+    matiere: null,
+    coefficients: []
+  })
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -73,7 +76,10 @@ function Matieres() {
 
   async function showCoeffModal(row) {
     await getSingleMatiere(row.id, headers).then((res) => {
-      setMatiereShow(res.matiere)
+      setMatiereShow({
+        matiere: res.matiere,
+        coefficients: res.coefficients
+      })
       handleShowMatiere()
     })
   }
@@ -273,15 +279,15 @@ function Matieres() {
 
       <Modal show={showMatiere} onHide={handleCloseMatiere}>
         <Modal.Header closeButton>
-          <Modal.Title>Matière : {matiereShow.intitule}</Modal.Title>
+          <Modal.Title>Matière : {matiereShow.matiere?.intitule}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h3>{matiereShow.intitule}</h3>
-          <p>{matiereShow.code}</p>
+          <h3>{matiereShow.matiere?.intitule}</h3>
+          <p>{matiereShow.matiere?.code}</p>
           <div className='mt-4'>
             <ul>
               {matiereShow?.coefficients && matiereShow?.coefficients.map((coeff, i) => (
-                <li key={i}>Coefficient : {coeff.coefficient}</li>
+                <li key={i}>Classe: {coeff.nom_classe} Coefficient : {coeff.coefficient}</li>
               ))}
             </ul>
           </div>
