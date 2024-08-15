@@ -85,12 +85,12 @@ const AppHeaderDropdown = () => {
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Mon école</CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownItem>
           <CIcon icon={cilInstitution} className="me-2" />
             {ecole.nom}
         </CDropdownItem>
-        <CDropdownItem href="#">
-          ID : {ecole?.matricule}
+        <CDropdownItem>
+          ID School : {ecole?.matricule}
         </CDropdownItem>
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Mon compte</CDropdownHeader>
         <CDropdownItem href="../#/documents">
@@ -101,28 +101,14 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownItem href="../#/messages">
-          <CIcon icon={cilEnvelopeOpen} className="me-2" />
+          <CIcon icon={cilCommentSquare} className="me-2" />
             Messages
           <CBadge color="success" className="ms-2">
             {messages.length}
           </CBadge>
         </CDropdownItem>
-        {/* <CDropdownItem href="#">
-          <CIcon icon={cilTask} className="me-2" />
-          Tasks
-          <CBadge color="danger" className="ms-2">
-            42
-          </CBadge>
-        </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilCommentSquare} className="me-2" />
-          Comments
-          <CBadge color="warning" className="ms-2">
-            42
-          </CBadge>
-        </CDropdownItem> */}
         <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Paramètres</CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownItem>
           <CIcon icon={cilUser} className="me-2" />
           Mon Profile
         </CDropdownItem>

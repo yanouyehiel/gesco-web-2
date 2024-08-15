@@ -62,6 +62,9 @@ function PDFClasse({ students, ecole, classe }) {
                         </View>
                     </View>
                 </View>
+                <Text style={styles.pageNumber}
+                render={({pageNumber, totalPages}) => `${pageNumber} / ${totalPages} pages`}
+                fixed></Text>
             </Page>}
         </Document>
     )
@@ -101,6 +104,15 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 12
+    },
+    pageNumber: {
+        position: 'absolute',
+        fontSize: 12,
+        bottom: 30,
+        left: 0,
+        right: 0,
+        textAlign: "center",
+        color: "gray"
     }
 })
 

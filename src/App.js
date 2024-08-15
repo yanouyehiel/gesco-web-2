@@ -24,7 +24,7 @@ const PasswordReset = React.lazy(() => import('./views/pages/password/PasswordRe
 const Home = React.lazy(() => import('./views/pages/home/home'))
 
 const App = () => {
-  const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
+  const { isColorModeSet, setColorMode } = useColorModes('gesco-theme')
   const storedTheme = useSelector((state) => state.theme)
   const [gesco, setGesco] = useState(null);
 

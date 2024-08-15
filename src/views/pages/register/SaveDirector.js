@@ -16,7 +16,7 @@ function SaveDirector() {
     const [ecole, setEcole] = useState({})
 
     useEffect(() => {
-        const themeS = localStorage.getItem('coreui-free-react-admin-template-theme')
+        const themeS = localStorage.getItem('gesco-theme')
         setTheme(themeS)
         setEcole(state.ecole);
     }, [])

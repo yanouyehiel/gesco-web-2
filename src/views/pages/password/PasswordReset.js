@@ -17,7 +17,7 @@ function PasswordReset() {
     const navigation = useNavigate()
 
     useEffect(async () => {
-        const themeS = localStorage.getItem('coreui-free-react-admin-template-theme')
+        const themeS = localStorage.getItem('gesco-theme')
         setTheme(themeS)
     }, [])
 

@@ -270,3 +270,23 @@ export async function linkStudentToParent(data, headers) {
     const response = await AxiosApi.post('/link-student-parent', data, {headers});
     return response.data;
 }
+
+export async function getSequences(id, headers) {
+    const response = await AxiosApi.get('/get-sequences/'+parseInt(id), {headers});
+    return response.data;
+}
+
+export async function addSequence(data, headers) {
+    const response = await AxiosApi.post('/add-sequence', data, {headers});
+    return response.data;
+}
+
+export async function addTrimestre(data, headers) {
+    const response = await AxiosApi.post('/add-trimestre', data, {headers});
+    return response.data;
+}
+
+export async function getTrimestres(id, headers) {
+    const response = await AxiosApi.get('/get-trimestres/'+parseInt(id), {headers});
+    return response.data;
+}

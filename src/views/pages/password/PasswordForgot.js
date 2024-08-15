@@ -14,7 +14,7 @@ function PasswordForgot() {
     const [email, setEmail] = useState("")
 
     useEffect(async () => {
-        const themeS = localStorage.getItem('coreui-free-react-admin-template-theme')
+        const themeS = localStorage.getItem('gesco-theme')
         setTheme(themeS)
     }, [])
 

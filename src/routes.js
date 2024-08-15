@@ -22,6 +22,8 @@ const Planning = React.lazy(() => import('./views/planning/Planning'))
 const Events = React.lazy(() => import('./views/events/Events'))
 const Messagerie = React.lazy(() => import('./views/messagerie/Messagerie'))
 const Groupes = React.lazy(() => import('./views/groupes_matiere/Groupes'))
+const Bulletins = React.lazy(() => import('./views/bulletins/Bulletins'))
+const TrimestreSequences = React.lazy(() => import('./views/trimestres_sequences/TrimestreSequences'))
 
 const routes = [
   { path: '/dashboard', exact: true, name: 'Dashboard' },
@@ -45,7 +47,9 @@ const routes = [
   { path: '/planning', name: 'Emploi du temps', element: Planning },
   { path: '/events', name: 'Evènements', element: Events },
   { path: '/messages', name: 'Messagerie', element: Messagerie },
-  { path: '/groupes-matieres', name: 'Groupes de matières', element: Groupes}
+  { path: '/modules-matieres', name: 'Groupes de matières', element: Groupes },
+  { path: '/bulletins', name: 'Gestion des bulletins', element: Bulletins },
+  { path: '/trimestres-sequences', name: 'Gestion des trimestres et séquences', element: TrimestreSequences },
 ]
 
 export default routes

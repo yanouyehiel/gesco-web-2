@@ -31,6 +31,7 @@ import {
   cilCalendarCheck,
   cilGroup,
   cilObjectGroup,
+  cilAvTimer,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -85,8 +86,8 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Les groupes de matières',
-    to: '/groupes-matieres',
+    name: 'Les modules',
+    to: '/modules-matieres',
     icon: <CIcon icon={cilObjectGroup} customClassName="nav-icon" />,
     badge: {
       color: 'secondary',
@@ -123,9 +124,21 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'Les trimestres et séquences',
+    to: '/trimestres-sequences',
+    icon: <CIcon icon={cilAvTimer} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Les notes',
     to: '/notes',
     icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Les bulletins',
+    to: '/bulletins',
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,

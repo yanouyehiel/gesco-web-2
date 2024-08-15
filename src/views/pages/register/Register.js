@@ -16,7 +16,7 @@ import {
   CSpinner
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilBank, cilDoor, cilEnvelopeLetter, cilFactory, cilGlobeAlt, cilInstitution, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
+import { cilBank, cilDoor, cilEnvelopeLetter, cilFactory, cilFlagAlt, cilGlobeAlt, cilInstitution, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
 import { Link, useNavigate, useNavigation } from 'react-router-dom'
 import { addEcole, typesEtablissements } from '../../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
@@ -32,7 +32,7 @@ const Register = () => {
 
 
   useEffect(() => {
-    const themeS = localStorage.getItem('coreui-free-react-admin-template-theme')
+    const themeS = localStorage.getItem('gesco-theme')
     setTheme(themeS)
     getTypesEtablissement()
   }, [])
@@ -54,7 +54,7 @@ const Register = () => {
 
   async function getTypesEtablissement() {
     await typesEtablissements().then((res) => {
-      setTypes(res)
+      setTypes(res.filter(t => t.id !== 3))
       setLoading(false)
     })
   }
@@ -86,6 +86,20 @@ const Register = () => {
                         onChange={handleChange} 
                         name="nom"
                         required="true"
+                        type='text'
+                      />
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilFlagAlt} />
+                      </CInputGroupText>
+                      <CFormInput 
+                        placeholder="Pays" 
+                        autoComplete="pays" 
+                        onChange={handleChange} 
+                        name="pays"
+                        required="true"
+                        type='text'
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
@@ -98,6 +112,7 @@ const Register = () => {
                         onChange={handleChange} 
                         name="ville"
                         required="true"
+                        type='text'
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
@@ -110,7 +125,7 @@ const Register = () => {
                         onChange={handleChange} 
                         name="telephone"
                         required="true"
-                        type='tel'
+                        type='text'
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
@@ -135,6 +150,7 @@ const Register = () => {
                         onChange={handleChange} 
                         name="localisation"
                         required="true"
+                        type='text'
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
@@ -146,6 +162,7 @@ const Register = () => {
                         autoComplete="site_web" 
                         onChange={handleChange} 
                         name="site_web"
+                        type='text'
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-3">

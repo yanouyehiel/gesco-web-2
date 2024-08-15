@@ -33,7 +33,7 @@ const Login = () => {
   const [loadingC, setLoadingC] = useState(false)
   
   useEffect(() => {
-    const themeS = localStorage.getItem('coreui-free-react-admin-template-theme')
+    const themeS = localStorage.getItem('gesco-theme')
     setTheme(themeS)
 
     const data = getItem('gesco')
