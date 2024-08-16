@@ -290,3 +290,8 @@ export async function getTrimestres(id, headers) {
     const response = await AxiosApi.get('/get-trimestres/'+parseInt(id), {headers});
     return response.data;
 }
+
+export async function generateBulletinClasse(data, headers) {
+    const response = await AxiosApi.get(`/generate-bulletin-classe/classe_id=${data.classe_id}&annee_scolaire=${data.annee_scolaire}&sequence_id=${data.sequence_id}`, {headers});
+    return response.data;
+}

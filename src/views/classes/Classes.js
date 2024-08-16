@@ -143,13 +143,13 @@ const Classes = () => {
       sortable: true
     },
     {
-      name: 'Ecole',
-      selector: row => row.nom_ecole,
+      name: 'Effectif',
+      selector: row => row.effectif,
       sortable: true
     },
     {
-      name: 'Effectif',
-      selector: row => row.effectif,
+      name: 'Cycle',
+      selector: row => row.cycle_id==1?'Premier Cycle':(row.cycle_id==2?'Second Cycle':''),
       sortable: true
     },
     {
@@ -222,7 +222,9 @@ const Classes = () => {
                       </Form.Select>
                   </Form.Group>
                   <Form.Group className="form-group mt-4">
-                    <Form.Label className="control-label">A quel cycle appartient-elle ?</Form.Label>
+                    <Form.Label className="control-label">A quel cycle appartient-elle ? 
+                      <span style={{color: 'red'}}> Remplir s'il s'agit d'une classe du secondaire</span>
+                    </Form.Label>
                     <Form.Select onChange={handleChange} name='cycle_id' className="form-control">
                         <option>-- select --</option>
                         <option value={1}>Premier Cycle</option>
