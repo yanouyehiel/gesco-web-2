@@ -22,6 +22,7 @@ const SaveDirector = React.lazy(() => import('./views/pages/register/SaveDirecto
 const PasswordForgot = React.lazy(() => import('./views/pages/password/PasswordForgot'))
 const PasswordReset = React.lazy(() => import('./views/pages/password/PasswordReset'))
 const Home = React.lazy(() => import('./views/pages/home/home'))
+const Contact = React.lazy(() => import('./views/pages/contact/Contact'))
 
 const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('gesco-theme')
@@ -62,6 +63,7 @@ const App = () => {
           {gesco?.user && <Route exact path="/" element={<Navigate to='dashboard' />} />}
           <Route exact path='/dashboard' element={<DefaultLayout />} />
           <Route exact path="/login" element={<Login />} />
+          <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/register" element={<Register />}/>
           <Route exact path="/save-director" element={<SaveDirector />}/>
           <Route exact path="/auth/email/verify/:email/:expires/:signature" element={<EmailVerify />}/>
