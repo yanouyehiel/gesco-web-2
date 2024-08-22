@@ -8,7 +8,6 @@ import "./css/animate.css"
 import "./css/typography.css"
 import "./css/style.css"
 import "./css/responsive.css"
-
 import Header from '../components/Header'
 import Banner from '../components/Banner'
 import Footer from '../components/Footer'

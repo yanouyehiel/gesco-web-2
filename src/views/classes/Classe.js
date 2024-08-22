@@ -155,7 +155,7 @@ function Classe() {
                     {loading ? <CSpinner color='primary' /> :
                         <DataTable
                             columns={columns}
-                            data={data}
+                            data={data}  
                             selectableRows
                             fixedHeader
                             pagination

@@ -1,10 +1,13 @@
 import { Document, Image, Page, StyleSheet, View, Text } from '@react-pdf/renderer'
 import React from 'react'
+import logo from "../assets/images/logo_bleu_sans_bg.png"
+import JSZip from 'jszip';
 
-function PDFBulletin({ data, student }) {
+function PDFBulletin({ data, student, ecole, notes }) {
+
     return (
         <Document>
-            <Page size='A3'>
+            <Page size='A3' style={styles.page}>
                 <View style={styles.header}>
                     <View>
                         <Text style={styles.title}>{ecole.nom}</Text>
@@ -12,62 +15,95 @@ function PDFBulletin({ data, student }) {
                         <Text style={styles.title}>{ecole.telephone}</Text>
                         <Text style={styles.title}>{ecole.site_web}</Text>
                     </View>
-                    <View>
-                        <Image source={{uri: 'https://fr.freepik.com/photos-gratuite/chien-visage-brun-visage-blanc-se-tient-dans-champ_40648523.htm#query=chien&position=0&from_view=keyword&track=ais_hybrid&uuid=e1981c71-c067-461b-b8d4-d994dada3728'}} style={{width: 200, height: 200}} />
+                    <View style={{width: 150, height: 150, marginTop: -40}}>
+                        <Image src={logo} style={{width: 150, height: 150}} />
                     </View>
                     <View>
-                        <Text style={styles.title}>REPUBLIQUE DU CAMEROUN</Text>
+                        <Text style={styles.title}>REPUBLIQUE DU {ecole.pays.toUpperCase()}</Text>
                         <Text style={styles.title}>PAIX-TRAVAIL-PATRIE</Text>
                     </View>
                 </View>
 
                 <View style={styles.headerSub}>
-                    <Text>BULLETIN DE NOTES {data.trimestre.intitule} / {data.annee_scolaire}</Text>
+                    <Text style={{textAlign: 'center'}}>BULLETIN DE NOTES {data?.trimestre.intitule} / {data?.annee_scolaire}</Text>
                     <View style={styles.table}>
                         <View style={styles.row}>
-                            <View style={styles.cell}>
-                                <Text style={styles.miniTitle}>Année scolaire</Text>
-                                <Text>{data.annee_scolaire}</Text>
+                            <View style={[styles.cell, {width: '30%'}]}>
+                                <View>
+                                    <Text style={styles.miniTitle}>ANNEE SCOLAIRE</Text>
+                                    <Text style={styles.englishText}>ACADEMIC YEAR</Text>
+                                </View>
+                                <Text style={styles.textValue}>{data?.annee_scolaire}</Text>
                             </View>
-                            <View style={styles.cell}>
-                                <Text style={styles.miniTitle}>Classe</Text>
-                                <Text>{data.classe.nom}</Text>
+                            <View style={[styles.cell, {width: '20%'}]}>
+                                <View>
+                                    <Text style={styles.miniTitle}>Classe</Text>
+                                    <Text style={styles.englishText}>Class</Text>
+                                </View>
+                                <Text style={styles.textValue}>{data?.classe.nom}</Text>
                             </View>
-                            <View style={styles.cell}>
-                                <Text style={styles.miniTitle}>Matricule</Text>
-                                <Text>{student.matricule}</Text>
+                            <View style={[styles.cell, {width: '25%'}]}>
+                                <View>
+                                    <Text style={styles.miniTitle}>Matricule</Text>
+                                    <Text style={styles.englishText}>ADM No</Text>
+                                </View>
+                                <Text style={styles.textValue}>{student?.matricule}</Text>
                             </View>
-                            <View style={styles.cell}>
-                                <Text style={styles.miniTitle}>Sexe</Text>
-                                <Text>{student.sexe}</Text>
+                            <View style={[styles.cell, {width: '25%'}]}>
+                                <View>
+                                    <Text style={styles.miniTitle}>Sexe</Text>
+                                    <Text style={styles.englishText}>Sex</Text>
+                                </View>
+                                <Text style={styles.textValue}>{student?.sexe}</Text>
                             </View>
                         </View>
                         <View style={styles.row}>
-                            <View style={styles.cell}>
-                                <Text style={styles.miniTitle}>Bulletin</Text>
-                                <Text>{data.sequence.intitule}</Text>
+                            <View style={[styles.cell, {width: '30%'}]}>
+                                <View>
+                                    <Text style={styles.miniTitle}>Bulletin</Text>
+                                    <Text style={styles.englishText}>Report card</Text>
+                                </View>
+                                <Text style={styles.textValue}>{data?.sequence.intitule}</Text>
                             </View>
-                            <View style={styles.cell}>
-                                <Text style={styles.miniTitle}>Effectif</Text>
-                                <Text>{data.total_students_classe}</Text>
+                            <View style={[styles.cell, {width: '20%'}]}>
+                                <View>
+                                    <Text style={styles.miniTitle}>Effectif</Text>
+                                    <Text style={styles.englishText}>No ON ROLL</Text>
+                                </View>
+                                <Text style={styles.textValue}>{data?.total_students_classe}</Text>
                             </View>
-                            <View style={styles.cell}>
-                                <Text style={styles.miniTitle}>Situation</Text>
-                                <Text>Régulier</Text>
+                            <View style={[styles.cell, {width: '25%'}]}>
+                                <View>
+                                    <Text style={styles.miniTitle}>Situation</Text>
+                                    <Text style={styles.englishText}>Situation</Text>
+                                </View>
+                                <Text style={styles.textValue}>Régulier</Text>
                             </View>
-                            <View style={styles.cell}>
-                                <Text style={styles.miniTitle}>Redoublant</Text>
-                                <Text>Non</Text>
+                            <View style={[styles.cell, {width: '25%'}]}>
+                                <View>
+                                    <Text style={styles.miniTitle}>Redoublant</Text>
+                                    <Text style={styles.englishText}>Repeat</Text>
+                                </View>
+                                <Text style={styles.textValue}>Non</Text>
                             </View>
                         </View>
                     </View>
                 </View>
 
+                {/* <View>
+                    {notes.map((item, i) => (
+                        <View key={i}>
+                            <Text>{item.note}</Text>
+                            <Text>{item.nom_matiere}</Text>
+                        </View>
+                    ))}
+                </View> */}
+
                 {/* <Text style={styles.pageNumber}
                 render={({pageNumber, totalPages}) => `${pageNumber} / ${totalPages} pages`}
                 fixed></Text> */}
             </Page>
-        </Document>
+        </Document> 
     )
 }
 
@@ -81,11 +117,14 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "gray"
     },
+    page: {
+        margin: 40
+    },
     header: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-start'
+        alignItems: 'center'
     },
     title: {
         fontSize: 14,
@@ -95,22 +134,36 @@ const styles = StyleSheet.create({
         fontSize: 12,
         textTransform: 'capitalize'
     },
+    englishText: {
+        fontSize: 12,
+        textTransform: 'capitalize',
+        color: 'blue'
+    },
+    textValue: {
+        fontSize: 12,
+        textTransform: 'capitalize',
+        fontWeight: 'bold'
+    },
     text: {
         fontSize: 11
     },
     headerSub: {
-
+        
     },
     table: {
-        display: 'table',
-        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 600,
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: 'black',
-        borderRadius: 10
+        borderRadius: 10,
+        margin: '0 auto'
     },
     row: {
-        display: 'table-row',
+        display: 'flex',
+        flexDirection: 'row'
     },
     cell: {
         borderStyle: 'solid',
@@ -118,7 +171,9 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         padding: 5,
         textAlign: 'center',
-        width: '25%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
 })
 

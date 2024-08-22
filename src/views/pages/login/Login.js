@@ -20,10 +20,6 @@ import { login } from '../../../services/AuthApi'
 import { addItem, getItem } from '../../../services/LocalStorage'
 import { ToastContainer, toast } from 'react-toastify'
 
-const headers = {
-  'Accept': 'application/json',
-  'Content-Type': 'application/json'
-}
 
 const Login = () => {
   const [user, setUser] = useState({})
@@ -115,7 +111,7 @@ const Login = () => {
                         onChange={handleChange} 
                         name="email"
                         type='email'
-                        required='true'
+                        required={true}
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -128,7 +124,7 @@ const Login = () => {
                         autoComplete="current-password"
                         onChange={handleChange} 
                         name="password"
-                        required='true'
+                        required={true}
                       />
                     </CInputGroup>
                     <CRow>

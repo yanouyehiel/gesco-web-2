@@ -15,7 +15,7 @@ const columns = [
     sortable: true
   },
   {
-    name: 'Nom de la matière',
+    name: 'Matière',
     selector: row => row.nom_matiere,
     sortable: true
   },

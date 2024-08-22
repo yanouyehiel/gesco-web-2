@@ -13,7 +13,7 @@ function PasswordForgot() {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState("")
 
-    useEffect(async () => {
+    useEffect(() => {
         const themeS = localStorage.getItem('gesco-theme')
         setTheme(themeS)
     }, [])

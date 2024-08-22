@@ -1,8 +1,12 @@
 import { CButton, CCard, CCardBody, CCardHeader, CCol, CFormSelect, CRow, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
-import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
+import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import { generateBulletinClasse, getClasses, getSequences } from '../../services/MainControllerApi'
+import { pdf, PDFDownloadLink } from '@react-pdf/renderer'
+import PDFBulletin from '../../components/PDFBulletin'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver';
 
 function Bulletins() {
     const ecole_id = getEcoleStored()
@@ -15,6 +19,9 @@ function Bulletins() {
         annee_scolaire: "",
         sequence_id: 0
     })
+    const [data, setData] = useState(null)
+    const ecole = getEcoleStore()
+    const [bulletinGenerated, setBulletinGenerated] = useState(false)
 
     useEffect(() => {
         getClasses(ecole_id, headers).then((res) => setClasses(res))
@@ -22,13 +29,26 @@ function Bulletins() {
     }, [])
 
     async function generateBulletin() {
-        console.log(bulletin)
         setLoading(true)
-        await generateBulletinClasse(bulletin, headers).then((res) => {
-            console.log(res)
-        }, (error) => {
-            toast.error(error.response.data.message)
-        })
+        if (bulletin.annee_scolaire == "" || bulletin.classe_id == 0 || bulletin.classe_id == 0) {
+            toast.error("Veuillez remplir tous les champs")
+        } else {
+            await generateBulletinClasse(bulletin, headers).then((res) => {
+                const zip = new JSZip()
+                res.notes.map(async (elt) => {
+                    const blob = await pdf(<PDFBulletin data={data} ecole={ecole} student={elt.student} notes={elt.notes} />).toBlob();
+                    zip.file(`Bulletin_${elt.student.nom+'_'+elt.student.prenom}.pdf`, blob, { base64: true });
+                })
+                setData(res)
+                setBulletinGenerated(true)
+
+                zip.generateAsync({ type: 'blob' }).then((content) => {
+                    saveAs(content, 'bulletins.zip');
+                });
+            }, (error) => {
+                toast.error(error.response.data.message)
+            })
+        }
         setLoading(false)
     }
 
@@ -73,12 +93,23 @@ function Bulletins() {
                         </CFormSelect>
                     </CCol>
                     <CCol xl={3}>
+                        {bulletinGenerated ? <PDFDownloadLink
+                            fileName='Bulletin'
+                            document={<PDFBulletin data={data} ecole={ecole} notes={data.notes} />}
+                            //onClick={generateBulletin}
+                            disabled={loading}
+                        >
+                            {
+                                ({loading}) => (loading ? <CSpinner color='primary' /> :
+                                <CButton className='text-white btn-primary'>Télécharger le bulletin</CButton>)
+                            }
+                        </PDFDownloadLink> :
                         <CButton className='text-white btn-primary' disabled={loading} onClick={generateBulletin}>
                             <CRow>
                             {loading && <CCol xs={3}><CSpinner color='white' /></CCol>}
                             <CCol xs={loading ? 9 : 12}>Générer le bulletin</CCol>
                             </CRow>
-                        </CButton>
+                        </CButton>}
                     </CCol>
                 </CRow>
                 <CRow>
