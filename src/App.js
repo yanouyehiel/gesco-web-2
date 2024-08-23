@@ -69,9 +69,9 @@ const App = () => {
           <Route exact path="/auth/email/verify/:email/:expires/:signature" element={<EmailVerify />}/>
           <Route exact path="/password-forgot" element={<PasswordForgot />}/>
           <Route exact path="/auth/password/reset/:email/:expires/:signature" element={<PasswordReset />}/>
-          {/* <Route exact path="/404" name="Page 404" element={<Page404 />} />
-          <Route exact path="/500" name="Page 500" element={<Page500 />} /> */}
-          {gesco?.user && <Route exact path="*" name="Dashboard" element={<DefaultLayout />} />}
+          <Route exact path="/404" name="Page 404" element={<Page404 />} />
+          {/* <Route exact path="/500" name="Page 500" element={<Page500 />} /> */}
+          <Route exact path="*" name="Dashboard" element={<DefaultLayout />} />
         </Routes>
       </Suspense>
     </HashRouter>

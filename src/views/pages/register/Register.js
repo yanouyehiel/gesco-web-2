@@ -43,13 +43,13 @@ const Register = () => {
 
     await addEcole(ecole).then((res) => {
       toast.success(res.message)
-      setLoading(false)
       setTimeout(() => {
         navigate("/save-director", {state: {ecole: res.data}})
       }, 2000)
     }, (error) => {
       toast.error(error.response.data.message)
     });
+    setLoading(false)
   }
 
   async function getTypesEtablissement() {

@@ -18,11 +18,11 @@ function EmailVerify() {
         setTheme(themeS)
 
         await verify(params).then((res) => {
-            setLoading(false)
             toast.success(res?.message)
         }, (error) => {
             toast.error(error.response.data.message)
         })
+        setLoading(false)
     }, [])
 
     return (

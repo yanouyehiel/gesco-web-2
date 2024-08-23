@@ -41,6 +41,7 @@ function SaveDirector() {
                 toast.error(error.response.data.message)
             })
         }
+        setLoading(false)
     }
 
     const handleChange = ({currentTarget}) => {
