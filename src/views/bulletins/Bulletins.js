@@ -34,17 +34,8 @@ function Bulletins() {
             toast.error("Veuillez remplir tous les champs")
         } else {
             await generateBulletinClasse(bulletin, headers).then((res) => {
-                /*const zip = new JSZip()
-                res.notes.map(async (elt) => {
-                    const blob = await pdf(<PDFBulletin data={data} ecole={ecole} student={elt.student} notes={elt.notes} />).toBlob();
-                    zip.file(`Bulletin_${elt.student.nom+'_'+elt.student.prenom}.pdf`, blob, { base64: true });
-                })*/
                 setData(res)
                 setBulletinGenerated(true)
-
-                /*zip.generateAsync({ type: 'blob' }).then((content) => {
-                    saveAs(content, 'bulletins.zip');
-                });*/
             }, (error) => {
                 toast.error(error.response.data.message)
             })

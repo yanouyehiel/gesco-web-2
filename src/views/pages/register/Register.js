@@ -13,11 +13,13 @@ import {
   CRow,
   CImage,
   CFormSelect,
-  CSpinner
+  CSpinner,
+  CFormCheck,
+  CFormLabel
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilBank, cilDoor, cilEnvelopeLetter, cilFactory, cilFlagAlt, cilGlobeAlt, cilInstitution, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
-import { Link, useNavigate, useNavigation } from 'react-router-dom'
+import { cilDoor, cilEnvelopeLetter, cilFactory, cilFile, cilFlagAlt, cilGlobeAlt, cilInstitution, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
+import { Link, useNavigate } from 'react-router-dom'
 import { addEcole, typesEtablissements } from '../../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
 import logo_noir from '../../../assets/images/logo_noir_sans_bg.png'
@@ -29,7 +31,18 @@ const Register = () => {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
   const [theme, setTheme] = useState("")
+  const fileInput = document.getElementById('logo');
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
+  const handleChangeImage = () => {
+    const selectedFile = fileInput.files[0]
+    if (selectedFile && !allowedTypes.includes(selectedFile.type)) {
+      toast.error('Veuillez sélectionner une image au format JPEG, PNG ou JPG.');
+      fileInput.value = '';
+    }
+    ecole.logo = selectedFile
+    console.log(ecole.logo)
+  }
 
   useEffect(() => {
     const themeS = localStorage.getItem('gesco-theme')
@@ -40,8 +53,18 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-
-    await addEcole(ecole).then((res) => {
+    const formData = new FormData()
+    formData.append('logo', ecole.logo)
+    formData.append('nom', ecole.nom)
+    formData.append('pays', ecole.pays)
+    formData.append('localisation', ecole.localisation)
+    formData.append('ville', ecole.ville)
+    formData.append('telephone', ecole.telephone)
+    formData.append('email', ecole.email)
+    formData.append('site_web', ecole.site_web)
+    formData.append('type_etablissement_id', ecole.type_etablissement_id)
+    
+    await addEcole(formData).then((res) => {
       toast.success(res.message)
       setTimeout(() => {
         navigate("/save-director", {state: {ecole: res.data}})
@@ -69,11 +92,11 @@ const Register = () => {
       <ToastContainer />
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={8}>
+          <CCol md={9}>
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm onSubmit={handleSubmit}>
+                  <CForm onSubmit={handleSubmit} encType='multipart/form-data'>
                     <h1>Inscription</h1>
                     <p className="text-body-secondary">Enregistrez votre établissement</p>
                     <CInputGroup className="mb-3">
@@ -89,57 +112,69 @@ const Register = () => {
                         type='text'
                       />
                     </CInputGroup>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilFlagAlt} />
-                      </CInputGroupText>
-                      <CFormInput 
-                        placeholder="Pays" 
-                        autoComplete="pays" 
-                        onChange={handleChange} 
-                        name="pays"
-                        required="true"
-                        type='text'
-                      />
-                    </CInputGroup>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilFactory} />
-                      </CInputGroupText>
-                      <CFormInput 
-                        placeholder="Ville" 
-                        autoComplete="ville" 
-                        onChange={handleChange} 
-                        name="ville"
-                        required="true"
-                        type='text'
-                      />
-                    </CInputGroup>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilPhone} />
-                      </CInputGroupText>
-                      <CFormInput 
-                        placeholder="Téléphone" 
-                        autoComplete="telephone" 
-                        onChange={handleChange} 
-                        name="telephone"
-                        required="true"
-                        type='text'
-                      />
-                    </CInputGroup>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilEnvelopeLetter} />
-                      </CInputGroupText>
-                      <CFormInput 
-                        placeholder="Email" 
-                        autoComplete="email" 
-                        onChange={handleChange} 
-                        name="email"
-                        type='email'
-                      />
-                    </CInputGroup>
+                    <CRow>
+                      <CCol>
+                        <CInputGroup className="mb-3">
+                          <CInputGroupText>
+                            <CIcon icon={cilFlagAlt} />
+                          </CInputGroupText>
+                          <CFormInput 
+                            placeholder="Pays" 
+                            autoComplete="pays" 
+                            onChange={handleChange} 
+                            name="pays"
+                            required="true"
+                            type='text'
+                          />
+                        </CInputGroup>
+                      </CCol>
+                      <CCol>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilFactory} />
+                        </CInputGroupText>
+                        <CFormInput 
+                          placeholder="Ville" 
+                          autoComplete="ville" 
+                          onChange={handleChange} 
+                          name="ville"
+                          required="true"
+                          type='text'
+                        />
+                      </CInputGroup>
+                      </CCol>
+                    </CRow>
+                    <CRow>
+                      <CCol>
+                        <CInputGroup className="mb-3">
+                          <CInputGroupText>
+                            <CIcon icon={cilPhone} />
+                          </CInputGroupText>
+                          <CFormInput 
+                            placeholder="Téléphone" 
+                            autoComplete="telephone" 
+                            onChange={handleChange} 
+                            name="telephone"
+                            required="true"
+                            type='text'
+                          />
+                        </CInputGroup>
+                      </CCol>
+                      <CCol>
+                        <CInputGroup className="mb-3">
+                          <CInputGroupText>
+                            <CIcon icon={cilEnvelopeLetter} />
+                          </CInputGroupText>
+                          <CFormInput 
+                            placeholder="Email" 
+                            autoComplete="email" 
+                            onChange={handleChange} 
+                            name="email"
+                            type='email'
+                          />
+                        </CInputGroup>
+                      </CCol>
+                    </CRow>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilMap} />
@@ -177,10 +212,32 @@ const Register = () => {
                         required="true"
                       >
                         <option>Choisir le type d'établissement</option>
-                        {types.map((type, i) => (
+                        {types.filter(t=>t.id!==4).map((type, i) => (
                           <option key={i} value={type.id}>{type.intitule}</option>
                         ))}
                       </CFormSelect>
+                    </CInputGroup>
+                    <CFormLabel>Importer votre logo</CFormLabel>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilFile} />
+                      </CInputGroupText>
+                      <input 
+                        type="file" 
+                        className='form-control' 
+                        name='logo' 
+                        id='logo' 
+                        accept='image/*'
+                        onChange={handleChangeImage} 
+                        required="true"
+                      />
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CFormCheck 
+                        label="Acceptez nos termes et conditions d'utilisation" 
+                        type='checkbox'
+                        required="true" 
+                      />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>

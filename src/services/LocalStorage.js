@@ -51,13 +51,13 @@ export function getHeaders() {
 }
 
 export function getHeadersWithForm() {
-    const local = getItem('gesco')
-    const dataParsed = JSON.parse(local)
+    //const local = getItem('gesco')
+    //const dataParsed = JSON.parse(local)
     
     const headers = {}
-    //headers.Accept = 'application/json'
+    headers.Accept = 'application/json'
     headers.ContentType = 'multipart/form-data'
-    headers.Authorization = `Bearer ${dataParsed?.access_token}`
+    //headers.Authorization = `Bearer ${dataParsed?.access_token}`
     
     return headers
 }

@@ -3,6 +3,7 @@ import React from 'react'
 import logo from "../assets/images/logo_bleu_sans_bg.png"
 
 function PDFHeaderBulletin({ data, ecole, elt }) {
+    
     return (
         <View>
             <View style={styles.header}>
@@ -13,7 +14,7 @@ function PDFHeaderBulletin({ data, ecole, elt }) {
                     <Text style={styles.title}>{ecole.site_web}</Text>
                 </View>
                 <View>
-                    <Image src={logo} style={{width: 150, height: 150}} />
+                    <Image source={{uri: ecole.logo}} style={{width: 150, height: 150}} />
                 </View>
                 <View>
                     <Text style={styles.title}>REPUBLIQUE DU {ecole.pays.toUpperCase()}</Text>
@@ -103,13 +104,10 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "gray"
     },
-    page: {
-        margin: 40
-    },
     header: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center'
     },
     title: {

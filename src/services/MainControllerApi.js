@@ -1,5 +1,5 @@
 import AxiosApi from "./AxiosApi";
-import { getItem } from "./LocalStorage";
+import { getHeadersWithForm } from "./LocalStorage";
 
 export async function getRoles(headers) {
     const response = await AxiosApi.get('/get-roles', {headers});
@@ -72,7 +72,7 @@ export async function getInfoEcole(id, header) {
 }
 
 export async function addEcole(ecole) {
-    const response = await AxiosApi.post('/add-ecole', ecole);
+    const response = await AxiosApi.post('/add-ecole', ecole, {headers: getHeadersWithForm()});
     return response.data;
 }
 

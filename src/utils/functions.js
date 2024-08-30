@@ -63,4 +63,19 @@ export function isMonthInCarbonDate(carbonDate, month) {
   
     // Comparer les mois
     return carbonMonth === monthIndex;
-  }
+}
+
+export function isTrimestre(sequence) {
+    const sequences = ["Séquence 2", "Séquence 4", "Séquence 5", "Séquence 6"]
+    return sequences.includes(sequence.intitule)
+}
+
+export function arrondirMoyenne(moyenne) {
+    let valueArrondie = Math.round(moyenne * 100) / 100
+    return valueArrondie
+}
+
+export function getRang(tableau, objetCible) {
+    const indexObjetCible = tableau.findIndex(obj => obj.student_id === objetCible.student_id);
+    return indexObjetCible + 1;
+}
