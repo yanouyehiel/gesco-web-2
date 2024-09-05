@@ -212,7 +212,7 @@ const Register = () => {
                         required="true"
                       >
                         <option>Choisir le type d'établissement</option>
-                        {types.filter(t=>t.id!==4).map((type, i) => (
+                        {types.map((type, i) => (
                           <option key={i} value={type.id}>{type.intitule}</option>
                         ))}
                       </CFormSelect>

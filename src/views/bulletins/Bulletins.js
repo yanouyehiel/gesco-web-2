@@ -5,8 +5,6 @@ import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalS
 import { generateBulletinClasse, getClasses, getSequences } from '../../services/MainControllerApi'
 import { pdf, PDFDownloadLink } from '@react-pdf/renderer'
 import PDFBulletin from '../../components/PDFBulletin'
-import JSZip from 'jszip'
-import { saveAs } from 'file-saver';
 
 function Bulletins() {
     const ecole_id = getEcoleStored()

@@ -81,16 +81,16 @@ const AppHeaderDropdown = () => {
     <CDropdown variant="nav-item">
       <ToastContainer />
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
-        <CAvatar src={avatar} size="md" />
+        <CAvatar src={ecole?.logo?ecole.logo:avatar} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Mon école</CDropdownHeader>
+        <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">{ecole?.type_etablissement_id==4?"Mon Université":"Mon école"}</CDropdownHeader>
         <CDropdownItem>
           <CIcon icon={cilInstitution} className="me-2" />
             {ecole.nom}
         </CDropdownItem>
         <CDropdownItem>
-          ID School : {ecole?.matricule}
+        {ecole?.type_etablissement_id==4?"ID Université :":"ID Ecole :"} {ecole?.matricule}
         </CDropdownItem>
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Mon compte</CDropdownHeader>
         <CDropdownItem href="../#/documents">

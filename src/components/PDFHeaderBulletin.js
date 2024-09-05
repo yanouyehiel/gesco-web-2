@@ -1,9 +1,11 @@
 import { Image, StyleSheet, Text, View } from '@react-pdf/renderer'
 import React from 'react'
 import logo from "../assets/images/logo_bleu_sans_bg.png"
+import { getHeaders } from '../services/LocalStorage'
+import { isTrimestre } from '../utils/functions'
 
 function PDFHeaderBulletin({ data, ecole, elt }) {
-    
+    const headers = getHeaders()
     return (
         <View>
             <View style={styles.header}>
@@ -14,7 +16,11 @@ function PDFHeaderBulletin({ data, ecole, elt }) {
                     <Text style={styles.title}>{ecole.site_web}</Text>
                 </View>
                 <View>
-                    <Image source={{uri: ecole.logo}} style={{width: 150, height: 150}} />
+                    <Image 
+                        //source={{uri: ecole.logo, headers: headers, method: 'GET'}} 
+                        src={ecole.logo}
+                        style={{width: 150, height: 150}} 
+                    />
                 </View>
                 <View>
                     <Text style={styles.title}>REPUBLIQUE DU {ecole.pays.toUpperCase()}</Text>
@@ -64,7 +70,7 @@ function PDFHeaderBulletin({ data, ecole, elt }) {
                                 <Text style={styles.miniTitle}>Bulletin</Text>
                                 <Text style={styles.englishText}>Report card</Text>
                             </View>
-                            <Text style={styles.textValue}>{data?.sequence.intitule}</Text>
+                            <Text style={styles.textValue}>{isTrimestre(data.sequence)?data.trimestre:data.sequence.intitule}</Text>
                         </View>
                         <View style={[styles.cell, {width: '20%'}]}>
                             <View>

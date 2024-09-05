@@ -44,20 +44,20 @@ const Dashboard = () => {
     await getFeesEcole(ecole_id, headers).then((res) => setFees(res))
   }
 
-  const progressExample = [
-    { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
-    { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
-    { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
-    { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
-    { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
-  ]
-
   return (
     <>
       <CRow>
         {loading && <CSpinner color='primary' className='mx-4 mb-4' />}
-        {fees && <WidgetsDropdown className="mb-4" nbDirecteurs={fees.nb_directeurs} nbTeachers={fees.nb_teachers} nbParents={fees.nb_parents} nb_students={fees.nb_students} />}
-        {fees?.nb_events && <WidgetsBrand className="mb-4" withCharts events={fees?.nb_events} />}
+        {fees && <WidgetsDropdown 
+            className="mb-4" 
+            nbDirecteurs={fees.nb_directeurs}
+            nbAdmins={fees.nb_admins} 
+            nbTeachers={fees.nb_teachers} 
+            nbParents={fees.nb_parents} 
+            nb_students={fees.nb_students} 
+          />
+        }
+        {/* {fees?.nb_events && <WidgetsBrand className="mb-4" withCharts events={fees?.nb_events} />} */}
       </CRow>
       <CRow>
       <CCard className="mb-4">
