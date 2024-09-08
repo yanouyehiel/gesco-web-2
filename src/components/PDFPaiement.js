@@ -1,4 +1,4 @@
-import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
+import { Document, Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
 import React from 'react'
 import { dateParser } from '../utils/functions';
 
@@ -13,6 +13,12 @@ function PDFPaiement({ fees, student, ecole }) {
                     <Text>{ecole.ville}</Text>
                     <Text>{ecole.telephone}</Text>
                     <Text>{ecole.site_web}</Text>
+                </View>
+                <View>
+                    <Image 
+                        src={ecole.logo}
+                        style={{width: 150, height: 150}} 
+                    />
                 </View>
                 <View>
                     <View style={styles.title}>
@@ -120,9 +126,9 @@ function PDFPaiement({ fees, student, ecole }) {
                     <Text style={{marginTop: 20}}>Le Sécrétariat</Text>
                 </View>
             </View>
-            <Text style={styles.pageNumber}
+            {/* <Text style={styles.pageNumber}
             render={({pageNumber, totalPages}) => `${pageNumber} / ${totalPages} pages`}
-            fixed></Text>
+            fixed></Text> */}
         </Page>}
     </Document>
   )

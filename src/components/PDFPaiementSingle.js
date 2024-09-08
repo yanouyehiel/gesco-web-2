@@ -1,4 +1,4 @@
-import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
+import { Document, Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
 import React, { useEffect, useState } from 'react'
 import { dateParser } from '../utils/functions'
 
@@ -7,7 +7,7 @@ function PDFPaiementSingle({ fees, ecole, tarifs, total, paye, reste }) {
     return (
         <Document>
             <Page size={'A4'} style={styles.body}>
-                <View style={{marginBottom: 25}}>
+                <View style={{marginBottom: 15, borderBottom: 1, borderColor: 'black', borderStyle: 'dashed', paddingBottom: 10}}>
                     <View style={styles.header}>
                         <View>
                             <Text style={styles.text}>{ecole.nom}</Text>
@@ -15,6 +15,12 @@ function PDFPaiementSingle({ fees, ecole, tarifs, total, paye, reste }) {
                             <Text style={styles.text}>{ecole.ville}</Text>
                             <Text style={styles.text}>{ecole.telephone}</Text>
                             <Text style={styles.text}>{ecole.site_web}</Text>
+                        </View>
+                        <View>
+                            <Image 
+                                src={ecole.logo}
+                                style={{width: 150, height: 150}} 
+                            />
                         </View>
                         <View>
                             <View style={styles.title}>
@@ -26,7 +32,7 @@ function PDFPaiementSingle({ fees, ecole, tarifs, total, paye, reste }) {
                             <Text style={styles.text}>{ecole.ville}, le {new Date().toLocaleDateString('fr-FR')}</Text>
                         </View>
                     </View>
-                    <View style={styles.content}>
+                    <View style={[styles.content, {marginTop: -35}]}>
                         <View style={{ flexDirection: 'row', borderBottom: '1px solid black', paddingVertical: 8 }}>
                             <View style={styles.tableHeader}>
                                 <Text style={styles.tableHeaderText}>Code</Text>
@@ -197,7 +203,7 @@ function PDFPaiementSingle({ fees, ecole, tarifs, total, paye, reste }) {
                                 <View style={{ width: '33.33%' }}><Text style={styles.tableRowText}>{reste}</Text></View>
                             </View>
                         </View>
-                        <View style={{marginTop: 20}}>
+                        <View style={{marginTop: 20, marginBottom: -5}}>
                             <Text style={{textAlign: 'center', fontSize: 13, textDecoration: 'underline', marginBottom: 15}}>Frais de pension</Text>
                             <View style={{ flexDirection: 'row', borderBottom: '1px solid black', paddingVertical: 8 }}>
                                 <View style={{ width: '25%' }}>
@@ -231,9 +237,9 @@ function PDFPaiementSingle({ fees, ecole, tarifs, total, paye, reste }) {
                         </View>
                     </View>
                 </View>
-                <Text style={styles.pageNumber}
-                render={({pageNumber, totalPages}) => `${pageNumber} / ${totalPages} pages`}
-                fixed></Text>
+                {/* <Text style={styles.pageNumber}
+                render={({pageNumber, totalPages}) => `${pageNumber} / ${totalPages}`}
+                fixed></Text> */}
             </Page>
         </Document>
     )

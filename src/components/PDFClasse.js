@@ -1,4 +1,4 @@
-import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
+import { Document, Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
 import React from 'react'
 import { dateParser } from '../utils/functions'
 
@@ -14,10 +14,23 @@ function PDFClasse({ students, ecole, classe }) {
                         <Text style={styles.text}>{ecole.telephone}</Text>
                         <Text style={styles.text}>{ecole?.site_web}</Text>
                     </View>
+                    <View>
+                        <Image 
+                            src={ecole.logo}
+                            //source={{uri: ecole.logo}}
+                            style={{width: 150, height: 150}} 
+                        />
+                    </View>
+                    <View>
+                        <Text style={styles.text}>REPUBLIQUE DU {ecole.pays.toUpperCase()}</Text>
+                        <Text style={styles.text}>PAIX-TRAVAIL-PATRIE</Text>
+                        <Text style={styles.text}>DELEGUATION DES ENSEIGNEMENTS</Text>
+                        <Text style={styles.text}>MINISTERE DES ENSEIGNEMENTS</Text>
+                    </View>
                 </View>
                 <View style={styles.content}>
                     <Text style={{textAlign: 'center', textDecoration: 'underline'}}>Liste des élèves de {classe.nom}</Text>
-                    <View style={styles.content}>
+                    <View style={{marginTop: 20}}>
                         <View style={{ flexDirection: 'row', borderBottom: '1px solid black', paddingVertical: 8 }}>
                             <View style={styles.tableHeader}>
                                 <Text style={styles.tableHeaderText}>Num</Text>
@@ -63,7 +76,7 @@ function PDFClasse({ students, ecole, classe }) {
                     </View>
                 </View>
                 <Text style={styles.pageNumber}
-                render={({pageNumber, totalPages}) => `${pageNumber} / ${totalPages} pages`}
+                render={({pageNumber, totalPages}) => `${pageNumber} / ${totalPages}`}
                 fixed></Text>
             </Page>}
         </Document>
@@ -83,7 +96,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     content: {
-        marginTop: 30
+        marginTop: -50
     },
     tableHeader: {
         width: '25%', 
@@ -104,6 +117,10 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 12
+    },
+    title: {
+        fontSize: 14,
+        textTransform: 'capitalize'
     },
     pageNumber: {
         position: 'absolute',

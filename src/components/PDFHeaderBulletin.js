@@ -17,7 +17,6 @@ function PDFHeaderBulletin({ data, ecole, elt }) {
                 </View>
                 <View>
                     <Image 
-                        //source={{uri: ecole.logo, headers: headers, method: 'GET'}} 
                         src={ecole.logo}
                         style={{width: 150, height: 150}} 
                     />

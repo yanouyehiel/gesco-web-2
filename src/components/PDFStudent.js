@@ -1,4 +1,4 @@
-import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import { Document, Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import * as React from "react";
 import { dateParserTime } from "../utils/functions";
 
@@ -9,16 +9,21 @@ export const PDFStudent = ({ student, ecole, director }) => {
             {(ecole && student && director) && <Page style={styles.body}>
                 <View style={styles.header}>
                     <View>
-                        <Text>{ecole.nom}</Text>
-                        {/* <Text>{ecole.localisation}</Text> */}
-                        <Text>{ecole.ville}</Text>
-                        <Text>{ecole.telephone}</Text>
-                        <Text>{ecole.site_web}</Text>
+                        <Text style={styles.minititle}>{ecole.nom}</Text>
+                        <Text style={styles.minititle}>{ecole.ville}</Text>
+                        <Text style={styles.minititle}>{ecole.telephone}</Text>
+                        <Text style={styles.minititle}>{ecole.site_web}</Text>
                     </View>
-                    {/* <View>
-                        <Text>{ecole.telephone}</Text>
-                        <Text>{ecole.site_web}</Text>
-                    </View> */}
+                    <View>
+                        <Image 
+                            src={ecole.logo}
+                            style={{width: 150, height: 150}} 
+                        />
+                    </View>
+                    <View>
+                        <Text style={styles.minititle}>REPUBLIQUE DU {ecole.pays.toUpperCase()}</Text>
+                        <Text style={styles.minititle}>PAIX-TRAVAIL-PATRIE</Text>
+                    </View>
                 </View>
                 <View style={styles.content}>
                     <View style={styles.title}>
@@ -61,6 +66,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-start'
     },
+    minititle: {
+        fontSize: 18,
+        textTransform: 'capitalize'
+    },
     title: {
         fontSize: 24,
         textAlign: 'center',
@@ -68,7 +77,7 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     content: {
-        marginTop: 100
+        marginTop: 30
     },
     footer: {
         marginTop: 50,

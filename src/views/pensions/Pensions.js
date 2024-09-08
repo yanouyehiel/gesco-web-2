@@ -98,13 +98,8 @@ function Pensions() {
       sortable: true
     },
     {
-      name: "Nom de l'élève",
-      selector: row => row.nom_student,
-      sortable: true
-    },
-    {
-      name: "Prénom de l'élève",
-      selector: row => row.prenom_student,
+      name: "Noms et prénoms de l'élève",
+      selector: row => row.nom_student+' '+row.prenom_student,
       sortable: true
     },
     {
@@ -115,6 +110,11 @@ function Pensions() {
     {
       name: 'Date',
       selector: row => dateParser(row.created_at),
+      sortable: true
+    },
+    {
+      name: 'Année scolaire',
+      selector: row => row.annee_scolaire,
       sortable: true
     },
     {
@@ -198,6 +198,13 @@ function Pensions() {
                   <Form.Group className="form-group mt-4">
                       <Form.Label className="control-label">Entrer le montant</Form.Label>
                       <Form.Control onChange={handleChange} className="form-control" name="montant" required />
+                  </Form.Group>
+                  <Form.Group className="form-group mt-4">
+                      <Form.Label className="control-label">Sélectionner l'année scolaire</Form.Label>
+                      <Form.Select onChange={handleChange} className="form-control" name="annee_scolaire" required>
+                          <option value="2024-2025">-- select --</option>
+                          <option value="2024-2025">2024-2025</option>
+                      </Form.Select>
                   </Form.Group><br />
                   
                   <Button size='lg' type='submit' disabled={loading}>
