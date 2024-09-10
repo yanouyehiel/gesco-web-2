@@ -14,10 +14,9 @@ function PDFClasse({ students, ecole, classe }) {
                         <Text style={styles.text}>{ecole.telephone}</Text>
                         <Text style={styles.text}>{ecole?.site_web}</Text>
                     </View>
-                    <View>
+                    <View style={{marginTop: -50}}>
                         <Image 
                             src={ecole.logo}
-                            //source={{uri: ecole.logo}}
                             style={{width: 150, height: 150}} 
                         />
                     </View>
@@ -96,7 +95,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     content: {
-        marginTop: -50
+        marginTop: 50
     },
     tableHeader: {
         width: '25%', 

@@ -16,7 +16,7 @@ function PDFPaiementSingle({ fees, ecole, tarifs, total, paye, reste }) {
                             <Text style={styles.text}>{ecole.telephone}</Text>
                             <Text style={styles.text}>{ecole.site_web}</Text>
                         </View>
-                        <View>
+                        <View style={{marginTop: -40}}>
                             <Image 
                                 src={ecole.logo}
                                 style={{width: 150, height: 150}} 
@@ -32,7 +32,7 @@ function PDFPaiementSingle({ fees, ecole, tarifs, total, paye, reste }) {
                             <Text style={styles.text}>{ecole.ville}, le {new Date().toLocaleDateString('fr-FR')}</Text>
                         </View>
                     </View>
-                    <View style={[styles.content, {marginTop: -35}]}>
+                    <View style={[styles.content, {marginTop: -15}]}>
                         <View style={{ flexDirection: 'row', borderBottom: '1px solid black', paddingVertical: 8 }}>
                             <View style={styles.tableHeader}>
                                 <Text style={styles.tableHeaderText}>Code</Text>
@@ -133,6 +133,12 @@ function PDFPaiementSingle({ fees, ecole, tarifs, total, paye, reste }) {
                             <Text style={styles.text}>{ecole.ville}</Text>
                             <Text style={styles.text}>{ecole.telephone}</Text>
                             <Text style={styles.text}>{ecole.site_web}</Text>
+                        </View>
+                        <View style={{marginTop: -40}}>
+                            <Image 
+                                src={ecole.logo}
+                                style={{width: 150, height: 150}} 
+                            />
                         </View>
                         <View>
                             <View style={styles.title}>

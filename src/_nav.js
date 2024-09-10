@@ -32,6 +32,9 @@ import {
   cilGroup,
   cilObjectGroup,
   cilAvTimer,
+  cilFile,
+  cilLinkAlt,
+  cilIndustry,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -215,6 +218,30 @@ const _navUniversity = [
   },
   {
     component: CNavItem,
+    name: 'Les Départements',
+    to: '/departements',
+    icon: <CIcon icon={cilIndustry} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Les Cursus',
+    to: '/cursus',
+    icon: <CIcon icon={cilLinkAlt} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Les filières',
+    to: '/filieres',
+    icon: <CIcon icon={cilFile} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Les types de classe',
+    to: '/type-classes',
+    icon: <CIcon icon={cilDoor} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Les salles de classe',
     to: '/classes',
     icon: <CIcon icon={cilDoor} customClassName="nav-icon" />,
@@ -327,7 +354,7 @@ const _navUniversity = [
   },
   {
     component: CNavItem,
-    name: 'Elèves',
+    name: 'Etudiants',
     to: '/students',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },

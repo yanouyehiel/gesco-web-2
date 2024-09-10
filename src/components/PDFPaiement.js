@@ -14,10 +14,10 @@ function PDFPaiement({ fees, student, ecole }) {
                     <Text>{ecole.telephone}</Text>
                     <Text>{ecole.site_web}</Text>
                 </View>
-                <View>
+                <View style={{marginTop: -30}}>
                     <Image 
                         src={ecole.logo}
-                        style={{width: 150, height: 150}} 
+                        style={{width: 100, height: 100}} 
                     />
                 </View>
                 <View>

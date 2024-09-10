@@ -1,7 +1,7 @@
 import { CCard, CCardHeader, CCardBody, CFormInput, CTable, CInputGroup, CSpinner, CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { typesClasse, addClasse, deleteClasse, updateClasse } from '../../services/MainControllerApi'
-import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
+import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import AxiosApi from '../../services/AxiosApi'
 import DataTable from 'react-data-table-component'
 import { Modal, Form, Button, Row, Col } from 'react-bootstrap'
@@ -12,6 +12,7 @@ import { cilOptions } from '@coreui/icons'
 
 const Classes = () => {
   const ecole_id = getEcoleStored()
+  const ecole = getEcoleStore()
   const headers = getHeaders()
   const [loading, setLoading] = useState(true)
   const [classes, setClasses] = useState([])
@@ -148,7 +149,7 @@ const Classes = () => {
       sortable: true
     },
     {
-      name: 'Cycle',
+      name: ecole.type_etablissement_id==4?'Cursus':'Cycle',
       selector: row => row.cycle_id==1?'Premier Cycle':(row.cycle_id==2?'Second Cycle':''),
       sortable: true
     },
@@ -164,8 +165,7 @@ const Classes = () => {
         </CDropdownMenu>
       </CDropdown>
     }
-  ]
-  
+  ] 
 
   return (
     <CCard>

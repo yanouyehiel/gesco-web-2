@@ -15,16 +15,18 @@ export const PDFStudent = ({ student, ecole, director }) => {
                         <Text style={styles.minititle}>{ecole.site_web}</Text>
                     </View>
                     <View>
-                        <Image 
-                            src={ecole.logo}
-                            style={{width: 150, height: 150}} 
-                        />
-                    </View>
-                    <View>
                         <Text style={styles.minititle}>REPUBLIQUE DU {ecole.pays.toUpperCase()}</Text>
                         <Text style={styles.minititle}>PAIX-TRAVAIL-PATRIE</Text>
                     </View>
                 </View>
+
+                <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                    <Image 
+                        src={ecole.logo}
+                        style={{width: 150, height: 150}} 
+                    />
+                </View>
+
                 <View style={styles.content}>
                     <View style={styles.title}>
                         <Text>Certificat de scolarité</Text>

@@ -26,6 +26,16 @@ export async function typesClasse(headers) {
     return response.data;
 }
 
+export async function typesClasseById(id, headers) {
+    const response = await AxiosApi.get('/get-types-classe/'+id, {headers});
+    return response.data;
+}
+
+export async function addTypeClasse(data, headers) {
+    const response = await AxiosApi.post('/type-classe/add', data, {headers});
+    return response.data;
+}
+
 export async function typesEtablissements() {
     const response = await AxiosApi.get('/get-types-etablissement');
     return response.data;
@@ -293,5 +303,35 @@ export async function getTrimestres(id, headers) {
 
 export async function generateBulletinClasse(data, headers) {
     const response = await AxiosApi.get(`/generate-bulletin-classe/classe_id=${data.classe_id}&annee_scolaire=${data.annee_scolaire}&sequence_id=${data.sequence_id}`, {headers});
+    return response.data;
+}
+
+export async function getFilieres(id, headers) {
+    const response = await AxiosApi.get('/filieres/list/'+parseInt(id), {headers});
+    return response.data;
+}
+
+export async function addFiliere(data, headers) {
+    const response = await AxiosApi.post('/filieres/add', data, {headers});
+    return response.data;
+}
+
+export async function getCursus(id, headers) {
+    const response = await AxiosApi.get('/cursus/list/'+parseInt(id), {headers});
+    return response.data;
+}
+
+export async function addCursus(data, headers) {
+    const response = await AxiosApi.post('/cursus/create', data, {headers});
+    return response.data;
+}
+
+export async function getDepartements(id, headers) {
+    const response = await AxiosApi.get('/departements/list/'+parseInt(id), {headers});
+    return response.data;
+}
+
+export async function addDepartement(data, headers) {
+    const response = await AxiosApi.post('/departements/create', data, {headers});
     return response.data;
 }
