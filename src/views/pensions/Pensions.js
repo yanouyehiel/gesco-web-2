@@ -25,7 +25,6 @@ function Pensions() {
   const [fees, setFees] = useState(null)
 
   useEffect(() => {
-    getStudentsSchool() 
     getPaiements().then(() => setLoading(false))      
   }, [])
 
@@ -59,7 +58,10 @@ function Pensions() {
   }
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    getStudentsSchool() 
+    setShow(true);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

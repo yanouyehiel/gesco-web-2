@@ -125,12 +125,12 @@ const _nav = [
     component: CNavTitle,
     name: 'Gestion des évaluations',
   },
-  /*{
+  {
     component: CNavItem,
     name: 'Les trimestres et séquences',
     to: '/trimestres-sequences',
     icon: <CIcon icon={cilAvTimer} customClassName="nav-icon" />,
-  },*/
+  },
   {
     component: CNavItem,
     name: 'Les notes',

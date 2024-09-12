@@ -1,9 +1,9 @@
-import { CCard, CCardBody, CCardHeader, CCol, CFormInput, CInputGroup, CRow, CSpinner, CTable } from '@coreui/react'
+import { CButton, CCard, CCardBody, CCardHeader, CCol, CFormInput, CInputGroup, CRow, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { getEcoleStored, getHeaders } from '../../services/LocalStorage';
+import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage';
 import { Button, Col, Form, Modal } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
-import { addTarif, getAllTarifs, typesClasse, updateTarif } from '../../services/MainControllerApi';
+import { addTarif, getAllTarifs, typesClasse, typesClasseById, updateTarif } from '../../services/MainControllerApi';
 import DataTable from 'react-data-table-component';
 
 
@@ -18,18 +18,22 @@ function Tarifs() {
   const headers = getHeaders()
   const [data, setData] = useState([])
   const [newData, setNewData] = useState({})
+  const ecole = getEcoleStore()
 
   useEffect(() => {
-    getAllClasses()
     getTarifs().then(() => setLoading(false))
   }, [])
 
   async function getAllClasses() {
-    await typesClasse(headers).then((res) => {
+    if (ecole.type_etablissement_id === 4) {
+      await typesClasseById(ecole.id, headers).then((res) => {
         setClasses(res)
-    }, (error) => {
-      toast.error(error.response.data.message)
-    })
+      })
+    } else {
+      await typesClasse(headers).then((res) => {
+        setClasses(res)
+      })
+    }
   }
 
   async function getTarifs() {
@@ -46,8 +50,11 @@ function Tarifs() {
     setTarif({...tarif, [name]: value})
   }
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false)
+  const handleShow = () => {
+    getAllClasses()
+    setShow(true);
+  }
   const handleCloseUpdate = () => setShowUpdate(false);
   const handleShowUpdate = () => setShowUpdate(true);
 
@@ -138,23 +145,23 @@ function Tarifs() {
       <ToastContainer />
         <CCardHeader>Tarifs</CCardHeader>
         <CCardBody>
-          <CTable>
-            <CRow>
-              <Col>
-                <CInputGroup className="mb-3">
-                  <CFormInput
-                    placeholder="Rechercher un tarif"
-                    aria-label="Rechercher"
-                    aria-describedby="basic-addon1"
-                    onChange={handleFilter}
-                  />
-                </CInputGroup>
-              </Col>
-              <Col>
-                <Button onClick={handleShow}>Ajouter un tarif</Button>
-              </Col>
-            </CRow>
-            <CRow>
+          <CRow>
+            <CCol>
+              <CInputGroup className="mb-3">
+                <CFormInput
+                  placeholder="Rechercher un tarif"
+                  aria-label="Rechercher"
+                  aria-describedby="basic-addon1"
+                  onChange={handleFilter}
+                />
+              </CInputGroup>
+            </CCol>
+            <CCol>
+              <CButton onClick={handleShow} className='btn-primary text-white'>Ajouter un tarif</CButton>
+            </CCol>
+          </CRow>
+          <CRow>
+            <CTable>
               {loading ? <CSpinner color='primary' /> :
                 <DataTable
                   columns={columns}
@@ -163,11 +170,10 @@ function Tarifs() {
                   pagination
                   selectableRowsHighlight
                   highlightOnHover
-                >
-                </DataTable>
+                />
               }
-            </CRow>
-          </CTable>
+            </CTable>
+          </CRow>
         </CCardBody>
 
         <Modal show={show} onHide={handleClose}>

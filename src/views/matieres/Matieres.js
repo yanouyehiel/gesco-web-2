@@ -1,8 +1,8 @@
 import { CButton, CCard, CCardBody, CCardHeader, CCol, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormInput, CInputGroup, CRow, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
-import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
-import { addMatiere, getAllMatieres, getGroupeMatieres, getSingleMatiere } from '../../services/MainControllerApi'
+import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage'
+import { addMatiere, getAllMatieres, getClassesUniversity, getGroupeMatieres, getSingleMatiere } from '../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
 import DataTable from 'react-data-table-component'
 import { dateParser } from '../../utils/functions'
@@ -11,12 +11,21 @@ import { cilOptions } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 function Matieres() {
+  const ecole = getEcoleStore()
   const [matieres, setMatieres] = useState([])
   const [data, setData] = useState([])
   const [show, setShow] = useState(false)
   const [showMatiere, setShowMatiere] = useState(false)
   const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+  const handleShow = () => {
+    if (ecole.type_etablissement_id==4) {
+      getGroupe().then()
+      getClassesUniversity(ecole_id, headers).then(res => setClasses(res))
+    } else {
+      getClasses(ecole_id, headers).then(res => setClasses(res))
+    }
+    setShow(true)
+  }
   const handleCloseMatiere = () => setShowMatiere(false)
   const handleShowMatiere = () => setShowMatiere(true)
   const headers = getHeaders()
@@ -93,8 +102,6 @@ function Matieres() {
     }, (error) => {
       toast.error(error.response.data.message)
     })
-    getGroupe().then()
-    getClasses()
   }, [])
 
   function handleFilter(event) {

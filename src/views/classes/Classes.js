@@ -1,6 +1,6 @@
-import { CCard, CCardHeader, CCardBody, CFormInput, CTable, CInputGroup, CSpinner, CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/react'
+import { CCard, CCardHeader, CCardBody, CFormInput, CTable, CInputGroup, CSpinner, CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem, CButton, CRow, CCol } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { typesClasse, addClasse, deleteClasse, updateClasse } from '../../services/MainControllerApi'
+import { typesClasse, addClasse, deleteClasse, updateClasse, getClassesUniversity, typesClasseById, getCursus } from '../../services/MainControllerApi'
 import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import AxiosApi from '../../services/AxiosApi'
 import DataTable from 'react-data-table-component'
@@ -20,22 +20,25 @@ const Classes = () => {
   const [typeClasses, setTypeClasses] = useState([])
   const [classe, setClasse] = useState({})
   const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+  const handleShow = () => {
+    if (ecole.type_etablissement_id==4) {
+      typesClasseById(ecole.id, headers).then(res => setTypeClasses(res))
+      getCursus(ecole.id, headers).then(res => setCursus(res))
+    } else {
+      typesClasse(headers).then(res => setTypeClasses(res))
+    }
+    setShow(true)
+  }
   const [show, setShow] = useState(false)
   const [showUpdate, setShowUpdate] = useState(false)
   const [teachers, setTeachers] = useState([])
   const handleCloseUpdate = () => setShowUpdate(false)
   const handleShowUpdate = () => setShowUpdate(true)
   const [newData, setNewData] = useState({})
+  const [cursus, setCursus] = useState([])
 
   useEffect(() => {
     getClasses().then()
-    
-    typesClasse(headers).then(res => {
-      setTypeClasses(res)
-    }, (error) => {
-      toast.error(error.response.data.message)
-    })
 
     getTeachers(ecole_id, headers).then(res => {
       setTeachers(res)
@@ -68,18 +71,27 @@ const Classes = () => {
   }
 
   async function getClasses() {
-    await AxiosApi.get('/get-classes-school/' + ecole_id, {headers})
-    .then(res => {
-      setClasses(res.data)
-      setData(res.data)
-    }, (error) => {
-      toast.error(error.response.data.message)
-    })
+    if (ecole.type_etablissement_id==4) {
+      await getClassesUniversity(ecole_id, headers).then(res => {
+        setClasses(res)
+        setData(res)
+      }, (error) => {
+        toast.error(error.response.data.message)
+      })
+    } else {
+      await AxiosApi.get('/get-classes-school/' + ecole_id, {headers})
+      .then(res => {
+        setClasses(res.data)
+        setData(res.data)
+      }, (error) => {
+        toast.error(error.response.data.message)
+      })
+    }  
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
-    if (!classe.teacher_id) {
+    if (!classe.teacher_id && ecole.type_etablissement_id !== 4) {
       toast.error("Veuillez lui attribuer en enseignant principale")
     } else {
       setLoading(true)
@@ -108,7 +120,7 @@ const Classes = () => {
     setClasse({...classe, [name]: value})
   }
 
-  async function handleDeleteClasse(id) {
+  /*async function handleDeleteClasse(id) {
     setLoading(true)
     await deleteClasse(id, headers).then((res) => {
       toast.success(res.message, {
@@ -120,7 +132,7 @@ const Classes = () => {
     }, (error) => {
       toast.error(error.response.data.message)
     })
-  }
+  }*/
 
   const columns = [
     {
@@ -165,41 +177,83 @@ const Classes = () => {
         </CDropdownMenu>
       </CDropdown>
     }
-  ] 
+  ]
+  
+  const columnsUniversity = [
+    {
+      name: 'Num',
+      selector: row => row.id,
+      sortable: true
+    },
+    {
+      name: 'Nom de la classe',
+      selector: row => row.nom,
+      sortable: true
+    },
+    {
+      name: 'Effectif',
+      selector: row => row.effectif,
+      sortable: true
+    },
+    {
+      name: 'Cycle',
+      selector: row => row.intitule_cycle,
+      sortable: true
+    },
+    {
+      name: 'Code du cyle',
+      selector: row => row.code_cycle,
+      sortable: true
+    },
+    {
+      name: 'Action',
+      cell: row => <CDropdown alignment="end">
+        <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
+          <CIcon icon={cilOptions} style={{color: '#000'}} />
+        </CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem href={'/#/classes/' + row.id}>Voir</CDropdownItem>
+          <CDropdownItem onClick={() => handleUpdate(row)} style={{cursor: 'pointer'}}>Modifier</CDropdownItem>
+        </CDropdownMenu>
+      </CDropdown>
+    }
+  ]
 
   return (
     <CCard>
         <ToastContainer />
-        <CCardHeader>Classes</CCardHeader>
+        <CCardHeader>Toutes les classes</CCardHeader>
         <CCardBody>
-          <CTable>
-            <Row>
-              <Col>
-                <CInputGroup className="mb-3">
-                  <CFormInput
-                    placeholder="Rechercher"
-                    aria-label="Rechercher"
-                    aria-describedby="basic-addon1"
-                    onChange={handleFilter}
-                  />
-                </CInputGroup>
-              </Col>
-              <Col>
-                <Button onClick={handleShow}>Ajouter une salle</Button>
-              </Col>
-            </Row>
-            {loading ? <CSpinner color='primary' /> :
-              <DataTable
-                columns={columns}
-                data={data}
-                fixedHeader
-                pagination
-                selectableRowsHighlight
-                highlightOnHover
-              >
-              </DataTable>
-            }
-          </CTable>
+          <CRow>
+            <CCol>
+              <CInputGroup className="mb-3">
+                <CFormInput
+                  placeholder="Rechercher"
+                  aria-label="Rechercher"
+                  aria-describedby="basic-addon1"
+                  onChange={handleFilter}
+                />
+              </CInputGroup>
+            </CCol>
+            <CCol>
+              <CButton className='btn-primary text-white' onClick={handleShow}>Ajouter une salle</CButton>
+            </CCol>
+          </CRow>
+          <CRow>
+            <CTable>
+              {loading ? <CSpinner color='primary' /> :
+                <DataTable
+                  columns={ecole.type_etablissement_id==4?columnsUniversity:columns}
+                  data={data}
+                  fixedHeader
+                  pagination
+                  selectableRowsHighlight
+                  highlightOnHover
+                >
+                </DataTable>
+              }
+            </CTable>
+          </CRow>
         </CCardBody>
 
         <Modal show={show} onHide={handleClose}>
@@ -222,28 +276,35 @@ const Classes = () => {
                       </Form.Select>
                   </Form.Group>
                   <Form.Group className="form-group mt-4">
-                    <Form.Label className="control-label">A quel cycle appartient-elle ? 
+                    {ecole.type_etablissement_id!==4?<Form.Label className="control-label">A quel cycle appartient-elle ? 
                       <span style={{color: 'red'}}> Remplir s'il s'agit d'une classe du secondaire</span>
-                    </Form.Label>
+                    </Form.Label>:
+                    <Form.Label className="control-label">A quel cursus appartient-elle ?</Form.Label>}
+                    {ecole.type_etablissement_id!==4?<Form.Select onChange={handleChange} name='cycle_id' className="form-control">
+                      <option>-- select --</option>
+                      <option value={1}>Premier Cycle</option>
+                      <option value={2}>Second Cycle</option>
+                    </Form.Select>:
                     <Form.Select onChange={handleChange} name='cycle_id' className="form-control">
-                        <option>-- select --</option>
-                        <option value={1}>Premier Cycle</option>
-                        <option value={2}>Second Cycle</option>
+                      <option>-- select --</option>
+                      {cursus.length>0&&cursus.map((c, i) => (
+                        <option key={i} value={c.id}>{c.intitule}</option>
+                      ))}
+                    </Form.Select>}
+                  </Form.Group>
+                  {ecole.type_etablissement_id!==4&&<Form.Group className="form-group mt-4">
+                    <Form.Label className="control-label">Nommer un enseignant principal</Form.Label>
+                    <Form.Select onChange={handleChange} name='teacher_id' className="form-control" required='true'>
+                      <option>-- select --</option>
+                      {teachers.length > 0 && teachers.map((teacher, i) => (
+                        <option key={i} value={teacher.id}>{teacher.nom + ' ' + teacher.prenom}</option>
+                      ))}
                     </Form.Select>
-                  </Form.Group>
-                  <Form.Group className="form-group mt-4">
-                      <Form.Label className="control-label">Nommer un enseignant principal</Form.Label>
-                      <Form.Select onChange={handleChange} name='teacher_id' className="form-control" required='true'>
-                          <option>-- select --</option>
-                          {teachers.length > 0 && teachers.map((teacher, i) => (
-                            <option key={i} value={teacher.id}>{teacher.nom + ' ' + teacher.prenom}</option>
-                          ))}
-                      </Form.Select>
-                  </Form.Group>
+                  </Form.Group>}
                   <br/>
-                  <Button size='lg' type='submit' disabled={loading}>
+                  <CButton size='lg' type='submit' className='btn-primary text-white' disabled={loading}>
                   {!loading ? 'Enregistrer' : 'Traitement...'}
-                  </Button>
+                  </CButton>
               </Form>
           </Modal.Body>
       </Modal>

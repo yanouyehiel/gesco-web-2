@@ -1,13 +1,13 @@
 import { CBadge, CCard, CCardBody, CCardHeader, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormInput, CImage, CInputGroup, CNavLink, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { getEcoleStored, getHeaders, getHeadersWithForm } from '../../services/LocalStorage'
+import { getEcoleStore, getEcoleStored, getHeaders, getHeadersWithForm } from '../../services/LocalStorage'
 import { addStudent, getStudents } from '../../services/StudentController'
 import DataTable from 'react-data-table-component'
 import { Col, Form, Modal, Row } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
-import { getAllParentsSchool, getClasses, importListStudents, linkStudentToParent } from '../../services/MainControllerApi'
+import { getAllParentsSchool, getClasses, getClassesUniversity, importListStudents, linkStudentToParent } from '../../services/MainControllerApi'
 import CIcon from '@coreui/icons-react'
 import { cilFile, cilOptions } from '@coreui/icons'
 import * as XLSX from 'xlsx';
@@ -64,13 +64,21 @@ function Eleves() {
   const [students, setStudents] = useState([])
   const [studentsUnlinked, setStudentsUnlinked] = useState([])
   const ecole_id = getEcoleStored()
+  const ecole = getEcoleStore()
   const headers = getHeaders()
   const headersForm = getHeadersWithForm()
   const [loading, setLoading] = useState(true)
   const [loadingLink, setLoadingLink] = useState(false)
   const [data, setData] = useState([])
   const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+  const handleShow = () => {   
+    if (ecole.type_etablissement_id==4) {
+      getClassesUniversity(ecole_id, headers).then(res => setClasses(res))
+    } else {
+      getClasses(ecole_id, headers).then(res => setClasses(res))
+    }
+    setShow(true)
+  }
   const [show, setShow] = useState(false)
   const handleCloseUpload = () => setShowUp(false)
   const handleShowUpload = () => setShowUp(true)
@@ -86,11 +94,6 @@ function Eleves() {
 
   useEffect(() => {
     getAllStudents().then()
-    getClasses(ecole_id, headers).then(res => {
-      setClasses(res)
-    }, (error) => {
-      toast.error(error.response.data.message)
-    })
     getParents().then(() => setLoading(false))
   }, [])
 

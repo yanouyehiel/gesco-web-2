@@ -12,7 +12,7 @@ function PDFClasse({ students, ecole, classe }) {
                         <Text style={styles.text}>{ecole.localisation}</Text>
                         <Text style={styles.text}>{ecole.ville}</Text>
                         <Text style={styles.text}>{ecole.telephone}</Text>
-                        <Text style={styles.text}>{ecole?.site_web}</Text>
+                        {ecole?.site_web&&<Text style={styles.text}>{ecole.site_web}</Text>}
                     </View>
                     <View style={{marginTop: -50}}>
                         <Image 
@@ -23,8 +23,8 @@ function PDFClasse({ students, ecole, classe }) {
                     <View>
                         <Text style={styles.text}>REPUBLIQUE DU {ecole.pays.toUpperCase()}</Text>
                         <Text style={styles.text}>PAIX-TRAVAIL-PATRIE</Text>
-                        <Text style={styles.text}>DELEGUATION DES ENSEIGNEMENTS</Text>
-                        <Text style={styles.text}>MINISTERE DES ENSEIGNEMENTS</Text>
+                        <Text style={styles.text}>DELEGUATION DES ENSEIGNEMENTS {ecole.type_etablissement_id==4?"SUPERIEUR".toUpperCase():"SECONDAIRE".toUpperCase()}</Text>
+                        <Text style={styles.text}>MINISTERE DES ENSEIGNEMENTS {ecole.type_etablissement_id==4?"SUPERIEUR".toUpperCase():"SECONDAIRE".toUpperCase()}</Text>
                     </View>
                 </View>
                 <View style={styles.content}>

@@ -20,9 +20,7 @@ function Documents() {
 
 
   useEffect(() => {
-    getAllStudents(ecole_id, headers).then((res) => setStudents(res))
     getDocuments().then(() => setLoading(false))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function validate(data) {
@@ -65,7 +63,10 @@ function Documents() {
     })
   }
 
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    getAllStudents(ecole_id, headers).then((res) => setStudents(res))
+    setShow(true);
+  }
   const handleClose = () => setShow(false);
   const handleFilter = () => {
 

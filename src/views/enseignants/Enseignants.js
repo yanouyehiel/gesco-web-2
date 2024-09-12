@@ -4,6 +4,7 @@ import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import { getTeachers } from '../../services/EnseignementController'
 import { Col, Row } from 'react-bootstrap'
 import DataTable from 'react-data-table-component'
+import { toast, ToastContainer } from 'react-toastify'
 
 const columns = [
   {
@@ -70,6 +71,7 @@ function Enseignants() {
 
   return (
     <CCard className='mb-4'>
+      <ToastContainer />
         <CCardHeader>Tous les enseignants</CCardHeader>
         <CCardBody>
           <CTable>

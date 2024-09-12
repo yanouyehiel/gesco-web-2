@@ -2,7 +2,7 @@ import { CButton, CCard, CCardBody, CCardHeader, CCol, CFormSelect, CRow, CSpinn
 import React, { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage'
-import { generateBulletinClasse, getClasses, getSequences } from '../../services/MainControllerApi'
+import { generateBulletinClasse, getClasses, getClassesUniversity, getSemestres, getSequences, getTrimestres } from '../../services/MainControllerApi'
 import { pdf, PDFDownloadLink } from '@react-pdf/renderer'
 import PDFBulletin from '../../components/PDFBulletin'
 
@@ -22,8 +22,13 @@ function Bulletins() {
     const [bulletinGenerated, setBulletinGenerated] = useState(false)
 
     useEffect(() => {
-        getClasses(ecole_id, headers).then((res) => setClasses(res))
-        getSequences(ecole_id, headers).then((res) => setSequences(res))
+        if (ecole.type_etablissement_id === 4) {
+            getClassesUniversity(ecole_id, headers).then((res) => setClasses(res))
+            getSemestres(headers).then((res) => setSequences(res))
+        } else {
+            getClasses(ecole_id, headers).then((res) => setClasses(res))
+            getSequences(ecole_id, headers).then((res) => setSequences(res))
+        }
     }, [])
 
     async function generateBulletin() {
@@ -65,7 +70,9 @@ function Bulletins() {
                             name='sequence_id'
                             value={bulletin.sequence_id}
                         >
-                            <option>Selectionner une sequence</option>
+                            {ecole.type_etablissement_id !== 4 ? <option>Selectionner une sequence</option> :
+                                <option>Selectionner un semestre</option>
+                            }
                             {sequences.map((seq, i) => (
                                 <option key={i} value={seq.id}>{seq.intitule}</option>
                             ))}

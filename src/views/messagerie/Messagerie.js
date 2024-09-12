@@ -22,7 +22,10 @@ function Messagerie() {
   const headers = getHeaders()
   const handleClose = () => setShow(false);
   const handleCloseMessage = () => setShowMessage(false);
-  const handleShowMessage = () => setShowMessage(true);
+  const handleShowMessage = () => {
+    getPersonnel().then()
+    setShowMessage(true);
+  }
   const [emetteur, setEmetteur] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [personnel, setPersonnel] = useState([])
@@ -31,10 +34,10 @@ function Messagerie() {
     getMessages(ecole, user.id, headers).then((res) => {
       const filtered = res.filter(m => (m.receveur === null || m.receveur === user.id))
       setMessages(filtered)
+      setLoading(false)
     }, (error) => {
       toast.error(error.response.data.message)
     })
-    getPersonnel().then(() => setLoading(false))
   }, [])
 
   async function showName(emetteurId) {

@@ -16,6 +16,11 @@ export async function getClasses(id, headers) {
     return response.data;
 }
 
+export async function getClassesUniversity(id, headers) {   
+    const response = await AxiosApi.get('/get-classes-university/' + id, {headers});
+    return response.data;
+}
+
 export async function infoClasse(id, headers) {   
     const response = await AxiosApi.get('/get-info-classe/' + id, {headers});
     return response.data;
@@ -227,7 +232,7 @@ export async function getLivres(id, headers) {
 }
 
 export async function getFeesStudent(id, headers) {
-    const response = await AxiosApi.get('/get-fees-student/' + id, {headers});
+const response = await AxiosApi.get('/get-fees-student/' + id, {headers});
     return response.data;
 }
 
@@ -333,5 +338,10 @@ export async function getDepartements(id, headers) {
 
 export async function addDepartement(data, headers) {
     const response = await AxiosApi.post('/departements/create', data, {headers});
+    return response.data;
+}
+
+export async function getSemestres(headers) {
+    const response = await AxiosApi.get('/semestres/list', {headers});
     return response.data;
 }

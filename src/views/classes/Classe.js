@@ -156,12 +156,9 @@ function Classe() {
                         <DataTable
                             columns={columns}
                             data={data}  
-                            selectableRows
                             fixedHeader
                             pagination
-                            selectableRowsHighlight
                             highlightOnHover
-                            onRowClicked={() => console.log('clicked')}
                         >
                         </DataTable>
                     }

@@ -131,7 +131,7 @@ function TrimestreSequences() {
                     <CTable>
                         <CRow className="mb-4">
                             <CCol>
-                                <CButton className='btn btn-primary' onClick={handleShow}>Ajouter un trimestre</CButton>
+                                <CButton className='btn btn-primary text-white' onClick={handleShow}>Ajouter un trimestre</CButton>
                             </CCol>
                         </CRow>
                         <CRow>

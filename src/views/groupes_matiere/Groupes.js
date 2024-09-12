@@ -37,7 +37,6 @@ function Groupes() {
     const [data, setData] = useState([])
 
     useEffect(() => {
-        setLoading(true)
         getGroupe()
     }, [])
 
