@@ -25,15 +25,9 @@ function Tarifs() {
   }, [])
 
   async function getAllClasses() {
-    if (ecole.type_etablissement_id === 4) {
-      await typesClasseById(ecole.id, headers).then((res) => {
+    await typesClasseById(ecole.id, headers).then((res) => {
         setClasses(res)
       })
-    } else {
-      await typesClasse(headers).then((res) => {
-        setClasses(res)
-      })
-    }
   }
 
   async function getTarifs() {

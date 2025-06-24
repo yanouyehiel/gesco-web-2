@@ -1,4 +1,4 @@
-import { CBadge, CCard, CCardBody, CCardHeader, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormInput, CImage, CInputGroup, CNavLink, CSpinner, CTable } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormInput, CImage, CInputGroup, CNavLink, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { getEcoleStore, getEcoleStored, getHeaders, getHeadersWithForm } from '../../services/LocalStorage'
 import { addStudent, getStudents } from '../../services/StudentController'
@@ -72,7 +72,7 @@ function Eleves() {
   const [data, setData] = useState([])
   const handleClose = () => setShow(false)
   const handleShow = () => {   
-    if (ecole.type_etablissement_id==4) {
+    if (ecole.type_etablissement_id==3) {
       getClassesUniversity(ecole_id, headers).then(res => setClasses(res))
     } else {
       getClasses(ecole_id, headers).then(res => setClasses(res))
@@ -149,7 +149,6 @@ function Eleves() {
     setLoading(true)
     student.ecole_id = ecole_id
     student.classe_id = parseInt(student.classe_id)
-    student.annee_scolaire = student.annee_scolaire
     student.file = studentsData
     
     await importListStudents(student, headersForm).then((res) => {
@@ -295,7 +294,7 @@ function Eleves() {
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-              <Modal.Title>Enregistrement d'une élève</Modal.Title>
+              <Modal.Title>{"Enregistrement d'une élève"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
               <Form onSubmit={handleSubmit}>
@@ -362,11 +361,11 @@ function Eleves() {
 
         <Modal show={showUp} onHide={handleCloseUpload}>
           <Modal.Header closeButton>
-            <Modal.Title>Enregistrement massif d'élèves</Modal.Title>
+            <Modal.Title>{"Enregistrement massif d'élèves"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Insérer une liste Excel contenant les données suivantes en respectant l'ordre : <b>matricule, noms, prénoms, date de naissance, lieu de naissance et sexe</b>.</p>
-            <p>NB: N'insérez pas les titres des colonnes mais seulement les valeurs directement.</p>
+            <p>{"Insérer une liste Excel contenant les données suivantes en respectant l'ordre"} : <b>matricule, noms, prénoms, date de naissance, lieu de naissance et sexe</b>.</p>
+            <p>{"NB: N'insérez pas les titres des colonnes mais seulement les valeurs directement."}</p>
             <CImage src={excel} width={'100%'} height={'50%'} />
             <Form onSubmit={handleSubmitUpload} encType='multipart/form-data'>
               <Form.Group className="form-group mt-4">
@@ -374,6 +373,7 @@ function Eleves() {
                 <Form.Select className="form-control" onChange={handleChange} name="annee_scolaire" required="true">
                   <option value=''>-- select --</option>
                   <option value='2024-2025'>2024 - 2025</option>
+                  <option value='2025-2026'>2025 - 2026</option>
                 </Form.Select>
               </Form.Group>
               <Form.Group className="form-group mt-4">
@@ -401,7 +401,7 @@ function Eleves() {
 
         <Modal show={showLink} onHide={handleCloseLink}>
           <Modal.Header closeButton>
-            <Modal.Title>Liaison de l'élève <b>{studentUnlinked.nom +' '+ studentUnlinked.prenom} à un parent</b></Modal.Title>
+            <Modal.Title>{"Liaison de l'élève"} <b>{studentUnlinked.nom +' '+ studentUnlinked.prenom} à un parent</b></Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleSubmitStudentLinked}>

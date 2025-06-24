@@ -1,8 +1,7 @@
-import { CCard, CCardBody, CCardHeader, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormInput, CInputGroup, CNavLink, CSpinner, CTable } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormInput, CInputGroup, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage';
-import { addPaiement, getFeesStudent, getPaiementSchool } from '../../services/MainControllerApi';
-import { getAllStudents, getStudents } from '../../services/StudentController';
+import { addPaiement, getClasses, getFeesStudent, getPaiementSchool, getTarifsTypeClasse } from '../../services/MainControllerApi';
 import { ToastContainer, toast } from 'react-toastify';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
@@ -11,11 +10,16 @@ import CIcon from '@coreui/icons-react';
 import { cilOptions } from '@coreui/icons';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import PDFPaiementSingle from '../../components/PDFPaiementSingle';
+import { getStudentsOfClasse } from '../../services/EnseignementController';
 
 function Pensions() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true)
+  const [loadingStudents, setLoadingStudents] = useState(false)
   const [paiement, setPaiement] = useState({})
+  const [classe, setClasse] = useState(null)
+  const [tarif, setTarif] = useState(null)
+  const [classes, setClasses] = useState([])
   const [paiements, setPaiements] = useState([])
   const [students, setStudents] = useState([])
   const ecole_id = getEcoleStored()
@@ -27,6 +31,18 @@ function Pensions() {
   useEffect(() => {
     getPaiements().then(() => setLoading(false))      
   }, [])
+
+  useEffect(() => {
+    if (classe) {
+      setLoadingStudents(true);
+      getTarifClasse();
+      getStudents().then(() => setLoadingStudents(false));
+    } else {
+      setStudents([]);
+      setTarif(null);
+      setLoadingStudents(false);
+    }
+  }, [classe]);
 
   async function getPaiements() {
     await getPaiementSchool(ecole_id, headers).then((res) => {
@@ -44,11 +60,29 @@ function Pensions() {
     })
   }
 
-  async function getStudentsSchool() {
-    await getAllStudents(ecole_id, headers).then((res) => {
+  async function getTarifClasse() {
+    if (classe) {
+      await getTarifsTypeClasse(classe.type_classe_id, headers).then((res) => {
+        setTarif(res)
+      }, () => {
+          toast.error("Impossible de récupérer les tarifs de cette classe")
+        })
+    }
+  }
+
+  async function getStudents() {
+    await getStudentsOfClasse(classe.id, ecole_id, headers).then((res) => {
       setStudents(res)
     }, (error) => {
-      toast.error(error.response.data.message)
+        toast.error(error.response.data.message)
+      })
+  }
+
+  async function getAllClasses() {
+    await getClasses(ecole.id, headers).then((res) => {
+        setClasses(res)
+      }, () => {
+      toast.error("Impossible de charger les classes")
     })
   }
 
@@ -59,7 +93,7 @@ function Pensions() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
-    getStudentsSchool() 
+    getAllClasses()
     setShow(true);
   }
 
@@ -72,7 +106,7 @@ function Pensions() {
         toast.error(res.message)
       } else {
         toast.success(res.message)
-        setShow(false);
+        handleClose()
         getPaiements().then(() => setLoading(false)) 
       }
     }, (error) => {
@@ -184,17 +218,54 @@ function Pensions() {
           </Modal.Header>
           <Modal.Body>
               <Form onSubmit={handleSubmit}>
-                  <Form.Group className="form-group mt-4">
-                      <Form.Label className="control-label">Sélectionner un élève</Form.Label>
-                      <Form.Select onChange={handleChange} className="form-control" name="student_id" required>
-                          <option>-- select --</option>
-                          {students.map((student, i) => (
-                              <option key={i} value={student.id}>{student.nom +' ' + student.prenom}</option>
-                          ))}
-                      </Form.Select>
+                <Form.Group className="form-group mt-4">
+                    <Form.Label className="control-label">Sélectionner une classe</Form.Label>
+                    <Form.Select 
+                      onChange={(e) => {
+                        const selectedId = e.target.value;
+                        if (!selectedId) {
+                          setClasse(null);
+                          setStudents([]);
+                          return;
+                        }
+                        const selectedClasse = classes.find(c => c.id === parseInt(selectedId));
+                        console.log("selected class form : ", selectedClasse)
+                        setClasse(selectedClasse);
+                      }}
+                      className="form-control" 
+                      required
+                      value={classe ? classe.id : null}
+                    >
+                      <option value="">-- select --</option>
+                      {classes.map((classe, j) => (
+                        <option key={j} value={classe.id}>{classe.nom}</option>
+                      ))}
+                    </Form.Select>
                   </Form.Group>
+                  {/* Loader et Select élève */}
+                  {classe && (
+                    loadingStudents ? (
+                      <CSpinner color='primary' />
+                    ) : (
+                      <Form.Group className="form-group mt-4">
+                        <Form.Label className="control-label">Sélectionner un élève</Form.Label>
+                        <Form.Select 
+                          onChange={handleChange} 
+                          className="form-control" 
+                          name="student_id" 
+                          required
+                          //disabled={students.length === 0}
+                        >
+                          <option value="">-- select --</option>
+                          {students.map((student, i) => (
+                            <option key={i} value={student.id}>{student.nom +' ' + student.prenom}</option>
+                          ))}
+                        </Form.Select>
+                      </Form.Group>
+                    )
+                  )}
                   <Form.Group className="form-group mt-4">
-                      <Form.Label className="control-label">Entrer l'intitulé de la transaction</Form.Label>
+                      <Form.Label className="control-label">{"Entrer l'intitulé de la transaction"}</Form.Label>
                       <Form.Control onChange={handleChange} className="form-control" name="intitule" required />
                   </Form.Group>
                   <Form.Group className="form-group mt-4">
@@ -202,10 +273,11 @@ function Pensions() {
                       <Form.Control onChange={handleChange} className="form-control" name="montant" required />
                   </Form.Group>
                   <Form.Group className="form-group mt-4">
-                      <Form.Label className="control-label">Sélectionner l'année scolaire</Form.Label>
+                      <Form.Label className="control-label">{"Sélectionner l'année scolaire"}</Form.Label>
                       <Form.Select onChange={handleChange} className="form-control" name="annee_scolaire" required>
                           <option value="2024-2025">-- select --</option>
                           <option value="2024-2025">2024-2025</option>
+                          <option value="2025-2026">2025-2026</option>
                       </Form.Select>
                   </Form.Group><br />
                   

@@ -1,4 +1,4 @@
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CFormInput, CInputGroup, CRow, CSpinner, CTable } from '@coreui/react'
+import { CButton, CCard, CCardBody, CCardHeader, CCol, CRow, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import { toast, ToastContainer } from 'react-toastify'
@@ -126,12 +126,15 @@ function TrimestreSequences() {
         <React.Fragment>
             <ToastContainer />
             <CCard className="mb-4">
-                <CCardHeader>Tous les trimestres de l'école</CCardHeader>
+                <CCardHeader>{"Tous les trimestres de l'école"}</CCardHeader>
                 <CCardBody>
                     <CTable>
                         <CRow className="mb-4">
                             <CCol>
-                                <CButton className='btn btn-primary text-white' onClick={handleShow}>Ajouter un trimestre</CButton>
+                                <CButton 
+                                    className='btn btn-primary' 
+                                    onClick={handleShow}
+                                >Ajouter un trimestre</CButton>
                             </CCol>
                         </CRow>
                         <CRow>
@@ -152,7 +155,7 @@ function TrimestreSequences() {
 
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Enregistrement de l'Intitulé d'un trimestre</Modal.Title>
+                        <Modal.Title>{"Enregistrement de l'Intitulé d'un trimestre"}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={handleSubmit}>
@@ -169,12 +172,15 @@ function TrimestreSequences() {
                 </Modal>
             </CCard>
             <CCard className="mb-4">
-                <CCardHeader>Toutes les séquences de l'école</CCardHeader>
+                <CCardHeader>{"Toutes les séquences de l'école"}</CCardHeader>
                 <CCardBody>
                     <CTable>
                         <CRow className="mb-4">
                             <CCol>
-                                <CButton className='btn btn-primary' onClick={handleShowSeq}>Ajouter une séquence</CButton>
+                                <CButton 
+                                    className='btn btn-primary' 
+                                    onClick={handleShowSeq}
+                                >Ajouter une séquence</CButton>
                             </CCol>
                         </CRow>
                         <CRow>
@@ -195,7 +201,7 @@ function TrimestreSequences() {
 
                 <Modal show={showSeq} onHide={handleCloseSeq}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Enregistrement de l'Intitulé d'une séquence</Modal.Title>
+                        <Modal.Title>{"Enregistrement de l'Intitulé d'une séquence"}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={handleSubmitSeq}>

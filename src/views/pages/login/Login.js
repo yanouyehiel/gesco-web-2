@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -50,6 +50,7 @@ const Login = () => {
     e.preventDefault()
     setLoading(true)
     await login(user).then((res) => {
+      console.log(res)
       if (res?.status_code === 401) {
         setLoading(false)
         toast.error(res.message)

@@ -23,8 +23,8 @@ function PDFClasse({ students, ecole, classe }) {
                     <View>
                         <Text style={styles.text}>REPUBLIQUE DU {ecole.pays.toUpperCase()}</Text>
                         <Text style={styles.text}>PAIX-TRAVAIL-PATRIE</Text>
-                        <Text style={styles.text}>DELEGUATION DES ENSEIGNEMENTS {ecole.type_etablissement_id==4?"SUPERIEUR".toUpperCase():"SECONDAIRE".toUpperCase()}</Text>
-                        <Text style={styles.text}>MINISTERE DES ENSEIGNEMENTS {ecole.type_etablissement_id==4?"SUPERIEUR".toUpperCase():"SECONDAIRE".toUpperCase()}</Text>
+                        <Text style={styles.text}>DELEGUATION DES ENSEIGNEMENTS {ecole.type_etablissement_id==3?"SUPERIEUR".toUpperCase():"SECONDAIRE".toUpperCase()}</Text>
+                        <Text style={styles.text}>MINISTERE DES ENSEIGNEMENTS {ecole.type_etablissement_id==3?"SUPERIEUR".toUpperCase():"SECONDAIRE".toUpperCase()}</Text>
                     </View>
                 </View>
                 <View style={styles.content}>

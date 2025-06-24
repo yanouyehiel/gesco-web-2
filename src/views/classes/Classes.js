@@ -1,10 +1,9 @@
 import { CCard, CCardHeader, CCardBody, CFormInput, CTable, CInputGroup, CSpinner, CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem, CButton, CRow, CCol } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { typesClasse, addClasse, deleteClasse, updateClasse, getClassesUniversity, typesClasseById, getCursus } from '../../services/MainControllerApi'
+import { addClasse, updateClasse, getClassesUniversity, typesClasseById, getCursus, getClasses } from '../../services/MainControllerApi'
 import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage'
-import AxiosApi from '../../services/AxiosApi'
 import DataTable from 'react-data-table-component'
-import { Modal, Form, Button, Row, Col } from 'react-bootstrap'
+import { Modal, Form, Button } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify'
 import { getTeachers } from '../../services/EnseignementController'
 import CIcon from '@coreui/icons-react'
@@ -21,11 +20,11 @@ const Classes = () => {
   const [classe, setClasse] = useState({})
   const handleClose = () => setShow(false)
   const handleShow = () => {
-    if (ecole.type_etablissement_id==4) {
+    if (ecole.type_etablissement_id === 3) {
       typesClasseById(ecole.id, headers).then(res => setTypeClasses(res))
       getCursus(ecole.id, headers).then(res => setCursus(res))
     } else {
-      typesClasse(headers).then(res => setTypeClasses(res))
+     typesClasseById(ecole.id, headers).then(res => setTypeClasses(res))
     }
     setShow(true)
   }
@@ -38,7 +37,7 @@ const Classes = () => {
   const [cursus, setCursus] = useState([])
 
   useEffect(() => {
-    getClasses().then()
+    getAllClasses().then()
 
     getTeachers(ecole_id, headers).then(res => {
       setTeachers(res)
@@ -63,15 +62,15 @@ const Classes = () => {
     
     await updateClasse(data, headers).then((res) => {
       toast.success(res)
-      getClasses().then(() => setLoading(false))
+      getAllClasses().then(() => setLoading(false))
       handleCloseUpdate()
     }, (error) => {
       toast.error(error.response.data.message)
     })
   }
 
-  async function getClasses() {
-    if (ecole.type_etablissement_id==4) {
+  async function getAllClasses() {
+    if (ecole.type_etablissement_id === 3) {
       await getClassesUniversity(ecole_id, headers).then(res => {
         setClasses(res)
         setData(res)
@@ -79,10 +78,10 @@ const Classes = () => {
         toast.error(error.response.data.message)
       })
     } else {
-      await AxiosApi.get('/get-classes-school/' + ecole_id, {headers})
+      await getClasses(ecole_id, headers)
       .then(res => {
-        setClasses(res.data)
-        setData(res.data)
+        setClasses(res)
+        setData(res)
       }, (error) => {
         toast.error(error.response.data.message)
       })
@@ -161,8 +160,8 @@ const Classes = () => {
       sortable: true
     },
     {
-      name: ecole.type_etablissement_id==4?'Cursus':'Cycle',
-      selector: row => row.cycle_id==1?'Premier Cycle':(row.cycle_id==2?'Second Cycle':''),
+      name: ecole.type_etablissement_id==3?'Cursus':'Cycle',
+      selector: row => row.cycle_id==1?'Premier Cycle':(row.cycle_id==2?'Second Cycle':'Non défini'),
       sortable: true
     },
     {
@@ -243,7 +242,7 @@ const Classes = () => {
             <CTable>
               {loading ? <CSpinner color='primary' /> :
                 <DataTable
-                  columns={ecole.type_etablissement_id==4?columnsUniversity:columns}
+                  columns={ecole.type_etablissement_id==3?columnsUniversity:columns}
                   data={data}
                   fixedHeader
                   pagination
@@ -258,7 +257,7 @@ const Classes = () => {
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-              <Modal.Title>Enregistrement d'une classe</Modal.Title>
+              <Modal.Title>{"Enregistrement d'une classe"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
               <Form onSubmit={handleSubmit}>
@@ -276,21 +275,27 @@ const Classes = () => {
                       </Form.Select>
                   </Form.Group>
                   <Form.Group className="form-group mt-4">
-                    {ecole.type_etablissement_id!==4?<Form.Label className="control-label">A quel cycle appartient-elle ? 
-                      <span style={{color: 'red'}}> Remplir s'il s'agit d'une classe du secondaire</span>
-                    </Form.Label>:
-                    <Form.Label className="control-label">A quel cursus appartient-elle ?</Form.Label>}
-                    {ecole.type_etablissement_id!==4?<Form.Select onChange={handleChange} name='cycle_id' className="form-control">
-                      <option>-- select --</option>
-                      <option value={1}>Premier Cycle</option>
-                      <option value={2}>Second Cycle</option>
-                    </Form.Select>:
-                    <Form.Select onChange={handleChange} name='cycle_id' className="form-control">
-                      <option>-- select --</option>
-                      {cursus.length>0&&cursus.map((c, i) => (
-                        <option key={i} value={c.id}>{c.intitule}</option>
-                      ))}
-                    </Form.Select>}
+                    {ecole.type_etablissement_id === 2 &&
+                      <>
+                        <Form.Label className="control-label">A quel cycle appartient-elle ?</Form.Label>
+                        <Form.Select onChange={handleChange} name='cycle_id' className="form-control">
+                          <option>-- select --</option>
+                          <option value={1}>Premier Cycle</option>
+                          <option value={2}>Second Cycle</option>
+                        </Form.Select>
+                      </>
+                    }
+                    {ecole.type_etablissement_id ===3 &&
+                      <>
+                        <Form.Label className="control-label">A quel cursus appartient-elle ?</Form.Label>
+                        <Form.Select onChange={handleChange} name='cycle_id' className="form-control">
+                          <option>-- select --</option>
+                          {cursus.length>0&&cursus.map((c, i) => (
+                            <option key={i} value={c.id}>{c.intitule}</option>
+                          ))}
+                        </Form.Select>
+                      </>
+                    }
                   </Form.Group>
                   {ecole.type_etablissement_id!==4&&<Form.Group className="form-group mt-4">
                     <Form.Label className="control-label">Nommer un enseignant principal</Form.Label>

@@ -1,21 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 
 import {
   CRow,
   CCol,
-  CDropdown,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdownToggle,
   CWidgetStatsA,
 } from '@coreui/react'
 import { getStyle } from '@coreui/utils'
-import { CChartBar, CChartLine } from '@coreui/react-chartjs'
-import CIcon from '@coreui/icons-react'
-import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
-import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage'
-import { getFeesEcole } from '../../services/MainControllerApi'
+import { getEcoleStore } from '../../services/LocalStorage'
 
 const WidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null)
@@ -50,7 +42,7 @@ const WidgetsDropdown = (props) => {
               {props.nb_students}
             </>
           }
-          title={ecole.type_etablissement_id==4?"Nombre d'étudiants":"Nombre d'élèves"}
+          title={ecole.type_etablissement_id==3?"Nombre d'étudiants":"Nombre d'élèves"}
         />
       </CCol>
       <CCol sm={6} xl={4} xxl={3}>
@@ -61,7 +53,7 @@ const WidgetsDropdown = (props) => {
               {props.nbDirecteurs}
             </>
           }
-          title="Directeur"
+          title="Directeurs"
         />
       </CCol>
       <CCol sm={6} xl={4} xxl={3}>
@@ -104,6 +96,26 @@ const WidgetsDropdown = (props) => {
 WidgetsDropdown.propTypes = {
   className: PropTypes.string,
   withCharts: PropTypes.bool,
+  nbDirecteurs: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  nbTeachers: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  nbParents: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  nbAdmins: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  nb_students: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
 }
 
 export default WidgetsDropdown

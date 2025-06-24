@@ -110,7 +110,7 @@ function TypeClasses() {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Enregistrement d'un type classe</Modal.Title>
+                    <Modal.Title>{"Enregistrement d'un type classe"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>

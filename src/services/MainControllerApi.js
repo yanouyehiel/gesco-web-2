@@ -101,6 +101,11 @@ export async function getAllTarifs(id, headers) {
     return response.data;
 }
 
+export async function getTarifsTypeClasse(id, headers) {
+    const response = await AxiosApi.get('/get-tarif/type-classe/' + id, {headers});
+    return response.data;
+}
+
 export async function addPaiement(paiement, headers) {
     const response = await AxiosApi.post('/add-paiement', paiement, {headers});
     return response.data;

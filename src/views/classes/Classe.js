@@ -1,11 +1,11 @@
-import { CCard, CCardBody, CCardHeader, CTable, CInputGroup, CFormInput, CSpinner, CNavLink } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CTable, CInputGroup, CFormInput, CSpinner, CNavLink, CButton } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import { useParams, NavLink } from "react-router-dom";
 import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage';
 import { Button, Col, Row, Modal, Form } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { getStudentsOfClasse } from '../../services/EnseignementController';
-import { getClasses, infoClasse } from '../../services/MainControllerApi';
+import { infoClasse } from '../../services/MainControllerApi';
 import { ToastContainer, toast } from "react-toastify";
 import { addStudent } from "../../services/StudentController";
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -167,7 +167,7 @@ function Classe() {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Enregistrement d'une élève</Modal.Title>
+                    <Modal.Title>{"Enregistrement d'une élève"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
@@ -199,14 +199,19 @@ function Classe() {
                             <Form.Label className="control-label">Année de scolarisation</Form.Label>
                             <Form.Select className="form-control" onChange={handleChange} name="annee_scolaire" required>
                                 <option value=''>-- select --</option>
-                                <option value='2023 - 2024'>2023 - 2024</option>
                                 <option value='2024 - 2025'>2024 - 2025</option>
+                                <option value='2025 - 2026'>2025 - 2026</option>
                             </Form.Select>
                         </Form.Group>
                         <br/>
-                        <Button size='lg' type='submit' disabled={loading ? true : false}>
-                            {loading && <CSpinner />} Enregistrer
-                        </Button>
+                        <CButton 
+                            size='lg' 
+                            type='submit' 
+                            className='btn-primary text-white' 
+                            disabled={loading}
+                        >
+                            {!loading ? 'Enregistrer' : <CSpinner />}
+                        </CButton>
                     </Form>
                 </Modal.Body>
             </Modal>

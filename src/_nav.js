@@ -1,16 +1,7 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilBell,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
   cilDescription,
-  cilDrop,
-  cilNotes,
-  cilPencil,
-  cilPuzzle,
-  cilStar,
   cilCash,
   cilDoor,
   cilMoney,
@@ -29,14 +20,13 @@ import {
   cilSchool,
   cilEnvelopeLetter,
   cilCalendarCheck,
-  cilGroup,
   cilObjectGroup,
   cilAvTimer,
   cilFile,
   cilLinkAlt,
   cilIndustry,
 } from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import { CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
   {
@@ -52,6 +42,12 @@ const _nav = [
   {
     component: CNavTitle,
     name: "Gestion de l'établissement",
+  },
+  {
+    component: CNavItem,
+    name: 'Les types de classe',
+    to: '/type-classes',
+    icon: <CIcon icon={cilDoor} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
@@ -264,12 +260,12 @@ const _navUniversity = [
     to: '/documents',
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
   },
-  /*{
+  {
     component: CNavItem,
     name: 'Les livres',
     to: '/livres',
     icon: <CIcon icon={cilBook} customClassName="nav-icon" />,
-  },*/
+  },
   {
     component: CNavTitle,
     name: 'Gestion des enseignements',
@@ -302,22 +298,22 @@ const _navUniversity = [
     to: '/presences',
     icon: <CIcon icon={cilCheckCircle} customClassName="nav-icon" />,
   },
-  /*{
+  {
     component: CNavItem,
     name: 'Les devoirs',
     to: '/devoirs',
     icon: <CIcon icon={cilColumns} customClassName="nav-icon" />,
-  },*/
+  },
   {
     component: CNavTitle,
     name: 'Gestion des évaluations',
   },
-  /*{
+  {
     component: CNavItem,
     name: 'Les trimestres et séquences',
     to: '/trimestres-sequences',
     icon: <CIcon icon={cilAvTimer} customClassName="nav-icon" />,
-  },*/
+  },
   {
     component: CNavItem,
     name: 'Les notes',

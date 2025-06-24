@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import classNames from 'classnames'
 
 import {
   CAvatar,
@@ -7,10 +6,8 @@ import {
   CButtonGroup,
   CCard,
   CCardBody,
-  CCardFooter,
   CCardHeader,
   CCol,
-  CProgress,
   CRow,
   CSpinner,
   CTable,
@@ -27,7 +24,6 @@ import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import { getFeesEcole } from '../../services/MainControllerApi'
 import { dateParser } from '../../utils/functions'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
-import WidgetsBrand from '../widgets/WidgetsBrand'
 import MainChart from "./MainChart"
 
 const Dashboard = () => {
@@ -65,7 +61,7 @@ const Dashboard = () => {
           <CRow>
             <CCol sm={5}>
               <h4 id="traffic" className="card-title mb-0">Trafic financier</h4>
-              <div className="small text-body-secondary">Tous les mois de l'année</div>
+              <div className="small text-body-secondary">{"Tous les mois de l'année"}</div>
             </CCol>
             <CCol sm={7} className="d-none d-md-block">
               <CButton color="primary" className="float-end">
@@ -116,7 +112,7 @@ const Dashboard = () => {
       <CRow>
         <CCol xs={12}>
           <CCard className="mb-4">
-            <CCardHeader>Paiements effectués aujourd'hui</CCardHeader>
+            <CCardHeader>{"Paiements effectués aujourd'hui"}</CCardHeader>
             <CCardBody>
               {(fees?.paiements_today && !loading) ? <CTable align="middle" className="mb-0 border" hover responsive>
                 <CTableHead className="text-nowrap">
@@ -158,7 +154,7 @@ const Dashboard = () => {
                         <div className="fw-semibold text-nowrap">{dateParser(item.created_at)}</div>
                       </CTableDataCell>
                     </CTableRow>
-                  )) : <p className="text-center">Auncun paiement effectué aujourd'hui</p>}
+                  )) : <p className="text-center">{"Auncun paiement effectué aujourd'hui"}</p>}
                 </CTableBody>
               </CTable> : <CSpinner color='primary' />}
             </CCardBody>

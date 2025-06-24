@@ -112,7 +112,7 @@ function Cursus() {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Enregistrement d'un cursus</Modal.Title>
+                    <Modal.Title>{"Enregistrement d'un cursus"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>

@@ -18,7 +18,7 @@ import {
   CFormLabel
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilDoor, cilEnvelopeLetter, cilFactory, cilFile, cilFlagAlt, cilGlobeAlt, cilInstitution, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
+import { cilDoor, cilEnvelopeLetter, cilFactory, cilFile, cilFlagAlt, cilGlobeAlt, cilInstitution, cilMap, cilPhone } from '@coreui/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { addEcole, typesEtablissements } from '../../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
@@ -77,7 +77,7 @@ const Register = () => {
 
   async function getTypesEtablissement() {
     await typesEtablissements().then((res) => {
-      setTypes(res.filter(t => t.id !== 3))
+      setTypes(res)
       setLoading(false)
     })
   }
@@ -171,6 +171,7 @@ const Register = () => {
                             onChange={handleChange} 
                             name="email"
                             type='email'
+                            //required="true"
                           />
                         </CInputGroup>
                       </CCol>
@@ -211,7 +212,7 @@ const Register = () => {
                         onChange={handleChange} 
                         required="true"
                       >
-                        <option>Choisir le type d'établissement</option>
+                        <option>{"Choisir le type d'établissement"}</option>
                         {types.map((type, i) => (
                           <option key={i} value={type.id}>{type.intitule}</option>
                         ))}

@@ -2,11 +2,10 @@ import { CButton, CCard, CCardBody, CCardHeader, CCol, CDropdown, CDropdownItem,
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage'
-import { addMatiere, getAllMatieres, getClassesUniversity, getGroupeMatieres, getSingleMatiere } from '../../services/MainControllerApi'
+import { addMatiere, getAllMatieres, getClasses, getClassesUniversity, getGroupeMatieres, getSingleMatiere } from '../../services/MainControllerApi'
 import { ToastContainer, toast } from 'react-toastify'
 import DataTable from 'react-data-table-component'
 import { dateParser } from '../../utils/functions'
-import AxiosApi from '../../services/AxiosApi'
 import { cilOptions } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
@@ -18,11 +17,11 @@ function Matieres() {
   const [showMatiere, setShowMatiere] = useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => {
-    if (ecole.type_etablissement_id==4) {
-      getGroupe().then()
+    getGroupe().then()
+    if (ecole.type_etablissement_id==3) {
       getClassesUniversity(ecole_id, headers).then(res => setClasses(res))
     } else {
-      getClasses(ecole_id, headers).then(res => setClasses(res))
+      getAllClasses().then()
     }
     setShow(true)
   }
@@ -94,14 +93,7 @@ function Matieres() {
   }
 
   useEffect(() => {
-    getAllMatieres(ecole_id, headers)
-    .then(res => {
-      setMatieres(res)
-      setData(res)
-      setLoading(false)
-    }, (error) => {
-      toast.error(error.response.data.message)
-    })
+    getMatieres().then()
   }, [])
 
   function handleFilter(event) {
@@ -110,6 +102,17 @@ function Matieres() {
       row.code.toLowerCase().includes(event.target.value.toLowerCase())
     })
     setData(newData)
+  }
+
+  async function getMatieres() {
+    getAllMatieres(ecole_id, headers)
+    .then(res => {
+      setMatieres(res)
+      setData(res)
+      setLoading(false)
+    }, (error) => {
+      toast.error(error.response.data.message)
+    })
   }
 
   const handleChange = ({currentTarget}) => {
@@ -125,7 +128,7 @@ function Matieres() {
     await addMatiere(matiere, headers).then((res) => {
       setShow(false);
       toast.success(res.message)
-      getAllMatieres(ecole_id, headers).then()
+      getMatieres().then()
       setLoading(false)
     }, (error) => {
       toast.error(error.response.data.message)
@@ -136,9 +139,9 @@ function Matieres() {
     await getGroupeMatieres(ecole_id, headers).then((res) => setGroupes(res))
   }
 
-  async function getClasses() {
-    await AxiosApi.get('/get-classes-school/' + ecole_id, {headers})
-    .then(res => setClasses(res.data), (error) => {
+  async function getAllClasses() {
+    await getClasses(ecole_id, headers)
+    .then(res => setClasses(res), (error) => {
       toast.error(error.response.data.message)
     })
   }
@@ -221,7 +224,7 @@ function Matieres() {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Enregistrement d'une matiere</Modal.Title>
+          <Modal.Title>{"Enregistrement d'une matiere"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <Form onSubmit={handleSubmit}>
