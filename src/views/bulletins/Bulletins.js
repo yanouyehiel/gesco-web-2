@@ -2,8 +2,8 @@ import { CButton, CCard, CCardBody, CCardHeader, CCol, CFormSelect, CRow, CSpinn
 import React, { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage'
-import { generateBulletinClasse, getClasses, getClassesUniversity, getSemestres, getSequences, getTrimestres } from '../../services/MainControllerApi'
-import { pdf, PDFDownloadLink } from '@react-pdf/renderer'
+import { generateBulletinClasse, getClasses, getClassesUniversity, getSemestres, getSequences } from '../../services/MainControllerApi'
+import { PDFDownloadLink } from '@react-pdf/renderer'
 import PDFBulletin from '../../components/PDFBulletin'
 
 function Bulletins() {
@@ -39,8 +39,8 @@ function Bulletins() {
             await generateBulletinClasse(bulletin, headers).then((res) => {
                 setData(res)
                 setBulletinGenerated(true)
-            }, (error) => {
-                toast.error(error.response.data.message)
+            }, () => {
+                toast.error("Une erreur est survenue lors de la génération des bulletins")
             })
         }
         setLoading(false)
@@ -84,8 +84,9 @@ function Bulletins() {
                             name='annee_scolaire'
                             value={bulletin.annee_scolaire}
                         >
-                            <option>Selectionner l'année scolaire</option>
+                            <option>{"Selectionner l'année scolaire"}</option>
                             <option value={"2024-2025"}>2024-2025</option>
+                            <option value={"2025-2026"}>2025-2026</option>
                         </CFormSelect>
                     </CCol>
                     <CCol xl={3}>

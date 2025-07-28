@@ -338,6 +338,7 @@ function Eleves() {
                       <Form.Select className="form-control" onChange={handleChange} name="annee_scolaire" required>
                           <option value=''>-- select --</option>
                           <option value='2024-2025'>2024 - 2025</option>
+                          <option value='2025-2026'>2025 - 2026</option>
                       </Form.Select>
                   </Form.Group>
                   <Form.Group className="form-group mt-4">

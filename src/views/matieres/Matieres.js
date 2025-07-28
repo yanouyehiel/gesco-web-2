@@ -126,6 +126,10 @@ function Matieres() {
     matiere.ecole_id = ecole_id
     matiere.coefficients = items
     await addMatiere(matiere, headers).then((res) => {
+      setMatiereShow({
+        matiere: null,
+        coefficients: []
+      })
       setShow(false);
       toast.success(res.message)
       getMatieres().then()

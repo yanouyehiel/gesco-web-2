@@ -1,9 +1,9 @@
 import { CButton, CCard, CCardBody, CCardHeader, CCol, CFormInput, CInputGroup, CRow, CSpinner, CTable } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { getEcoleStore, getEcoleStored, getHeaders } from '../../services/LocalStorage';
-import { Button, Col, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
-import { addTarif, getAllTarifs, typesClasse, typesClasseById, updateTarif } from '../../services/MainControllerApi';
+import { addTarif, getAllTarifs, typesClasseById, updateTarif } from '../../services/MainControllerApi';
 import DataTable from 'react-data-table-component';
 
 
@@ -172,7 +172,7 @@ function Tarifs() {
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-              <Modal.Title>Enregistrement d'un tarif</Modal.Title>
+              <Modal.Title>{"Enregistrement d'un tarif"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
               <Form onSubmit={handleSubmit}>
@@ -200,6 +200,14 @@ function Tarifs() {
                   <Form.Group className="form-group mt-4">
                       <Form.Label className="control-label">Montant troisième tranche</Form.Label>
                       <Form.Control onChange={handleChange} className="form-control" name="troisieme_tranche" type="number" required />
+                  </Form.Group>
+                  <Form.Group className="form-group mt-4">
+                      <Form.Label className="control-label">{"Sélectionner l'année scolaire"}</Form.Label>
+                      <Form.Select onChange={handleChange} className="form-control" name="annee_scolaire" required>
+                          <option value="2024-2025">-- select --</option>
+                          <option value="2024-2025">2024-2025</option>
+                          <option value="2025-2026">2025-2026</option>
+                      </Form.Select>
                   </Form.Group>
                   <br/>
                   <Button size='lg' type='submit' disabled={loading}>

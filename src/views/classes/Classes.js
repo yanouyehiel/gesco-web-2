@@ -13,19 +13,25 @@ const Classes = () => {
   const ecole_id = getEcoleStored()
   const ecole = getEcoleStore()
   const headers = getHeaders()
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const [loadingData, setLoadingData] = useState(false)
   const [classes, setClasses] = useState([])
   const [data, setData] = useState([])
   const [typeClasses, setTypeClasses] = useState([])
   const [classe, setClasse] = useState({})
   const handleClose = () => setShow(false)
   const handleShow = () => {
+    setLoadingData(true)
     if (ecole.type_etablissement_id === 3) {
       typesClasseById(ecole.id, headers).then(res => setTypeClasses(res))
       getCursus(ecole.id, headers).then(res => setCursus(res))
     } else {
      typesClasseById(ecole.id, headers).then(res => setTypeClasses(res))
     }
+    getTeachers(ecole_id, headers).then(res => {
+      setTeachers(res)
+      setLoadingData(false)
+    })
     setShow(true)
   }
   const [show, setShow] = useState(false)
@@ -38,13 +44,6 @@ const Classes = () => {
 
   useEffect(() => {
     getAllClasses().then()
-
-    getTeachers(ecole_id, headers).then(res => {
-      setTeachers(res)
-      setLoading(false)
-    }, (error) => {
-      toast.error(error.response.data.message)
-    })
   }, [])
 
   const handleUpdate = (data) => {
@@ -70,6 +69,7 @@ const Classes = () => {
   }
 
   async function getAllClasses() {
+    setLoading(true)
     if (ecole.type_etablissement_id === 3) {
       await getClassesUniversity(ecole_id, headers).then(res => {
         setClasses(res)
@@ -86,6 +86,7 @@ const Classes = () => {
         toast.error(error.response.data.message)
       })
     }  
+    setLoading(false)
   }
 
   const handleSubmit = async e => {
@@ -285,7 +286,7 @@ const Classes = () => {
                         </Form.Select>
                       </>
                     }
-                    {ecole.type_etablissement_id ===3 &&
+                    {ecole.type_etablissement_id === 3 &&
                       <>
                         <Form.Label className="control-label">A quel cursus appartient-elle ?</Form.Label>
                         <Form.Select onChange={handleChange} name='cycle_id' className="form-control">
@@ -307,8 +308,8 @@ const Classes = () => {
                     </Form.Select>
                   </Form.Group>}
                   <br/>
-                  <CButton size='lg' type='submit' className='btn-primary text-white' disabled={loading}>
-                  {!loading ? 'Enregistrer' : 'Traitement...'}
+                  <CButton size='lg' type='submit' className='btn-primary text-white' disabled={loadingData}>
+                  {!loadingData ? 'Enregistrer' : 'Traitement...'}
                   </CButton>
               </Form>
           </Modal.Body>

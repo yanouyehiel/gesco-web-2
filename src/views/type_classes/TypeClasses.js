@@ -121,7 +121,7 @@ function TypeClasses() {
                                 name='classe' 
                                 type="text" 
                                 className="form-control" 
-                                placeholder="Exemple: GL1" 
+                                placeholder="Exemple: SIL, CP, CM2" 
                                 required='true' 
                             />
                         </Form.Group>

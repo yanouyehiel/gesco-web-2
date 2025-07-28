@@ -2,10 +2,10 @@ import { CCard, CCardBody, CCardHeader, CFormInput, CInputGroup, CSpinner, CTabl
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import DataTable from 'react-data-table-component'
-import { getAllNotes } from '../../services/EnseignementController'
+import { getAllNotes, getStudentsOfClasse } from '../../services/EnseignementController'
 import { getEcoleStored, getHeaders } from '../../services/LocalStorage'
 import { getClasses } from '../../services/MainControllerApi'
-import { getAllStudents, getStudents } from '../../services/StudentController'
+import { getAllStudents } from '../../services/StudentController'
 import { toast } from 'react-toastify'
 
 const columns = [
@@ -54,43 +54,69 @@ function Notes() {
   const headers = getHeaders()
   const [classes, setClasses] = useState([])
   const [students, setStudents] = useState([])
-  const [classe, setClasse] = useState(0)
-  const [student, setStudent] = useState(0)
+  const [classe, setClasse] = useState('')
+  const [student, setStudent] = useState('')
+  const [loadingStudents, setLoadingStudents] = useState(false)
 
   useEffect(() => {
-    getNotes().then()
-    getAllClasses().then()
-    getAllStudents(ecole_id, headers).then((res) => {
-      setStudents(res)
-      setLoading(false)
-    }, (error) => {
-      toast.error(error.response.data.message)
-    })
+    getNotes().then(() => setLoading(false))
+    getAllClasses()
   }, [])
 
   async function getNotes() {
-    await getAllNotes(ecole_id, headers).then((res) => {
+    try {
+      const res = await getAllNotes(ecole_id, headers)
       setNotes(res)
       setData(res)
-    }, (error) => {
-      toast.error(error.response.data.message)
-    })
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Erreur lors du chargement des notes')
+    }
   }
 
   async function getAllClasses() {
-    await getClasses(ecole_id, headers).then((res) => {
+    try {
+      const res = await getClasses(ecole_id, headers)
       setClasses(res)
-    }, (error) => {
-      toast.error(error.response.data.message)
-    })
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Erreur lors du chargement des classes')
+    }
+  }
+
+  const handleClasseChange = async (e) => {
+    const selectedClasseId = e.target.value
+    setClasse(selectedClasseId)
+    setStudent('') // reset sélection élève
+
+    if (selectedClasseId) {
+      setLoadingStudents(true)
+      try {
+        const studentsOfClasse = await getStudentsOfClasse(selectedClasseId, ecole_id, headers)
+        setStudents(studentsOfClasse)
+      } catch (error) {
+        toast.error(error.response?.data?.message || 'Erreur lors du chargement des élèves')
+        setStudents([])
+      } finally {
+        setLoadingStudents(false)
+      }
+    } else {
+      setStudents([])
+    }
+  }
+
+
+  const handleStudentChange = (e) => {
+    setStudent(e.target.value)
   }
 
   const handleFilter = (e) => {
+    const search = e.toLowerCase()
     const newData = notes.filter((note) => {
-      return note.nom_matiere.toLowerCase().includes(e.toLowerCase()) || 
-      note.nom_student.toLowerCase().includes(e.toLowerCase()) ||
-      note.prenom_student.toLowerCase().includes(e.toLowerCase()) ||
-      note.nom_classe.toLowerCase().includes(e.toLowerCase())
+      return (
+        note.nom_matiere.toLowerCase().includes(search) ||
+        note.nom_student.toLowerCase().includes(search) ||
+        note.prenom_student.toLowerCase().includes(search) ||
+        note.nom_classe.toLowerCase().includes(search)
+      )
     })
     setData(newData)
   }
@@ -98,78 +124,89 @@ function Notes() {
   const handleSubmit = () => {
     const classe_id = parseInt(classe)
     const student_id = parseInt(student)
-    
-    if (classe_id === 0 && student_id === 0) {
+
+    if ((!classe_id || classe_id === 0) && (!student_id || student_id === 0)) {
       setData(notes)
     } else {
-      if (classe_id !== 0 && student_id !== 0) {
-        const newCours = notes.filter((note) => (note.classe_id === classe_id && note.student_id === student_id))
-        setData(newCours)
-      } else {
-        const newCours = notes.filter((note) => (note.classe_id === classe_id || note.student_id === student_id))
-        setData(newCours)
+      if (classe_id && student_id) {
+        const filtered = notes.filter(note => note.classe_id === classe_id && note.student_id === student_id)
+        setData(filtered)
+      } else if (classe_id) {
+        const filtered = notes.filter(note => note.classe_id === classe_id)
+        setData(filtered)
+      } else if (student_id) {
+        const filtered = notes.filter(note => note.student_id === student_id)
+        setData(filtered)
       }
     }
   }
+
   return (
     <CCard className="mb-4">
-        <CCardHeader>Toutes les notes</CCardHeader>
-        <CCardBody>
-          <CTable>
-            <Row>
-              <Col xs={3}>
-                <CInputGroup className="mb-3">
-                  <CFormInput
-                    placeholder="Rechercher"
-                    aria-label="Rechercher"
-                    aria-describedby="basic-addon1"
-                    onChange={(e) => handleFilter(e.target.value)}
-                  />
-                </CInputGroup>
-              </Col>
-              <Col xs={9}>
-                <Row>
-                  <Col>
-                    <Form.Group className="form-group">
-                      <Form.Select onChange={(e) => setClasse(e.target.value)} className="form-control" required='true'>
-                        <option>Sélectionner une classe</option>
-                        {classes.map((classe, i) => (
-                          <option value={classe.id} key={i}>{classe.nom}</option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group className="form-group">
-                      <Form.Select onChange={(e) => setStudent(e.target.value)} className="form-control" required='true'>
-                        <option>Sélectionner un élève</option>
-                        {students.map((student, i) => (
-                          <option value={student.id} key={i}>{student.nom +' '+student.prenom}</option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Button variant='primary' type='submit' className='text-white' onClick={handleSubmit}>Appliquer</Button>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-            <Row>
-              {loading ? <CSpinner color='primary' /> :
-                <DataTable
-                  columns={columns}
-                  data={data}
-                  fixedHeader
-                  pagination
-                  selectableRowsHighlight
-                  highlightOnHover
-                >
-                </DataTable>
-              }
-            </Row>
-          </CTable>
-        </CCardBody>
+      <CCardHeader>Toutes les notes</CCardHeader>
+      <CCardBody>
+        <CTable>
+          <Row>
+            <Col xs={3}>
+              <CInputGroup className="mb-3">
+                <CFormInput
+                  placeholder="Rechercher"
+                  aria-label="Rechercher"
+                  aria-describedby="basic-addon1"
+                  onChange={(e) => handleFilter(e.target.value)}
+                />
+              </CInputGroup>
+            </Col>
+            <Col xs={9}>
+              <Row>
+                <Col>
+                  <Form.Group className="form-group">
+                    <Form.Select onChange={handleClasseChange} className="form-control" required value={classe}>
+                      <option value="">Sélectionner une classe</option>
+                      {classes.map((classeItem, i) => (
+                        <option value={classeItem.id} key={i}>{classeItem.nom}</option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className="form-group">
+                    <Form.Select 
+                      onChange={handleStudentChange} 
+                      className="form-control" 
+                      required 
+                      value={student} 
+                      disabled={loadingStudents || students.length === 0}
+                    >
+                      <option value="">{loadingStudents ? 'Chargement...' : 'Sélectionner un élève'}</option>
+                      {!loadingStudents && students.map((studentItem, i) => (
+                        <option value={studentItem.id} key={i}>{studentItem.nom + ' ' + studentItem.prenom}</option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Button variant='primary' type='button' className='text-white' onClick={handleSubmit}>Appliquer</Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row>
+            {loading ? (
+              <CSpinner color='primary' />
+            ) : (
+              <DataTable
+                columns={columns}
+                data={data}
+                fixedHeader
+                pagination
+                selectableRowsHighlight
+                highlightOnHover
+              />
+            )}
+          </Row>
+        </CTable>
+      </CCardBody>
     </CCard>
   )
 }

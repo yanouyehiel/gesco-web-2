@@ -62,6 +62,7 @@ function Pensions() {
 
   async function getTarifClasse() {
     if (classe) {
+      console.log("nous sommes dans le tarif : ", classe)
       await getTarifsTypeClasse(classe.type_classe_id, headers).then((res) => {
         setTarif(res)
       }, () => {
